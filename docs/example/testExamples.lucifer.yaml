@@ -1,12 +1,3 @@
-options:
-  logLevel: verbose|
-  command: commandToRun
-  binDirectory: path/to/bin (defaults to .)
-  executionDirectory: path/to/where/you/want/to/execute (defaults to .)
-  output: console|file (defaults to console)
-  outputDirectory: where/to/store/output/file (defaults to .)
-  removeTestFolder: true|false (defaults true) 
-
 tests:
   - name: The name of the test to run
     description: >
@@ -21,6 +12,7 @@ tests:
     args: # arguments to the cli as a string or a list
       - --something
       - "somevalue"
+
   # Example tests
   - name: Console Output Test
     description: >
@@ -41,6 +33,7 @@ tests:
     args:
       - --something
       - "somevalue"
+
   - name: File Content Matches Test
     expectations:
       file: path/to/output/file
@@ -53,6 +46,7 @@ tests:
     args:
       - --something
       - "somevalue"
+
   - name: Expected Code Test
     description: >
       Makes sure that the script returns a specific exit code.    
@@ -62,6 +56,7 @@ tests:
     args:
       - --something
       - "somevalue"
+
   - name: Performance Test
     description: >
       Makes sure that the script returns within a given time frame.
@@ -71,6 +66,7 @@ tests:
     args:
       - --something
       - "somevalue"
+      
   - name: Multi-assert Test
     type: expectedCode
     description: >
