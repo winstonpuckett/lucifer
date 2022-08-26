@@ -12,21 +12,19 @@ pub fn find(folder: &str) -> io::Result<()> {
 }
 
 fn is_lucifer_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
-    entry 
-        .as_ref()
-        .unwrap()
-        .path()
-        .display()
-        .to_string()
-        .ends_with(".lucifer.yaml")
+    path_ends_with(entry, ".lucifer.yaml")
 }
 
 fn is_settings_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
+    path_ends_with(entry, "settings.lucifer.yaml")
+}
+
+fn path_ends_with(entry: &Result<DirEntry, std::io::Error>, comparison: &str) -> bool {
     entry 
         .as_ref()
         .unwrap()
         .path()
         .display()
         .to_string()
-        .ends_with("settings.lucifer.yaml")
+        .ends_with(comparison)
 }
