@@ -7,9 +7,6 @@ logLevel: verbose|debug|none
 # What command should be executed.
 command: commandToRun
 
-# Where the command is located.
-binDirectory: path/to/bin (defaults to .)
-
 # Where the tests should be executed (should be an empty folder).
 executionDirectory: path/to/where/you/want/to/execute (defaults to .)
 

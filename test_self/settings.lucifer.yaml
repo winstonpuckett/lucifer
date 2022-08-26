@@ -1,0 +1,3 @@
+version: 1
+command: echo
+executionDirectory: ./tests_tmp
