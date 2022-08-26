@@ -1,5 +1,5 @@
 # The version of the test file syntax.
-version: 1
+version: 0
 
 # Which things should lucifer keep.
 logLevel: verbose|debug|none

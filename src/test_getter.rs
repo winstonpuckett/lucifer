@@ -1,14 +1,31 @@
 use std::{fs::{self, DirEntry}, io};
+use std::str;
+extern crate yaml_rust;
+use yaml_rust::{YamlLoader};
 
-pub fn find(folder: &str) -> io::Result<()> {
+pub fn find(folder: &str) -> io::Result<Settings> {
     let mut files = fs::read_dir(folder)
         .unwrap()
         .filter(is_lucifer_file);
 
-    let _settings_file: DirEntry = files.find(is_settings_file).unwrap().unwrap();
+    let settings_file: DirEntry = files.find(is_settings_file).unwrap().unwrap();
+    let settings = get_settings_file(settings_file);
+    
     let _test_files = files.filter(|f| !is_settings_file(f));
 
-    Ok(())
+    Ok(settings)
+}
+
+fn get_settings_file(settings_file: DirEntry) -> Settings {
+    let content = fs::read_to_string(settings_file.path()).unwrap();
+    let settings_yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
+    let settings_map = &settings_yaml[0];
+
+    Settings { 
+        version: settings_map["version"].as_i64().unwrap() as u8,
+        command: String::from(settings_map["command"].as_str().unwrap()), 
+        execution_directory: String::from(settings_map["executionDirectory"].as_str().unwrap())
+    }
 }
 
 fn is_lucifer_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
@@ -27,4 +44,10 @@ fn path_ends_with(entry: &Result<DirEntry, std::io::Error>, comparison: &str) ->
         .display()
         .to_string()
         .ends_with(comparison)
+}
+
+pub struct Settings {
+    pub version: u8,
+    pub command: String,
+    pub execution_directory: String,
 }
