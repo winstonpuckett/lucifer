@@ -1,0 +1,27 @@
+tests:
+  - name: The name of the test to run
+    description: >
+      A description of the test
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: The name of the test to run
+    description: >
+      A description of the test
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"

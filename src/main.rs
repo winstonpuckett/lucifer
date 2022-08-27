@@ -1,11 +1,12 @@
-mod test_getter;
+mod suite_constructor;
 
 fn main() {
-    let settings = test_getter::find("./test_self").unwrap();
-    println!("version: {0}, command: {1}, execution_directory: {2}"
-        , settings.version
-        , settings.command
-        , settings.execution_directory);
+    let suite = suite_constructor::construct("./test_self").unwrap();
+    println!("version: {0}, command: {1}, execution_directory: {2}, test_count: {3}"
+        , suite.settings.version
+        , suite.settings.command
+        , suite.settings.execution_directory
+        , suite.tests.len());
 }
 
 
