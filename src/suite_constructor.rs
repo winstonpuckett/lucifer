@@ -1,3 +1,15 @@
+/*
+    Easy improvements which should be made:
+        - Remove all unwraps
+        - Abstract getting a String
+        - Pass sub objects vs root objects in to_test
+            - serialization: to_serialization(y),
+            - args: to_args(y),
+            - expectations: to_expectations(y)
+        - Move this into a sub folder and break out structs
+
+*/
+
 use std::{fs::{self, DirEntry}, io};
 use std::str;
 extern crate yaml_rust;
@@ -9,7 +21,7 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
         .filter(is_lucifer_file);
 
     let settings_file: DirEntry = files.find(is_settings_file).unwrap().unwrap();
-    let settings = get_settings_file(settings_file);
+    let settings = to_settings(settings_file);
     
     let tests = files
         .filter(|f| !is_settings_file(f))
@@ -17,12 +29,15 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
         .flatten()
         .collect();
 
-    let suite = Suite { settings, tests };
+    let suite = Suite { 
+        settings, 
+        tests 
+    };
 
     Ok(suite)
 }
 
-fn get_settings_file(settings_file: DirEntry) -> Settings {
+fn to_settings(settings_file: DirEntry) -> Settings {
     let settings_map = file_to_map(settings_file);
 
     Settings { 
@@ -54,12 +69,10 @@ fn to_tests(entry: DirEntry) -> Vec<Test> {
 }
 
 fn to_test(y: &Yaml) -> Test {
-    let serialization = to_serialization(y);
-
     Test {
         name: String::from(y["name"].as_str().unwrap()),
         description: String::from(y["description"].as_str().unwrap()),
-        serialization,
+        serialization: to_serialization(y),
         args: to_args(y),
         expectations: to_expectations(y) 
     }
