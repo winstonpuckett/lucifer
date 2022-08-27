@@ -53,8 +53,8 @@ fn to_tests(entry: DirEntry) -> Vec<Test> {
     tests
 }
 
-fn to_test(f: &Yaml) -> Test {
-    let serialization_key = f["serialization"].as_str().unwrap();
+fn to_test(y: &Yaml) -> Test {
+    let serialization_key = y["serialization"].as_str().unwrap();
     let serialization = if serialization_key == "auto" {
         Serialization::Auto
     } else if serialization_key == "parallel" {
@@ -66,10 +66,15 @@ fn to_test(f: &Yaml) -> Test {
     };
 
     Test {
-        name: String::from(f["name"].as_str().unwrap()),
-        description: String::from(f["description"].as_str().unwrap()),
+        name: String::from(y["name"].as_str().unwrap()),
+        description: String::from(y["description"].as_str().unwrap()),
         serialization,
-
+        args: y["args"]
+            .as_vec()
+            .unwrap()
+            .into_iter()
+            .map(|g| String::from(g.as_str().unwrap()))
+            .collect()
     }
 }
 
@@ -107,8 +112,7 @@ pub struct Settings {
 
 
 pub struct Test {
-    // TODO: args
-    // pub args: Vec<String>,
+    pub args: Vec<String>,
     pub description: String,
     // TODO: expectations
     // pub expectations: Expectations,
