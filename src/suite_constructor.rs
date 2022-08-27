@@ -54,7 +54,20 @@ fn to_tests(entry: DirEntry) -> Vec<Test> {
 }
 
 fn to_test(y: &Yaml) -> Test {
+    let serialization = to_serialization(y);
+
+    Test {
+        name: String::from(y["name"].as_str().unwrap()),
+        description: String::from(y["description"].as_str().unwrap()),
+        serialization,
+        args: to_args(y),
+        expectations: to_expectations(y) 
+    }
+}
+
+fn to_serialization(y: &Yaml) -> Serialization {
     let serialization_key = y["serialization"].as_str().unwrap();
+    
     let serialization = if serialization_key == "auto" {
         Serialization::Auto
     } else if serialization_key == "parallel" {
@@ -65,19 +78,27 @@ fn to_test(y: &Yaml) -> Test {
         panic!("Could not parse serialization: {:?}", serialization_key)
     };
 
-    Test {
-        name: String::from(y["name"].as_str().unwrap()),
-        description: String::from(y["description"].as_str().unwrap()),
-        serialization,
-        args: y["args"]
-            .as_vec()
-            .unwrap()
-            .into_iter()
-            .map(|g| String::from(g.as_str().unwrap()))
-            .collect()
-    }
+    serialization
 }
 
+fn to_args(y: &Yaml) -> Vec<String> {
+    y["args"]
+        .as_vec()
+        .unwrap()
+        .into_iter()
+        .map(|g| String::from(g.as_str().unwrap()))
+        .collect()
+}
+
+fn to_expectations(y: &Yaml) -> Expectations {
+    Expectations { 
+        performance: y["expectations"]["performance"].as_i64().unwrap() as u64,
+        exit_code: y["expectations"]["exitCode"].as_i64().unwrap() as i32,
+        output: String::from(y["expectations"]["output"].as_str().unwrap()),
+        file: String::from(y["expectations"]["file"].as_str().unwrap()),
+        contents: String::from(y["expectations"]["contents"].as_str().unwrap()) 
+    }
+}
 
 fn is_lucifer_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
     path_ends_with(entry, ".lucifer.yaml")
@@ -114,8 +135,7 @@ pub struct Settings {
 pub struct Test {
     pub args: Vec<String>,
     pub description: String,
-    // TODO: expectations
-    // pub expectations: Expectations,
+    pub expectations: Expectations,
     pub name: String,
     pub serialization: Serialization
 }
@@ -127,9 +147,9 @@ pub enum Serialization {
 }
 
 pub struct Expectations {
-    pub performance: Option<u64>,
-    pub exit_code: Option<i32>,
-    pub output: Option<String>,
-    pub file: Option<String>,
-    pub contents: Option<String>
+    pub performance: u64,
+    pub exit_code: i32,
+    pub output: String,
+    pub file: String,
+    pub contents: String
 }
