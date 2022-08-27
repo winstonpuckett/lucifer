@@ -46,8 +46,34 @@ fn path_ends_with(entry: &Result<DirEntry, std::io::Error>, comparison: &str) ->
         .ends_with(comparison)
 }
 
+// Settings structs
+
 pub struct Settings {
     pub version: u8,
     pub command: String,
     pub execution_directory: String,
+}
+
+// Test structs
+
+pub struct Test {
+    pub name: String,
+    pub description: String,
+    pub expectations: Expectations,
+    pub serialization: Serialization,
+    pub args: [String]
+}
+
+pub enum Serialization {
+    Auto,
+    Parallel,
+    Serial,
+}
+
+pub struct Expectations {
+    pub performance: Option<u64>,
+    pub exit_code: Option<i32>,
+    pub output: Option<String>,
+    pub file: Option<String>,
+    pub contents: Option<String>
 }
