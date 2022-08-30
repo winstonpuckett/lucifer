@@ -1,13 +1,9 @@
-// mod suite_constructor;
 mod constructor;
+mod executor;
 
 fn main() {
     let suite = constructor::construct("./test_self").unwrap();
-    println!("version: {0}, command: {1}, execution_directory: {2}, test_count: {3}"
-        , suite.settings.version
-        , suite.settings.command
-        , suite.settings.execution_directory
-        , suite.tests.len());
+    executor::execute(suite);
 }
 
 
