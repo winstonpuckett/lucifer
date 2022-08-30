@@ -12,6 +12,8 @@
 use std::{fs::{self, DirEntry}, io};
 extern crate yaml_rust;
 use std::str;
+
+use self::transformer::{Expectations, Serialization};
 mod transformer;
 mod sorter;
 
@@ -39,4 +41,12 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
 pub struct Suite {
     pub settings: transformer::Settings,
     pub features: Vec<transformer::Feature>
+}
+
+pub struct Test {
+    pub args: Vec<String>,
+    pub description: String,
+    pub expectations: Expectations,
+    pub name: String,
+    pub serialization: Serialization
 }

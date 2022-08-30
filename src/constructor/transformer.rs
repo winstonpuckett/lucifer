@@ -1,5 +1,7 @@
 use yaml_rust::{YamlLoader, Yaml};
 use std::{fs::{self, DirEntry}};
+
+use super::Test;
 extern crate yaml_rust;
 
 pub fn to_settings(settings_file: DirEntry) -> Settings {
@@ -89,14 +91,6 @@ pub struct Settings {
 pub struct Feature {
     pub name: String,
     pub tests: Vec<Test>
-}
-
-pub struct Test {
-    pub args: Vec<String>,
-    pub description: String,
-    pub expectations: Expectations,
-    pub name: String,
-    pub serialization: Serialization
 }
 
 pub enum Serialization {

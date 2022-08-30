@@ -30,7 +30,7 @@ pub fn execute(suite: constructor::Suite) -> TestResult {
 
         for test in feature.tests {
             let output = Command::new(&shell)
-                .args([&first_arg, &test.args.join(" ")])
+                .args([&first_arg, &to_arg(&suite.settings.command, &test.args)])
                 .output()
                 .expect("Could not call tool");
             
@@ -51,9 +51,11 @@ pub fn execute(suite: constructor::Suite) -> TestResult {
     TestResult { }
 }
 
-// fn test(cmd: Commandlet) -> TestResult {
-//     panic!()
-// }
+fn to_arg(command: &String, args: &Vec<String>) -> String {
+    std::format!("{0} {1}", 
+        command, 
+        args.join(" "))
+}
 
 // struct Commandlet {
 //     shell: String,

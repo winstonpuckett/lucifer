@@ -9,9 +9,8 @@ tests:
       file: path/to/output/file
       contents: file output string
     serialization: auto
-    args: # arguments to the cli as a string or a list
-      - --something
-      - "somevalue"
+    args:
+    - hello
   - name: The name of the test to run
     description: >
       A description of the test
