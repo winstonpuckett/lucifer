@@ -1,42 +1,8 @@
-/*
-    Easy improvements which should be made:
-        - Remove all unwraps
-        - Abstract getting a String
-        - Pass sub objects vs root objects in to_test
-            - serialization: to_serialization(y),
-            - args: to_args(y),
-            - expectations: to_expectations(y)
-        - Move this into a sub folder and break out structs
-*/
-
-use std::{fs::{self, DirEntry}, io};
-use std::str;
-extern crate yaml_rust;
 use yaml_rust::{YamlLoader, Yaml};
+use std::{fs::{self, DirEntry}};
+extern crate yaml_rust;
 
-pub fn construct(folder: &str) -> io::Result<Suite> {
-    let mut files = fs::read_dir(folder)
-        .unwrap()
-        .filter(is_lucifer_file);
-
-    let settings_file: DirEntry = files.find(is_settings_file).unwrap().unwrap();
-    let settings = to_settings(settings_file);
-    
-    let tests = files
-        .filter(|f| !is_settings_file(f))
-        .map(|f| to_tests(f.unwrap()))
-        .flatten()
-        .collect();
-
-    let suite = Suite { 
-        settings, 
-        tests 
-    };
-
-    Ok(suite)
-}
-
-fn to_settings(settings_file: DirEntry) -> Settings {
+pub fn to_settings(settings_file: DirEntry) -> Settings {
     let settings_map = file_to_map(settings_file);
 
     Settings { 
@@ -54,7 +20,7 @@ fn file_to_map(file: DirEntry) -> yaml_rust::Yaml {
     settings_map.to_owned()
 }
 
-fn to_tests(entry: DirEntry) -> Vec<Test> {
+pub fn to_tests(entry: DirEntry) -> Vec<Test> {
     let tests_map = file_to_map(entry);
 
     let tests = tests_map["tests"]
@@ -112,30 +78,8 @@ fn to_expectations(y: &Yaml) -> Expectations {
     }
 }
 
-fn is_lucifer_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
-    path_ends_with(entry, ".lucifer.yaml")
-}
-
-fn is_settings_file(entry: &Result<DirEntry, std::io::Error>) -> bool {
-    path_ends_with(entry, "settings.lucifer.yaml")
-}
-
-fn path_ends_with(entry: &Result<DirEntry, std::io::Error>, comparison: &str) -> bool {
-    entry 
-        .as_ref()
-        .unwrap()
-        .path()
-        .display()
-        .to_string()
-        .ends_with(comparison)
-}
 
 // Suite Structs
-
-pub struct Suite {
-    pub settings: Settings,
-    pub tests: Vec<Test>
-}
 
 pub struct Settings {
     pub version: u8,
