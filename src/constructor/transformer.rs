@@ -20,17 +20,16 @@ fn file_to_map(file: DirEntry) -> yaml_rust::Yaml {
     settings_map.to_owned()
 }
 
-pub fn to_tests(entry: DirEntry) -> Vec<Test> {
-    let tests_map = file_to_map(entry);
-
-    let tests = tests_map["tests"]
-        .as_vec()
-        .unwrap()
-        .into_iter()
-        .map(to_test)
-        .collect();
-
-    tests
+pub fn to_feature(entry: DirEntry) -> Feature {
+    Feature { 
+        name: entry.file_name().into_string().unwrap(), 
+        tests: file_to_map(entry)["tests"]
+            .as_vec()
+            .unwrap()
+            .into_iter()
+            .map(to_test)
+            .collect()
+    }
 }
 
 fn to_test(y: &Yaml) -> Test {
@@ -87,6 +86,10 @@ pub struct Settings {
     pub execution_directory: String,
 }
 
+pub struct Feature {
+    pub name: String,
+    pub tests: Vec<Test>
+}
 
 pub struct Test {
     pub args: Vec<String>,

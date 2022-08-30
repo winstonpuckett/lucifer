@@ -23,15 +23,14 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
     let settings_file: DirEntry = files.find(sorter::is_settings_file).unwrap().unwrap();
     let settings = transformer::to_settings(settings_file);
     
-    let tests = files
+    let features = files 
         .filter(|f| !sorter::is_settings_file(f))
-        .map(|f| transformer::to_tests(f.unwrap()))
-        .flatten()
+        .map(|f| transformer::to_feature(f.unwrap()))
         .collect();
 
     let suite = Suite { 
         settings, 
-        tests 
+        features
     };
 
     Ok(suite)
@@ -39,5 +38,5 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
 
 pub struct Suite {
     pub settings: transformer::Settings,
-    pub tests: Vec<transformer::Test>
+    pub features: Vec<transformer::Feature>
 }
