@@ -1,0 +1,82 @@
+tests:
+  - name: Missing description should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+    - "1"
+  - description: Missing name should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: Missing expectations should compile
+    description: missing expectations test
+    serialization: auto
+    args:
+    - "1"
+  - name: Missing expectations/performance should compile
+    description: Missing expectations/performance should compile
+    expectations: # what do you expect from this test?
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: Missing expectations/exitCode should compile
+    description: Missing expectations/exitCode should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: Missing expectations/output should compile
+    description: Missing expectations/output should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: Missing expectations/file should compile
+    description: Missing expectations/file should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      contents: file output string
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+  - name: Missing expectations/contents should compile
+    description: Missing expectations/contents should compile
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+    serialization: auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"

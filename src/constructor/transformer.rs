@@ -5,7 +5,7 @@ use super::Test;
 extern crate yaml_rust;
 
 pub fn to_settings(settings_file: DirEntry) -> Settings {
-    let settings_map = file_to_map(settings_file);
+    let settings_map = file_to_map(&settings_file);
 
     Settings { 
         version: settings_map["version"].as_i64().unwrap() as u8,
@@ -14,7 +14,7 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
     }
 }
 
-fn file_to_map(file: DirEntry) -> yaml_rust::Yaml {
+fn file_to_map(file: &DirEntry) -> yaml_rust::Yaml {
     let content = fs::read_to_string(file.path()).unwrap();
     let settings_yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
     let settings_map = &settings_yaml[0];
@@ -22,7 +22,7 @@ fn file_to_map(file: DirEntry) -> yaml_rust::Yaml {
     settings_map.to_owned()
 }
 
-pub fn to_feature(entry: DirEntry) -> Feature {
+pub fn to_feature(entry: &DirEntry) -> Feature {
     Feature { 
         name: entry.file_name().into_string().unwrap(), 
         tests: file_to_map(entry)["tests"]
@@ -70,12 +70,23 @@ fn to_args(y: &Yaml) -> Vec<String> {
 }
 
 fn to_expectations(y: &Yaml) -> Expectations {
+    if y["expectations"].is_badvalue() {
+        // TODO: set default expectations somewhere else
+        return Expectations { 
+            performance: 1000, 
+            exit_code: 0,
+            output: None,
+            file: None,
+            contents: None 
+        }
+    }
+
     Expectations { 
-        performance: y["expectations"]["performance"].as_i64().unwrap() as u64,
-        exit_code: y["expectations"]["exitCode"].as_i64().unwrap() as i32,
-        output: String::from(y["expectations"]["output"].as_str().unwrap()),
-        file: String::from(y["expectations"]["file"].as_str().unwrap()),
-        contents: String::from(y["expectations"]["contents"].as_str().unwrap()) 
+        performance: y["expectations"]["performance"].as_i64().unwrap_or(1000) as u64,
+        exit_code: y["expectations"]["exitCode"].as_i64().unwrap_or(0) as i32,
+        output: y["expectations"]["output"].as_str().and_then(|o| Some(String::from(o))),
+        file: y["expectations"]["file"].as_str().and_then(|o| Some(String::from(o))),
+        contents: y["expectations"]["contents"].as_str().and_then(|o| Some(String::from(o))) 
     }
 }
 
@@ -102,7 +113,7 @@ pub enum Serialization {
 pub struct Expectations {
     pub performance: u64,
     pub exit_code: i32,
-    pub output: String,
-    pub file: String,
-    pub contents: String
+    pub output: Option<String>,
+    pub file: Option<String>,
+    pub contents: Option<String>
 }

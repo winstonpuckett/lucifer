@@ -6,29 +6,45 @@
             - serialization: to_serialization(y),
             - args: to_args(y),
             - expectations: to_expectations(y)
-        - Move this into a sub folder and break out structs
 */
 
-use std::{fs::{self, DirEntry}, io};
+use std::{fs, io};
 extern crate yaml_rust;
 use std::str;
 
-use self::transformer::{Expectations, Serialization};
+use self::{transformer::{Expectations, Serialization, Feature}, sorter::{is_settings_file, is_lucifer_file}};
 mod transformer;
 mod sorter;
 
 pub fn construct(folder: &str) -> io::Result<Suite> {
-    let mut files = fs::read_dir(folder)
-        .unwrap()
-        .filter(sorter::is_lucifer_file);
+    let files = fs::read_dir(folder).unwrap();
 
-    let settings_file: DirEntry = files.find(sorter::is_settings_file).unwrap().unwrap();
-    let settings = transformer::to_settings(settings_file);
-    
-    let features = files 
-        .filter(|f| !sorter::is_settings_file(f))
-        .map(|f| transformer::to_feature(f.unwrap()))
-        .collect();
+    let mut features: Vec<Feature> = vec![];
+    // TODO: store default settings somewhere else.
+    let mut settings = transformer::Settings {
+        command: String::from("echo"),
+        execution_directory: String::from("."),
+        version: 0
+    };
+    for file_result in files {
+        if file_result.is_err() {
+            // TODO: Figure out why a file would be in error.
+            continue;
+        }
+        
+        let file = file_result.unwrap();
+
+        if !is_lucifer_file(&file) {
+            continue;
+        }
+
+        if is_settings_file(&file) {
+            settings = transformer::to_settings(file);
+            continue;
+        }
+
+        features.push(transformer::to_feature(&file));
+    }
 
     let suite = Suite { 
         settings, 
