@@ -36,7 +36,7 @@ pub fn to_feature(entry: DirEntry) -> Feature {
 
 fn to_test(y: &Yaml) -> Test {
     Test {
-        name: String::from(y["name"].as_str().unwrap()),
+        name: String::from(y["name"].as_str().unwrap_or("Unnamed test")),
         description: String::from(y["description"].as_str().unwrap_or("")),
         serialization: to_serialization(y),
         args: to_args(y),

@@ -9,9 +9,7 @@ tests:
     serialization: auto
     args:
     - "1"
-  - name: The name of the test to run
-    description: >
-      A description of the test
+  - description: Missing name
     expectations: # what do you expect from this test?
       performance: 1234 # in milliseconds
       exitCode: 1234 # any number
