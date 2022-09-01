@@ -90,22 +90,22 @@ tests:
       contents: file output string
     args:
     - "1"
-  # - name: Missing args should compile
-  #   description: Missing args should compile
-  #   expectations: 
-  #     performance: 1234
-  #     exitCode: 1234
-  #     output: console output string
-  #     file: path/to/output/file
-  #     contents: file output string
-  #   serialization: auto
-  # - name: Empty args should compile
-  #   description: Empty args should compile
-  #   expectations: 
-  #     performance: 1234
-  #     exitCode: 1234
-  #     output: console output string
-  #     file: path/to/output/file
-  #     contents: file output string
-  #   serialization: auto
-  #   args:
+  - name: Missing args should compile
+    description: Missing args should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+  - name: Empty args should compile
+    description: Empty args should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:

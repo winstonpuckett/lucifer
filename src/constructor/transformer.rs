@@ -5,32 +5,54 @@ use super::Test;
 extern crate yaml_rust;
 
 pub fn to_settings(settings_file: DirEntry) -> Settings {
-    let settings_map = file_to_map(&settings_file);
+    let settings_option = file_to_map(&settings_file);
 
-    Settings { 
-        version: settings_map["version"].as_i64().unwrap() as u8,
-        command: String::from(settings_map["command"].as_str().unwrap()), 
-        execution_directory: String::from(settings_map["executionDirectory"].as_str().unwrap())
+    if settings_option.is_none() {
+        Settings {
+            version: 0,
+            command: String::from("exit"),
+            execution_directory: String::from(".")
+        }
+    } else {
+        // TODO: Handle mistyping gracefully.
+        let settings = settings_option.unwrap();
+        Settings { 
+            version: settings["version"].as_i64().unwrap() as u8,
+            command: String::from(settings["command"].as_str().unwrap()), 
+            execution_directory: String::from(settings["executionDirectory"].as_str().unwrap())
+        }
     }
 }
 
-fn file_to_map(file: &DirEntry) -> yaml_rust::Yaml {
+fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
     let content = fs::read_to_string(file.path()).unwrap();
     let settings_yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
+
+    if settings_yaml.is_empty(){
+        return None;
+    }
+
     let settings_map = &settings_yaml[0];
-    
-    settings_map.to_owned()
+    Some(settings_map.to_owned())
 }
 
 pub fn to_feature(entry: &DirEntry) -> Feature {
-    Feature { 
-        name: entry.file_name().into_string().unwrap(), 
-        tests: file_to_map(entry)["tests"]
+    let tests_option = file_to_map(entry);
+    let tests = if tests_option.is_some() {
+        tests_option
+            .unwrap()["tests"]
             .as_vec()
             .unwrap()
             .into_iter()
             .map(to_test)
             .collect()
+    } else {
+        vec![]
+    };
+
+    Feature { 
+        name: entry.file_name().into_string().unwrap(), 
+        tests
     }
 }
 
@@ -45,7 +67,7 @@ fn to_test(y: &Yaml) -> Test {
 }
 
 fn to_serialization(y: &Yaml) -> Serialization {
-    let serialization_key = y["serialization"].as_str().unwrap();
+    let serialization_key = y["serialization"].as_str().unwrap_or("auto");
     
     let serialization = if serialization_key == "auto" {
         Serialization::Auto
@@ -61,12 +83,31 @@ fn to_serialization(y: &Yaml) -> Serialization {
 }
 
 fn to_args(y: &Yaml) -> Vec<String> {
-    y["args"]
-        .as_vec()
+    let args_option = y["args"].as_vec();
+
+    if args_option.is_none() {
+        return vec![];
+    }
+
+    args_option
         .unwrap()
         .into_iter()
-        .map(|g| String::from(g.as_str().unwrap()))
+        .map(to_string_from_string_or_i64_default_empty)
         .collect()
+}
+
+fn to_string_from_string_or_i64_default_empty(g: &Yaml) -> String {
+    let str_option = g.as_str();
+    if str_option.is_some() {
+        return String::from(str_option.unwrap());
+    }
+    
+    let i64_option = g.as_i64();
+    if i64_option.is_some() {
+        return format!("{}", i64_option.unwrap());
+    }
+
+    String::from("")
 }
 
 fn to_expectations(y: &Yaml) -> Expectations {
