@@ -1,32 +1,14 @@
 use std::process::Command;
 use std::str;
-// use std::env;
-// let args: Vec<String> = env::args().collect();
-// let output = Command::new("cmd")
-//     .args(args)
-//     .output()
-//     .expect("Could not call tool");
-// let code = output.status;
-// println!("{code}");
-// let stdout = str::from_utf8(&output.stdout).unwrap();
-// print!("stdout: {stdout}");
-// let stderr = str::from_utf8(&output.stderr).unwrap();
-// print!("stderr: {stderr}");
 
-use crate::constructor;
+use crate::{constructor, logger};
 
 pub fn execute(suite: constructor::Suite) -> TestResult {
-    // println!("version: {0}, command: {1}, execution_directory: {2}, test_count: {3}"
-    //     , suite.settings.version
-    //     , suite.settings.command
-    //     , suite.settings.execution_directory
-    //     , suite.tests.len());
-
     let (shell, first_arg) = get_shell();
 
     for feature in suite.features {
-        println!("Feature: {0}", feature.name);
-        println!("");
+        format!("Feature: {0}", feature.name);
+        logger::log("");
 
         for test in feature.tests {
             let output = Command::new(&shell)
@@ -34,14 +16,14 @@ pub fn execute(suite: constructor::Suite) -> TestResult {
                 .output()
                 .expect("Could not call tool");
             
-            println!("Test: {:?}", test.name);
-            println!("Description: {:?}", test.description);
+            logger::log(&format!("Test: {:?}", test.name));
+            logger::log(&format!("Description: {:?}", test.description));
             let code = output.status;
-            println!("{code}");
+            logger::log(&format!("{code}"));
             let stdout = str::from_utf8(&output.stdout).unwrap();
-            println!("stdout: {stdout}");
+            logger::log(&format!("stdout: {stdout}"));
             let stderr = str::from_utf8(&output.stderr).unwrap();
-            println!("stderr: {stderr}");
+            logger::log(&format!("stderr: {stderr}"));
         }
     }
     
