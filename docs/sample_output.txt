@@ -1,0 +1,38 @@
+🐍 Lucifer 🐍
+
+🌳 Feature Name 🌳
+
+🍏 Test Name: 22 ms
+
+🍎 Failing console output: 123 ms
+
+Expected output: asdf
+Actual output: fdsa
+
+🍏 Test Name  3: 2345 ms
+
+🍏 Test Name  19: 134 ms
+
+🍎 Failing file content: 123 ms
+
+Expected file content: asdf
+Actual file content: fdsa
+
+🍎 Failing file content: 123 ms
+
+Expected file content: asdf
+Actual file content: fdsa
+
+🍎 Failing file existence: 123 ms
+
+File "path/file.name" does not exist
+
+🍎 Failing performance: 123 ms
+
+Expected performance: 100 ms
+Actual performance: 123 ms
+
+🍎 Failing exit code: 123 ms
+
+Expected exit code: 0
+Actual exit code: 1

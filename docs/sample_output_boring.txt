@@ -1,0 +1,37 @@
+∫ Lucifer ∫
+
+Finding features in "path"
+Found 3 features
+
+↟ Executing Feature "file.name" ↟
+
+Testing "test name"...
+✓ "test name" succeeded in 23ms.
+
+Testing "test name 2"...
+✕ "test name" failed in 23ms.
+
+Reproduce this with: 
+exit 1 --hello world
+
+Failures:
+
+• Expected output: "hello, world"
+• Actual output: "hello, bobby"
+
+• Expected code: 0
+• Actual exit code: 1
+
+• Expected performance: 1ms
+• Actual performance: 23ms
+
+• Expected file to exists: "path/file.name"
+• Expected file content: "hello, blobble"
+• Actual file content: "hello, cornonthebob"
+
+• Standard out: ""
+• Standard error: ""
+
+↟ Done Executing Feature "file.name" ↟
+
+↟ Executing Feature "file.name" ↟
