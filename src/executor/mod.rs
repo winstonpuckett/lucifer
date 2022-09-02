@@ -3,17 +3,17 @@ use std::str;
 
 use crate::{constructor, logger};
 
-pub fn execute(suite: constructor::Suite) -> TestResult {
+pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
+    let results: Vec<TestResult> = vec![];
+
     let (shell, first_arg) = get_shell();
 
     for feature in suite.features {
         logger::log_newline();
-        logger::log_section(vec![
-            &format!("🌳 Feature: {0} 🌳", feature.name)
-        ]);
+        logger::log_heading(&format!("Feature: {0}", feature.name));
         
         for test in feature.tests {
-            // logger::log(&format!("Testing '{0}'", test.name));
+            // let mut result = TestResult {};
             let now = Instant::now();
 
             let output = Command::new(&shell)
@@ -48,49 +48,42 @@ pub fn execute(suite: constructor::Suite) -> TestResult {
                 && exit_code_satisfied 
                 && output_satisfied
                 && error_satisfied {
-                logger::log_section(vec![
-                    &format!("  🍏 '{0}' succeeded in {1}ms", test.name, time_in_milliseconds)
-                ]);
+                logger::log_success(&format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
-                logger::log_section(vec![
-                    &format!("  🍎 '{0}' failed in {1}ms", test.name, time_in_milliseconds)
-                ]);
+                logger::log_failure(&format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
 
                 if !performance_satisfied {
-                    logger::log_section(vec![
-                        &format!("    🌿 Expected performance: {0}ms", test.expectations.performance),
-                        &format!("    🌿 Actual performance: {0}ms", time_in_milliseconds)
+                    logger::log_details(vec![
+                        &format!("Expected performance: {0}ms", test.expectations.performance),
+                        &format!("Actual performance: {0}ms", time_in_milliseconds)
                     ]);
                 }
 
                 if !exit_code_satisfied {
-                    logger::log_section(vec![
-                        &format!("    🌿 Expected exit code: {0}", test.expectations.exit_code),
-                        &format!("    🌿 Actual exit code: {0}", output.status.code().unwrap())
+                    logger::log_details(vec![
+                        &format!("Expected exit code: {0}", test.expectations.exit_code),
+                        &format!("Actual exit code: {0}", output.status.code().unwrap())
                     ]);
                 }
 
                 if !output_satisfied {
-                    logger::log_section(vec![
-                        &format!("    🌿 Expected output: {0}", output_expectation),
-                        &format!("    🌿 Actual output: {0}", stdout)
+                    logger::log_details(vec![
+                        &format!("Expected output: {0}", output_expectation),
+                        &format!("Actual output: {0}", stdout)
                     ]);
                 }
 
                 if !error_satisfied {
-                    logger::log_section(vec![
-                        &format!("    🌿 Expected error: {0}", error_expectation),
-                        &format!("    🌿 Actual error: {0}", stderr)
+                    logger::log_details(vec![
+                        &format!("Expected error: {0}", error_expectation),
+                        &format!("Actual error: {0}", stderr)
                     ]);
                 }
             }
         }
     }
-    
 
-    
-
-    TestResult { }
+    results
 }
 
 fn to_arg(command: &String, args: &Vec<String>) -> String {
@@ -105,7 +98,7 @@ fn to_arg(command: &String, args: &Vec<String>) -> String {
 // }
 
 pub struct TestResult { 
-
+    
 }
 
 fn get_shell() -> (String, String) {

@@ -1,10 +1,29 @@
 use crate::args;
 
-pub fn log_section(messages: Vec<&str>) {
-    for m in messages {
-        log(m);
+pub fn log_heading(message: &str) {
+    log(&format!("🌳 {0} 🌳", message));
+    log_newline();
+}
+
+pub fn log_success(message: &str) {
+    log(&format!("  🍏 {0}", message));
+    log_newline();
+}
+
+pub fn log_failure(message: &str) {
+    log(&format!("  🍎 {0}", message));
+    log_newline();
+}
+
+pub fn log_details(messages: Vec<&str>) {
+    for detail in messages {
+        log_detail(detail);
     }
     log_newline();
+}
+
+pub fn log_detail(message: &str) {
+    log(&format!("    🌿 {0}", message));
 }
 
 pub fn log_newline() {
