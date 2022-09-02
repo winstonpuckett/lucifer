@@ -117,6 +117,7 @@ fn to_expectations(y: &Yaml) -> Expectations {
             performance: 1000, 
             exit_code: 0,
             output: None,
+            error: None,
             file: None,
             contents: None 
         }
@@ -126,6 +127,7 @@ fn to_expectations(y: &Yaml) -> Expectations {
         performance: y["expectations"]["performance"].as_i64().unwrap_or(1000) as u64,
         exit_code: y["expectations"]["exitCode"].as_i64().unwrap_or(0) as i32,
         output: y["expectations"]["output"].as_str().and_then(|o| Some(String::from(o))),
+        error: y["expectations"]["error"].as_str().and_then(|o| Some(String::from(o))),
         file: y["expectations"]["file"].as_str().and_then(|o| Some(String::from(o))),
         contents: y["expectations"]["contents"].as_str().and_then(|o| Some(String::from(o))) 
     }
@@ -155,6 +157,7 @@ pub struct Expectations {
     pub performance: u64,
     pub exit_code: i32,
     pub output: Option<String>,
+    pub error: Option<String>,
     pub file: Option<String>,
     pub contents: Option<String>
 }

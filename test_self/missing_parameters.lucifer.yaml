@@ -4,6 +4,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
@@ -14,6 +15,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
@@ -30,6 +32,7 @@ tests:
     expectations: 
       exitCode: 1234
       output:
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
@@ -41,6 +44,7 @@ tests:
     expectations: 
       performance: 1234
       output:
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
@@ -64,6 +68,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       contents: file output string
     serialization: auto
     args:
@@ -71,6 +76,18 @@ tests:
       - "somevalue"
   - name: Missing expectations/contents should compile
     description: Missing expectations/contents should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/error should compile
+    description: Missing expectations/error should compile
     expectations: 
       performance: 1234
       exitCode: 1234
@@ -86,6 +103,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       file: path/to/output/file
       contents: file output string
     args:
@@ -96,6 +114,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
@@ -105,6 +124,7 @@ tests:
       performance: 1234
       exitCode: 1234
       output: console output string
+      error: console error string
       file: path/to/output/file
       contents: file output string
     serialization: auto
