@@ -1,5 +1,3 @@
-use crate::args;
-
 pub fn log_heading(message: &str) {
     log(&format!("🌳 {0} 🌳", message));
     log_newline();
@@ -31,8 +29,5 @@ pub fn log_newline() {
 }
 
 pub fn log(message: &str) {
-    match args::get_output_type() {
-        args::OutputType::Console => println!("{message}"),
-        args::OutputType::File => todo!(),
-    }
+    println!("{message}")
 }
