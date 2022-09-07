@@ -1,5 +1,5 @@
 tests:
-  - name: Tests should fail lucifer
+  - name: Returning an unexpected exit code fails the run
     description: >
       Given a test that will fail
       When lucifer runs
