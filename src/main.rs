@@ -11,31 +11,41 @@ mod args;
 fn main() {
     let command = get_command();
 
-    match command.command {
+    let exit_code: i32 = match command.command {
         args::CommandType::None => summarize(command),
         args::CommandType::Run => run(command),
         args::CommandType::Help => help(command),
         args::CommandType::Version => version(command),
-    }
+    };
 }
 
-fn summarize(_command: RunCommand) {
+fn summarize(_command: RunCommand) -> i32 {
     logger::log("summary 🐍  LUCIFER  🐍");
+    0
 }
 
-fn run(command: RunCommand) {
+fn run(command: RunCommand) -> i32 {
     logger::log("run ran");
     logger::log("🐍  LUCIFER  🐍");
     logger::log(&format!("Executing tests in '{0}'", command.input_directory));
 
     let suite = constructor::construct(&command.input_directory).unwrap();
-    executor::execute(suite);
+    let results = executor::execute(suite);
+
+    // if in error, 1. otherwise 0.
+    if results.into_iter().any(|r| !r.succeeded) {
+        1
+    } else {
+        0
+    }
 }
 
-fn help(_command: RunCommand) {
-    log("help ran")
+fn help(_command: RunCommand) -> i32 {
+    log("help ran");
+    0
 }
 
-fn version(_command: RunCommand) {
-    log("version ran")
+fn version(_command: RunCommand) -> i32 {
+    log("version ran");
+    0
 }

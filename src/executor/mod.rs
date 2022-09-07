@@ -4,7 +4,7 @@ use std::str;
 use crate::{constructor, logger};
 
 pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
-    let results: Vec<TestResult> = vec![];
+    let mut results: Vec<TestResult> = vec![];
 
     let (shell, first_arg) = get_shell();
 
@@ -13,14 +13,22 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
         logger::log_heading(&format!("Feature: {0}", feature.name));
         
         for test in feature.tests {
-            // let mut result = TestResult {};
+            let mut result = TestResult {
+                succeeded: true
+            };
+
+            let mut command = Command::new(&shell);
+            let command_with_args = command
+                .args([&first_arg, &to_arg(&suite.settings.command, &test.args)]);
+            
             let now = Instant::now();
 
-            let output = Command::new(&shell)
-                .args([&first_arg, &to_arg(&suite.settings.command, &test.args)])
-                .output().expect("Could not call tool");
+            let output = command_with_args
+                .output()
+                .unwrap();
             
             let time_in_milliseconds = now.elapsed().as_millis();
+
             let stdout = str::from_utf8(&output.stdout).unwrap();
             let stderr = str::from_utf8(&output.stderr).unwrap();
 
@@ -51,6 +59,7 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
                 logger::log_success(&format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
                 logger::log_failure(&format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
+                result.succeeded = false;
 
                 if !performance_satisfied {
                     logger::log_details(vec![
@@ -80,6 +89,8 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
                     ]);
                 }
             }
+            
+            results.push(result);
         }
     }
 
@@ -92,13 +103,8 @@ fn to_arg(command: &String, args: &Vec<String>) -> String {
         args.join(" "))
 }
 
-// struct Commandlet {
-//     shell: String,
-//     args: Vec<String>
-// }
-
 pub struct TestResult { 
-    
+    pub succeeded: bool
 }
 
 fn get_shell() -> (String, String) {
