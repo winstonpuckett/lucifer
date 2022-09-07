@@ -37,14 +37,12 @@ fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
 }
 
 pub fn to_feature(entry: &DirEntry) -> Feature {
+    println!("{:?}", entry.to_owned().file_name());
     let tests_option = file_to_map(entry);
+    
     let tests = if tests_option.is_some() {
-        // TODO: Remove unwrap
-        let x = &tests_option.unwrap()["tests"];
-        
-        println!("{:?}", x);
-
-        x.as_vec()
+        tests_option.unwrap()["tests"]
+            .as_vec()
             .unwrap()
             .into_iter()
             .map(to_test)
