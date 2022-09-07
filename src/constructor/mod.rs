@@ -17,6 +17,7 @@ mod transformer;
 mod sorter;
 
 pub fn construct(folder: &str) -> io::Result<Suite> {
+    // TODO: Catch errors from unwrapping folders.
     let files = fs::read_dir(folder).unwrap();
 
     let mut features: Vec<Feature> = vec![];
