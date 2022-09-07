@@ -18,8 +18,9 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
             };
 
             let mut command = Command::new(&shell);
+            let arg = to_arg(&suite.settings.command, &test.args);
             let command_with_args = command
-                .args([&first_arg, &to_arg(&suite.settings.command, &test.args)]);
+                .args([&first_arg, &arg]);
             
             let now = Instant::now();
 
@@ -31,6 +32,11 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
 
             let stdout = str::from_utf8(&output.stdout).unwrap();
             let stderr = str::from_utf8(&output.stderr).unwrap();
+
+            if suite.settings.verbose {
+                println!("Standard Out: '{stdout}'");
+                println!("Standard Error: '{stderr}'");
+            }
 
             let performance_satisfied = (time_in_milliseconds as u64) <= test.expectations.performance;
 
@@ -60,6 +66,8 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
             } else {
                 logger::log_failure(&format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
                 result.succeeded = false;
+
+                logger::log_failure(&format!("Reproduce with: {0} {1} {2}", shell, first_arg, arg));
 
                 if !performance_satisfied {
                     logger::log_details(vec![

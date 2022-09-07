@@ -24,7 +24,8 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
     // TODO: store default settings somewhere else.
     let mut settings = transformer::Settings {
         command: String::from("echo"),
-        version: 0
+        version: 0,
+        verbose: false,
     };
     for file_result in files {
         if file_result.is_err() {
