@@ -3,4 +3,4 @@ tests:
     expectations: 
       exitCode: 0
     args:
-      - 1
+      - "1"
