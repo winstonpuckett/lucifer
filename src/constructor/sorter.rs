@@ -5,7 +5,7 @@ pub fn is_lucifer_file(entry: &DirEntry) -> bool {
 }
 
 pub fn is_settings_file(entry: &DirEntry) -> bool {
-    path_ends_with(entry, "\\settings.lucifer.yaml")
+    path_ends_with(entry, "settings.lucifer.yaml")
 }
 
 pub fn path_ends_with(entry: &DirEntry, comparison: &str) -> bool {
