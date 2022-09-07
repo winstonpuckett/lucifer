@@ -1,3 +1,5 @@
+use std::process::ExitCode;
+
 use args::{get_command, RunCommand};
 use logger::log;
 
@@ -8,23 +10,25 @@ mod args;
 
 
 
-fn main() {
+fn main() -> ExitCode {
     let command = get_command();
 
-    let exit_code: i32 = match command.command {
+    let exit_code: u8 = match command.command {
         args::CommandType::None => summarize(command),
         args::CommandType::Run => run(command),
         args::CommandType::Help => help(command),
         args::CommandType::Version => version(command),
     };
+
+    ExitCode::from(exit_code)
 }
 
-fn summarize(_command: RunCommand) -> i32 {
+fn summarize(_command: RunCommand) -> u8 {
     logger::log("summary 🐍  LUCIFER  🐍");
     0
 }
 
-fn run(command: RunCommand) -> i32 {
+fn run(command: RunCommand) -> u8 {
     logger::log("run ran");
     logger::log("🐍  LUCIFER  🐍");
     logger::log(&format!("Executing tests in '{0}'", command.input_directory));
@@ -40,12 +44,12 @@ fn run(command: RunCommand) -> i32 {
     }
 }
 
-fn help(_command: RunCommand) -> i32 {
+fn help(_command: RunCommand) -> u8 {
     log("help ran");
     0
 }
 
-fn version(_command: RunCommand) -> i32 {
+fn version(_command: RunCommand) -> u8 {
     log("version ran");
     0
 }
