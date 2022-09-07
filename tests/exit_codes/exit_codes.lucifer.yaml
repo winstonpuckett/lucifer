@@ -5,7 +5,6 @@ tests:
       When lucifer runs
       Then it should return 1
     expectations: 
-      performance: 10
       exitCode: 1
     args:
       - -i

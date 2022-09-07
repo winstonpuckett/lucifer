@@ -28,9 +28,11 @@ jobs:
 # ✔️ Build new lucifer version
 # ✔️ Cargo Test new lucifer version
 # Use old version to run new version across all tests, in all supported OS's
-# If any test fails, fail the build
-# Use new version to run itself across all tests, in all supported OS's
-# If any test fails, fail the build
+# ✔️ If any test fails, fail the build
+# ✔️ Use new version to run itself 
+#    - across all tests
+#    - in all supported OS's
+# ✔️ If any test fails, fail the build
 # Push to (unfinished list):
 # - cargo
 # - yum
