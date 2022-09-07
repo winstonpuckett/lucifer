@@ -17,9 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --release --verbose
     - name: Run tests
       run: cargo test --verbose
+    - name: Find lucifer
+      run: cd ./target/release && ls -a
 
 # ✔️ Start
 # Get previous version of lucifer (unavailable until release)
