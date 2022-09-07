@@ -21,7 +21,7 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - name: Find lucifer
-      run: cd ./target/release && ls -a
+      run: ./target/release/lucifer
 
 # ✔️ Start
 # Get previous version of lucifer (unavailable until release)
