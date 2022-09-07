@@ -1,0 +1,7 @@
+tests:
+  - name: Expect 0, return 1
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - 1

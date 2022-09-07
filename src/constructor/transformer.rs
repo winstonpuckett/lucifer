@@ -11,7 +11,6 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
         Settings {
             version: 0,
             command: String::from("exit"),
-            execution_directory: String::from(".")
         }
     } else {
         // TODO: Handle mistyping gracefully.
@@ -19,7 +18,6 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
         Settings { 
             version: settings["version"].as_i64().unwrap() as u8,
             command: String::from(settings["command"].as_str().unwrap()), 
-            execution_directory: String::from(settings["executionDirectory"].as_str().unwrap())
         }
     }
 }
@@ -140,7 +138,7 @@ fn to_expectations(y: &Yaml) -> Expectations {
 pub struct Settings {
     pub version: u8,
     pub command: String,
-    pub execution_directory: String,
+    // pub execution_directory: String,
 }
 
 pub struct Feature {

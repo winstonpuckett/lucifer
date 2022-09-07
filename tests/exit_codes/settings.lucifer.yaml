@@ -1,0 +1,2 @@
+version: 0
+command: ./target/release/lucifer
