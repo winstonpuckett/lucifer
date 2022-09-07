@@ -1,0 +1,39 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+
+# ✔️ Start
+# Get previous version of lucifer (unavailable until release)
+# ✔️ Build new lucifer version
+# ✔️ Cargo Test new lucifer version
+# Use old version to run new version across all tests, in all supported OS's
+# If any test fails, fail the build
+# Use new version to run itself across all tests, in all supported OS's
+# If any test fails, fail the build
+# Push to (unfinished list):
+# - cargo
+# - yum
+# - apt
+# - apt-get
+# - pacman
+# - snap
+# Report successful build status
