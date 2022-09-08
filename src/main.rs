@@ -27,7 +27,7 @@ fn summarize(_command: RunCommand) -> i32 {
 }
 
 fn run(command: RunCommand) -> i32 {
-    logger::log("run ran");
+    logger::log_newline();
     logger::log("🐍  LUCIFER  🐍");
     logger::log(&format!("Executing tests in '{0}'", command.input_directory));
 
