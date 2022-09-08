@@ -12,18 +12,12 @@ fn main() {
     let command = get_command();
 
     let exit_code: i32 = match command.command {
-        args::CommandType::None => summarize(command),
-        args::CommandType::Run => run(command),
+        args::CommandType::None => run(command),
         args::CommandType::Help => help(command),
         args::CommandType::Version => version(command),
     };
 
     std::process::exit(exit_code)
-}
-
-fn summarize(_command: RunCommand) -> i32 {
-    logger::log("summary 🐍  LUCIFER  🐍");
-    0
 }
 
 fn run(command: RunCommand) -> i32 {

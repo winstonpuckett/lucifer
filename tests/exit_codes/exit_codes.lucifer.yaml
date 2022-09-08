@@ -7,6 +7,5 @@ tests:
     expectations: 
       exitCode: 1
     args:
-      - run
       - -i
       - ./tests/test_data/fail_on_exit_code

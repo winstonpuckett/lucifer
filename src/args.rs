@@ -32,8 +32,6 @@ pub fn get_command() -> RunCommand {
             result.command = CommandType::Help;
         } else if is_version_command(&arg) {
             result.command = CommandType::Version;
-        } else if is_run_command(&arg) {
-            result.command = CommandType::Run;
         } else if is_input_directory(&arg) {
             result.input_directory = (&args[i + 1]).to_owned();
             skip = true;
@@ -52,9 +50,6 @@ pub fn get_command() -> RunCommand {
 
 fn is_help_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("help")
-}
-fn is_run_command(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("run")
 }
 fn is_version_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("version")
@@ -86,7 +81,6 @@ pub struct RunCommand {
 
 pub enum CommandType {
     None,
-    Run,
     Help,
     Version
 }
