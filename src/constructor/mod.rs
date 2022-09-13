@@ -27,6 +27,7 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
         version: 0,
         verbose: false,
     };
+    
     for file_result in files {
         if file_result.is_err() {
             // TODO: Figure out why a file would be in error.

@@ -1,5 +1,5 @@
 use yaml_rust::{YamlLoader, Yaml};
-use std::{fs::{self, DirEntry}};
+use std::fs::{self, DirEntry};
 
 use super::Test;
 extern crate yaml_rust;

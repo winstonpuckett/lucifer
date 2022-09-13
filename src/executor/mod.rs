@@ -67,7 +67,8 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
                 logger::log_failure(&format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
                 result.succeeded = false;
 
-                logger::log_failure(&format!("Reproduce with: {0} {1} {2}", shell, first_arg, arg));
+                logger::log_detail(&format!("Reproduce with: {0} {1} {2}", shell, first_arg, arg));
+                logger::log_newline();
 
                 if !performance_satisfied {
                     logger::log_details(vec![

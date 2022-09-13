@@ -1,9 +1,8 @@
 use std::env;
 
 pub fn get_command() -> RunCommand {
-    // TODO: Don't grab the args twice.
-    let args_max_iter_value = env::args().count();
     let args: Vec<String> = env::args().collect();
+    let args_max_iter_value = args.len();
 
     // TODO: Store defaults somewhere sensible.
     let mut result = RunCommand {
@@ -49,10 +48,12 @@ pub fn get_command() -> RunCommand {
 
 
 fn is_help_command(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("help")
+    arg.eq_ignore_ascii_case("-h")
+    || arg.eq_ignore_ascii_case("--help")
 }
 fn is_version_command(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("version")
+    arg.eq_ignore_ascii_case("-v")
+    || arg.eq_ignore_ascii_case("--version")
 }
 
 fn is_input_directory(arg: &String) -> bool {
@@ -64,8 +65,8 @@ fn is_output_directory(arg: &String) -> bool {
     || arg.eq_ignore_ascii_case("--output-directory")
 }
 fn is_execution_directory(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("-o")
-    || arg.eq_ignore_ascii_case("--output-directory")
+    arg.eq_ignore_ascii_case("-e")
+    || arg.eq_ignore_ascii_case("--execution-directory")
 }
 
 pub struct RunCommand {

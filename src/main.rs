@@ -6,8 +6,6 @@ mod executor;
 mod logger;
 mod args;
 
-
-
 fn main() {
     let command = get_command();
 
