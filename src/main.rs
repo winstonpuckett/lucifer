@@ -1,4 +1,4 @@
-use std::{io::Write, fmt::format};
+use std::io::Write;
 
 use args::Args;
 use logger::log;
