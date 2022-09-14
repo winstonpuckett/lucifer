@@ -19,22 +19,15 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
             };
 
             // Prefer test, feature, suite, args for where the test can come from.
-            let tool = test.command.unwrap_or(
-                feature.clone().command.unwrap_or(
-                    suite.settings.command.unwrap_or(
-                        args.command.unwrap()
-                    )
-                )
-            );
-            // if test.command.is_some() {
-            //     test.command.unwrap()
-            // } else if feature.clone().command.is_some() {
-            //     feature.clone().command.unwrap()
-            // } else if suite.settings.command.is_some() {
-            //     suite.settings.command.unwrap()
-            // } else {
-            //     args.command.to_owned().unwrap()
-            // };
+            let tool = if test.command.is_some() {
+                test.command.unwrap()
+            } else if feature.has_command {
+                feature.command.to_owned().unwrap()
+            } else if suite.settings.has_command {
+                suite.settings.command.to_owned().unwrap()
+            } else {
+                args.command.to_owned().unwrap()
+            };
 
             let mut command = Command::new(&shell);
             let arg = to_arg(tool, &test.args);

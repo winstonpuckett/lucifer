@@ -10,6 +10,7 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
     if settings_option.is_none() {
         Settings {
             version: 0,
+            has_command: false,
             command: None,
             verbose: false
         }
@@ -20,6 +21,7 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
 
         Settings { 
             version: settings["version"].as_i64().unwrap() as u8,
+            has_command: command.is_some(),
             command: if command.is_some() {
                 Some(String::from(command.unwrap()))
             } else {
@@ -49,6 +51,7 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
         let file = file_option.unwrap();
         Feature {
             name: entry.file_name().into_string().unwrap(),
+            has_command: file["command"].as_str().is_some(),
             command: file["command"].as_str().and_then(|f| Some(String::from(f))),
             tests: file["tests"]
                 .as_vec()
@@ -61,6 +64,7 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
     } else {
         Feature {
             name: entry.file_name().into_string().unwrap(),
+            has_command: false,
             command: None,
             tests: vec![]
         }
@@ -151,6 +155,7 @@ fn to_expectations(y: &Yaml) -> Expectations {
 #[derive(Clone)]
 pub struct Settings {
     pub version: u8,
+    pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
     pub command: Option<String>,
     pub verbose: bool,
 }
@@ -158,6 +163,7 @@ pub struct Settings {
 #[derive(Clone)]
 pub struct Feature {
     pub name: String,
+    pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
     pub command: Option<String>,
     pub tests: Vec<Test>
 }

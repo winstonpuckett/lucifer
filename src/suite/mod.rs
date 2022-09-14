@@ -12,6 +12,7 @@ pub fn get(args: &Args) -> io::Result<Suite> {
     let mut features: Vec<Feature> = vec![];
     // TODO: store default settings somewhere else.
     let mut settings = transformer::Settings {
+        has_command: false,
         command: None,
         version: 0,
         verbose: false,

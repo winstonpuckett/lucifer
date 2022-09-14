@@ -1,4 +1,4 @@
-use args::{args, Args};
+use args::Args;
 use logger::log;
 
 mod suite;
@@ -7,7 +7,7 @@ mod logger;
 mod args;
 
 fn main() {
-    let args = args();
+    let args = args::get();
 
     let exit_code: i32 = match args.run_mode {
         args::RunMode::None => run(&args),
@@ -26,11 +26,10 @@ fn run(args: &Args) -> i32 {
     let suite = suite::get(args).unwrap();
     let results = executor::execute(suite, args);
 
-    // if in error, 1. otherwise 0.
-    if results.into_iter().any(|r| !r.succeeded) {
-        1
-    } else {
+    if results.into_iter().all(|r| r.succeeded) {
         0
+    } else {
+        1
     }
 }
 

@@ -1,6 +1,6 @@
 use std::env;
 
-pub fn args() -> Args {
+pub fn get() -> Args {
     let args: Vec<String> = env::args().collect();
     let args_max_iter_value = args.len();
 
@@ -44,6 +44,7 @@ pub fn args() -> Args {
             skip = true;
         } else if is_command(&arg) {
             result.command = Some((&args[i + 1]).to_owned());
+            result.has_command = true;
             skip = true;
         }
     };
@@ -81,7 +82,7 @@ fn is_command(arg: &String) -> bool {
 pub struct Args {
     pub run_mode: RunMode,
 
-    pub has_command: bool,
+    pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
     pub command: Option<String>,
 
     pub output_directory: String,
