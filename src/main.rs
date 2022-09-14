@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::{io::Write, fmt::format};
 
 use args::Args;
 use logger::log;
@@ -58,7 +58,7 @@ fn run(args: &Args) -> i32 {
         }).unwrap();
     }
 
-    let mut file = std::fs::File::create("results.json").expect("create failed");
+    let mut file = std::fs::File::create(format!("{}/{}", args.output_directory,"results.json")).expect("create failed");
     file.write_all(json::stringify(data).as_bytes()).expect("write failed");
 
     if success {
