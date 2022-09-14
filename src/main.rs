@@ -1,3 +1,5 @@
+use std::io::Write;
+
 use args::Args;
 use logger::log;
 
@@ -26,7 +28,40 @@ fn run(args: &Args) -> i32 {
     let suite = suite::get(args).unwrap();
     let results = executor::execute(suite, args);
 
-    if results.into_iter().all(|r| r.succeeded) {
+    let mut data = json::JsonValue::new_object();
+    data["testResults"] = json::JsonValue::new_array();//results;
+    
+    let mut success = true;
+    for r in results {
+        success &= r.succeeded;
+        let mut failures = json::JsonValue::new_array();
+        for f in r.failures {
+            failures.push(json::object!{
+                type: match f.failure_type{
+                    executor::FailureType::Performance => "performance",
+                    executor::FailureType::ExitCode => "exitCode",
+                    executor::FailureType::Output => "output",
+                    executor::FailureType::Error => "error",
+                    executor::FailureType::FileDoesNotExist => "fileMissing",
+                    executor::FailureType::FileContents => "fileContents",
+                },
+                expectation: f.expectation,
+                actual: f.actual
+            }).unwrap();
+        }
+
+        data["testResults"].push(json::object!{
+            succeeded: r.succeeded,
+            // TODO: is u64 enough?
+            milliseconds: r.performance as u64,
+            failures: failures
+        }).unwrap();
+    }
+
+    let mut file = std::fs::File::create("results.json").expect("create failed");
+    file.write_all(json::stringify(data).as_bytes()).expect("write failed");
+
+    if success {
         0
     } else {
         1

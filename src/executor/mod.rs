@@ -15,7 +15,9 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
         
         for test in feature.tests {
             let mut result = TestResult {
-                succeeded: true
+                succeeded: true,
+                failures: vec![],
+                performance: 0
             };
 
             // Prefer test, feature, suite, args for where the test can come from.
@@ -36,6 +38,8 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
             let now = Instant::now();
             let output_option = command_with_args.output();
             let time_in_milliseconds = now.elapsed().as_millis();
+
+            result.performance = time_in_milliseconds;
 
             let output = output_option.unwrap();
 
@@ -84,6 +88,12 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
                         &format!("Expected performance: {0}ms", test.expectations.performance),
                         &format!("Actual performance: {0}ms", time_in_milliseconds)
                     ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::Performance,
+                        expectation: test.expectations.performance.to_string(),
+                        actual: time_in_milliseconds.to_string()
+                    })
                 }
 
                 if !exit_code_satisfied {
@@ -91,6 +101,12 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
                         &format!("Expected exit code: {0}", test.expectations.exit_code),
                         &format!("Actual exit code: {0}", output.status.code().unwrap())
                     ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::ExitCode,
+                        expectation: test.expectations.exit_code.to_string(),
+                        actual: output.status.code().unwrap().to_string()
+                    })
                 }
 
                 if !output_satisfied {
@@ -98,6 +114,12 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
                         &format!("Expected output: {0}", output_expectation),
                         &format!("Actual output: {0}", stdout)
                     ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::Output,
+                        expectation: output_expectation,
+                        actual: String::from(stdout)
+                    })
                 }
 
                 if !error_satisfied {
@@ -105,6 +127,12 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
                         &format!("Expected error: {0}", error_expectation),
                         &format!("Actual error: {0}", stderr)
                     ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::Error,
+                        expectation: error_expectation,
+                        actual: String::from(stderr)
+                    })
                 }
             }
             
@@ -121,14 +149,31 @@ fn to_arg(command: String, args: &Vec<String>) -> String {
         args.join(" "))
 }
 
-pub struct TestResult { 
-    pub succeeded: bool
-}
-
 fn get_shell() -> (String, String) {
     if cfg!(target_os = "windows") {
         (String::from("cmd"), String::from("/C"))
     } else {
         (String::from("sh"), String::from("-c"))
     }
+}
+
+pub struct TestResult { 
+    pub succeeded: bool,
+    pub failures: Vec<Failure>,
+    pub performance: u128,
+}
+
+pub struct Failure {
+    pub failure_type: FailureType,
+    pub expectation: String,
+    pub actual: String
+}
+
+pub enum FailureType {
+    Performance,
+    ExitCode,
+    Output,
+    Error,
+    FileDoesNotExist,
+    FileContents
 }
