@@ -1,33 +1,22 @@
-/*
-    Easy improvements which should be made:
-        - Remove all unwraps
-        - Abstract getting a String
-        - Pass sub objects vs root objects in to_test
-            - serialization: to_serialization(y),
-            - args: to_args(y),
-            - expectations: to_expectations(y)
-*/
-
 use std::{fs, io};
 extern crate yaml_rust;
-use std::str;
-
+use crate::args::Args;
 use self::{transformer::{Expectations, Serialization, Feature}, sorter::{is_settings_file, is_lucifer_file}};
 mod transformer;
 mod sorter;
 
-pub fn construct(folder: &str) -> io::Result<Suite> {
+pub fn get(args: &Args) -> io::Result<Suite> {
     // TODO: Catch errors from unwrapping folders.
-    let files = fs::read_dir(folder).unwrap();
+    let files = fs::read_dir(&args.input_directory).unwrap();
 
     let mut features: Vec<Feature> = vec![];
     // TODO: store default settings somewhere else.
     let mut settings = transformer::Settings {
-        command: String::from("echo"),
+        command: None,
         version: 0,
         verbose: false,
     };
-    
+
     for file_result in files {
         if file_result.is_err() {
             // TODO: Figure out why a file would be in error.
@@ -56,13 +45,16 @@ pub fn construct(folder: &str) -> io::Result<Suite> {
     Ok(suite)
 }
 
+#[derive(Clone)]
 pub struct Suite {
     pub settings: transformer::Settings,
     pub features: Vec<transformer::Feature>
 }
 
+#[derive(Clone)]
 pub struct Test {
     pub args: Vec<String>,
+    pub command: Option<String>,
     pub description: String,
     pub expectations: Expectations,
     pub name: String,

@@ -1,30 +1,30 @@
-use args::{get_command, RunCommand};
+use args::{args, Args};
 use logger::log;
 
-mod constructor;
+mod suite;
 mod executor;
 mod logger;
 mod args;
 
 fn main() {
-    let command = get_command();
+    let args = args();
 
-    let exit_code: i32 = match command.command {
-        args::CommandType::None => run(command),
-        args::CommandType::Help => help(command),
-        args::CommandType::Version => version(command),
+    let exit_code: i32 = match args.run_mode {
+        args::RunMode::None => run(&args),
+        args::RunMode::Help => help(&args),
+        args::RunMode::Version => version(&args),
     };
 
     std::process::exit(exit_code)
 }
 
-fn run(command: RunCommand) -> i32 {
+fn run(args: &Args) -> i32 {
     logger::log_newline();
     logger::log("🐍  LUCIFER  🐍");
-    logger::log(&format!("Executing tests in '{0}'", command.input_directory));
+    logger::log(&format!("Executing tests in '{0}'", args.input_directory));
 
-    let suite = constructor::construct(&command.input_directory).unwrap();
-    let results = executor::execute(suite);
+    let suite = suite::get(args).unwrap();
+    let results = executor::execute(suite, args);
 
     // if in error, 1. otherwise 0.
     if results.into_iter().any(|r| !r.succeeded) {
@@ -34,12 +34,12 @@ fn run(command: RunCommand) -> i32 {
     }
 }
 
-fn help(_command: RunCommand) -> i32 {
+fn help(_command: &Args) -> i32 {
     log("help ran");
     0
 }
 
-fn version(_command: RunCommand) -> i32 {
+fn version(_command: &Args) -> i32 {
     log("version ran");
     0
 }

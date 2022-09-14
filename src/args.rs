@@ -1,12 +1,14 @@
 use std::env;
 
-pub fn get_command() -> RunCommand {
+pub fn args() -> Args {
     let args: Vec<String> = env::args().collect();
     let args_max_iter_value = args.len();
 
     // TODO: Store defaults somewhere sensible.
-    let mut result = RunCommand {
-        command: CommandType::None,
+    let mut result = Args {
+        run_mode: RunMode::None,
+        has_command: false,
+        command: None,
         execution_directory: String::from("."),
         input_directory: String::from("."),
         output_directory: String::from("."),
@@ -28,9 +30,9 @@ pub fn get_command() -> RunCommand {
         let arg = arg_option;
 
         if is_help_command(&arg) {
-            result.command = CommandType::Help;
+            result.run_mode = RunMode::Help;
         } else if is_version_command(&arg) {
-            result.command = CommandType::Version;
+            result.run_mode = RunMode::Version;
         } else if is_input_directory(&arg) {
             result.input_directory = (&args[i + 1]).to_owned();
             skip = true;
@@ -39,6 +41,9 @@ pub fn get_command() -> RunCommand {
             skip = true;
         } else if is_execution_directory(&arg) {
             result.execution_directory = (&args[i + 1]).to_owned();
+            skip = true;
+        } else if is_command(&arg) {
+            result.command = Some((&args[i + 1]).to_owned());
             skip = true;
         }
     };
@@ -68,9 +73,16 @@ fn is_execution_directory(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-e")
     || arg.eq_ignore_ascii_case("--execution-directory")
 }
+fn is_command(arg: &String) -> bool {
+    arg.eq_ignore_ascii_case("-c")
+    || arg.eq_ignore_ascii_case("--command")
+}
 
-pub struct RunCommand {
-    pub command: CommandType,
+pub struct Args {
+    pub run_mode: RunMode,
+
+    pub has_command: bool,
+    pub command: Option<String>,
 
     pub output_directory: String,
     pub execution_directory: String,
@@ -80,7 +92,7 @@ pub struct RunCommand {
     pub no_file: bool,
 }
 
-pub enum CommandType {
+pub enum RunMode {
     None,
     Help,
     Version

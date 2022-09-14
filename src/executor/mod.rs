@@ -1,9 +1,10 @@
 use std::{process::Command, time::Instant};
 use std::str;
 
-use crate::{constructor, logger};
+use crate::args::Args;
+use crate::{suite, logger};
 
-pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
+pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
     let mut results: Vec<TestResult> = vec![];
 
     let (shell, first_arg) = get_shell();
@@ -17,10 +18,27 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
                 succeeded: true
             };
 
+            // Prefer test, feature, suite, args for where the test can come from.
+            let tool = test.command.unwrap_or(
+                feature.clone().command.unwrap_or(
+                    suite.settings.command.unwrap_or(
+                        args.command.unwrap()
+                    )
+                )
+            );
+            // if test.command.is_some() {
+            //     test.command.unwrap()
+            // } else if feature.clone().command.is_some() {
+            //     feature.clone().command.unwrap()
+            // } else if suite.settings.command.is_some() {
+            //     suite.settings.command.unwrap()
+            // } else {
+            //     args.command.to_owned().unwrap()
+            // };
+
             let mut command = Command::new(&shell);
-            let arg = to_arg(&suite.settings.command, &test.args);
-            let command_with_args = command
-                .args([&first_arg, &arg]);
+            let arg = to_arg(tool, &test.args);
+            let command_with_args = command.args([&first_arg, &arg]);
             
             let now = Instant::now();
 
@@ -106,7 +124,7 @@ pub fn execute(suite: constructor::Suite) -> Vec<TestResult> {
     results
 }
 
-fn to_arg(command: &String, args: &Vec<String>) -> String {
+fn to_arg(command: String, args: &Vec<String>) -> String {
     std::format!("{0} {1}", 
         command, 
         args.join(" "))

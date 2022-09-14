@@ -1,4 +1,4 @@
-use std::{fs::{DirEntry}};
+use std::fs::DirEntry;
 
 pub fn is_lucifer_file(entry: &DirEntry) -> bool {
     path_ends_with(entry, ".lucifer.yaml")

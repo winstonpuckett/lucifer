@@ -10,15 +10,21 @@ pub fn to_settings(settings_file: DirEntry) -> Settings {
     if settings_option.is_none() {
         Settings {
             version: 0,
-            command: String::from("exit"),
+            command: None,
             verbose: false
         }
     } else {
         // TODO: Handle mistyping gracefully.
         let settings = settings_option.unwrap();
+        let command = settings["command"].as_str();
+
         Settings { 
             version: settings["version"].as_i64().unwrap() as u8,
-            command: String::from(settings["command"].as_str().unwrap()), 
+            command: if command.is_some() {
+                Some(String::from(command.unwrap()))
+            } else {
+                None
+            }, 
             verbose: settings["verbose"].as_bool().unwrap_or(false)
         }
     }
@@ -37,23 +43,27 @@ fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
 }
 
 pub fn to_feature(entry: &DirEntry) -> Feature {
-    let tests_option = file_to_map(entry);
-    
-    let tests = if tests_option.is_some() {
-        tests_option.unwrap()["tests"]
-            .as_vec()
-            // TODO: Handle case where tests is not a vec
-            .unwrap()
-            .into_iter()
-            .map(to_test)
-            .collect()
-    } else {
-        vec![]
-    };
+    let file_option = file_to_map(entry);
 
-    Feature { 
-        name: entry.file_name().into_string().unwrap(), 
-        tests
+    if file_option.is_some() {
+        let file = file_option.unwrap();
+        Feature {
+            name: entry.file_name().into_string().unwrap(),
+            command: file["command"].as_str().and_then(|f| Some(String::from(f))),
+            tests: file["tests"]
+                .as_vec()
+                // TODO: Handle case where tests is not a vec
+                .unwrap()
+                .into_iter()
+                .map(to_test)
+                .collect()
+        }
+    } else {
+        Feature {
+            name: entry.file_name().into_string().unwrap(),
+            command: None,
+            tests: vec![]
+        }
     }
 }
 
@@ -63,7 +73,8 @@ fn to_test(y: &Yaml) -> Test {
         description: String::from(y["description"].as_str().unwrap_or("")),
         serialization: to_serialization(y),
         args: to_args(y),
-        expectations: to_expectations(y) 
+        expectations: to_expectations(y),
+        command: y["command"].as_str().and_then(|f| Some(String::from(f)))
     }
 }
 
@@ -137,23 +148,28 @@ fn to_expectations(y: &Yaml) -> Expectations {
 
 // Suite Structs
 
+#[derive(Clone)]
 pub struct Settings {
     pub version: u8,
-    pub command: String,
+    pub command: Option<String>,
     pub verbose: bool,
 }
 
+#[derive(Clone)]
 pub struct Feature {
     pub name: String,
+    pub command: Option<String>,
     pub tests: Vec<Test>
 }
 
+#[derive(Clone)]
 pub enum Serialization {
     Auto,
     Parallel,
     Serial,
 }
 
+#[derive(Clone)]
 pub struct Expectations {
     pub performance: u64,
     pub exit_code: i32,
