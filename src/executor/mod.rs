@@ -34,12 +34,10 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
             let command_with_args = command.args([&first_arg, &arg]);
             
             let now = Instant::now();
-
-            let output = command_with_args
-                .output()
-                .unwrap();
-            
+            let output_option = command_with_args.output();
             let time_in_milliseconds = now.elapsed().as_millis();
+
+            let output = output_option.unwrap();
 
             let stdout = str::from_utf8(&output.stdout).unwrap();
             let stderr = str::from_utf8(&output.stderr).unwrap();
