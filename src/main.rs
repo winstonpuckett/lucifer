@@ -74,6 +74,6 @@ fn help(_command: &Args) -> i32 {
 }
 
 fn version(_command: &Args) -> i32 {
-    log("version ran");
+    log(&format!("v{0}", env!("CARGO_PKG_VERSION")));
     0
 }
