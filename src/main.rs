@@ -29,7 +29,7 @@ fn run(args: &Args) -> i32 {
     let results = executor::execute(suite, args);
 
     let mut data = json::JsonValue::new_object();
-    data["testResults"] = json::JsonValue::new_array();//results;
+    data["testResults"] = json::JsonValue::new_array();
     
     let mut success = true;
     for r in results {
@@ -92,7 +92,7 @@ fn help(_command: &Args) -> i32 {
     log("    -v, --version                               Print the currently running version.");
     log("    -s, --silent                                Suppress all console output.");
     log("    -n, --no-file                               Suppress all file output.");
-    log("    -e, --emoji                                Use emoji output in the console.");
+    log("    -e, --emoji                                 Use emoji output in the console.");
     log_newline();
     log("OPTIONS:");
     log("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
