@@ -39,9 +39,6 @@ pub fn get() -> Args {
         } else if is_output_directory(&arg) {
             result.output_directory = (&args[i + 1]).to_owned();
             skip = true;
-        } else if is_execution_directory(&arg) {
-            result.execution_directory = (&args[i + 1]).to_owned();
-            skip = true;
         } else if is_command(&arg) {
             result.command = Some((&args[i + 1]).to_owned());
             result.has_command = true;
@@ -69,10 +66,6 @@ fn is_input_directory(arg: &String) -> bool {
 fn is_output_directory(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-o")
     || arg.eq_ignore_ascii_case("--output-directory")
-}
-fn is_execution_directory(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("-e")
-    || arg.eq_ignore_ascii_case("--execution-directory")
 }
 fn is_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-c")

@@ -1,7 +1,7 @@
 use std::io::Write;
 
 use args::Args;
-use logger::log;
+use logger::{log, log_newline};
 
 mod suite;
 mod executor;
@@ -69,7 +69,35 @@ fn run(args: &Args) -> i32 {
 }
 
 fn help(_command: &Args) -> i32 {
-    log("help ran");
+    log("LUCIFER");
+    log("Illuminating CLI testing.");
+    log("Winston Puckett");
+    log_newline();
+    log("Helpful Links:");
+    log("• Documentation: https://github.com/winstonpuckett/lucifer");
+    log("• View source code: https://github.com/winstonpuckett/lucifer");
+    log("• Support the project: https://github.com/winstonpuckett/lucifer");
+    log("• Need help?: https://github.com/winstonpuckett/lucifer/issues");
+    
+    log_newline();
+    log(&format!("version: {0}", env!("CARGO_PKG_VERSION")));
+    log_newline();
+    
+    log("USAGE:");
+    log("    lucifer [FLAGS] [OPTIONS]");
+    log_newline();
+    
+    log("FLAGS:");
+    log("    -h, --help                                  Print the help output.");
+    log("    -v, --version                               Print the currently running version.");
+    log("    -s, --silent                                Suppress all console output.");
+    log("    -n, --no-file                               Suppress all file output.");
+    log("    -e, --emoji                                Use emoji output in the console.");
+    log_newline();
+    log("OPTIONS:");
+    log("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
+    log("    -o, --output-directory <folder_path>        Where to store resulting files. Default: .");
+    log("    -c, --command <file_path>                   The default command to run.");
     0
 }
 
