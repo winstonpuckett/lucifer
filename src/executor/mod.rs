@@ -1,19 +1,18 @@
 use std::{process::Command, time::Instant};
 use std::str;
 
-use crate::args::Args;
 use crate::{suite, logger};
 
-pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
+pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
     let mut results: Vec<TestResult> = vec![];
 
     let (shell, first_arg) = get_shell();
 
-    for feature in suite.features {
+    for feature in suite.features.iter() {
         logger::log_newline();
         logger::log_heading(&format!("Feature: {0}", feature.name));
         
-        for test in feature.tests {
+        for test in feature.tests.iter() {
             let mut result = TestResult {
                 succeeded: true,
                 failures: vec![],
@@ -22,13 +21,13 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
 
             // Prefer test, feature, suite, args for where the test can come from.
             let tool = if test.command.is_some() {
-                test.command.unwrap()
+                test.command.to_owned().unwrap()
             } else if feature.has_command {
                 feature.command.to_owned().unwrap()
             } else if suite.settings.has_command {
                 suite.settings.command.to_owned().unwrap()
             } else {
-                args.command.to_owned().unwrap()
+                suite.args.command.to_owned().unwrap()
             };
 
             let mut command = Command::new(&shell);
@@ -59,7 +58,7 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
             let output_satisfied = if test.expectations.output.is_none() {
                 true
             } else {
-                output_expectation = test.expectations.output.unwrap();
+                output_expectation = test.to_owned().expectations.to_owned().output.unwrap();
                 output_expectation == stdout
             };
 
@@ -67,7 +66,7 @@ pub fn execute(suite: suite::Suite, args: &Args) -> Vec<TestResult> {
             let error_satisfied = if test.expectations.error.is_none() {
                 true
             } else {
-                error_expectation = test.expectations.error.unwrap();
+                error_expectation = test.to_owned().expectations.to_owned().error.unwrap();
                 error_expectation == stderr
             };
 

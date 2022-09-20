@@ -160,7 +160,6 @@ pub struct Settings {
     pub verbose: bool,
 }
 
-#[derive(Clone)]
 pub struct Feature {
     pub name: String,
     pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.

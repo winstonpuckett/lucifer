@@ -12,7 +12,7 @@ fn main() {
     let args = args::get();
 
     let exit_code: i32 = match args.run_mode {
-        args::RunMode::None => run(&args),
+        args::RunMode::None => run(args),
         args::RunMode::Help => help(&args),
         args::RunMode::Version => version(&args),
     };
@@ -20,13 +20,13 @@ fn main() {
     std::process::exit(exit_code)
 }
 
-fn run(args: &Args) -> i32 {
+fn run(args: Args) -> i32 {
     logger::log_newline();
     logger::log("🐍  LUCIFER  🐍");
     logger::log(&format!("Executing tests in '{0}'", args.input_directory));
 
     let suite = suite::get(args).unwrap();
-    let results = executor::execute(suite, args);
+    let results = executor::execute(&suite);
 
     let mut data = json::JsonValue::new_object();
     data["testResults"] = json::JsonValue::new_array();
@@ -58,7 +58,7 @@ fn run(args: &Args) -> i32 {
         }).unwrap();
     }
 
-    let mut file = std::fs::File::create(format!("{}/{}", args.output_directory,"results.json")).expect("create failed");
+    let mut file = std::fs::File::create(format!("{}/{}", &suite.args.output_directory, "results.json")).expect("create failed");
     file.write_all(json::stringify(data).as_bytes()).expect("write failed");
 
     if success {

@@ -5,7 +5,7 @@ use self::{transformer::{Expectations, Serialization, Feature}, sorter::{is_sett
 mod transformer;
 mod sorter;
 
-pub fn get(args: &Args) -> io::Result<Suite> {
+pub fn get(args: Args) -> io::Result<Suite> {
     // TODO: Catch errors from unwrapping folders.
     let files = fs::read_dir(&args.input_directory).unwrap();
 
@@ -38,7 +38,8 @@ pub fn get(args: &Args) -> io::Result<Suite> {
         features.push(transformer::to_feature(&file));
     }
 
-    let suite = Suite { 
+    let suite = Suite {
+        args,
         settings, 
         features
     };
@@ -46,13 +47,12 @@ pub fn get(args: &Args) -> io::Result<Suite> {
     Ok(suite)
 }
 
-#[derive(Clone)]
 pub struct Suite {
+    pub args: Args,
     pub settings: transformer::Settings,
     pub features: Vec<transformer::Feature>
 }
 
-#[derive(Clone)]
 pub struct Test {
     pub args: Vec<String>,
     pub command: Option<String>,
