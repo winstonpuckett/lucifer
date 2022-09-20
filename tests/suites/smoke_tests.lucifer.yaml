@@ -1,0 +1,42 @@
+tests:
+  - name: Defaults compile
+    description: >
+      Given valid yaml, with some ommitions
+      When lucifer runs
+      Then it should output failures normally
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/yaml_with_defaults
+
+  - name: All file names are valid
+    description: >
+      Given file names before and after s (settings file)
+      When lucifer runs
+      Then it should output failures normally
+
+      Origin: 
+        Because of a for loop error, lucifer 
+        paniced when passed tests which had a 
+        letter lower than "s". This test was
+        developed so that we catch this early 
+        if it were to happen again.
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/files_before_and_after_s
+
+  - name: Empty files should simply return ok
+    description: >
+      Given a suite with an empty settings and feature
+      When lucifer runs
+      Then it should output success normally
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/files_before_and_after_s
+
+  
