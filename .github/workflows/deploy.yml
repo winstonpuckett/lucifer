@@ -24,7 +24,6 @@ jobs:
       run: >
         for suite in "./tests/suites"*
         do
-          echo "running suite $suite"
           ./target/release/lucifer run -i $suite --silent
         done
 
