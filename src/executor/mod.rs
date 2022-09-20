@@ -4,13 +4,17 @@ use std::str;
 use crate::{suite, logger};
 
 pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
+    logger::log_newline(suite);
+    logger::log(suite, "🐍  LUCIFER  🐍");
+    logger::log(suite, &format!("Executing tests in '{0}'", suite.args.input_directory));
+
     let mut results: Vec<TestResult> = vec![];
 
     let (shell, first_arg) = get_shell();
 
     for feature in suite.features.iter() {
-        logger::log_newline();
-        logger::log_heading(&format!("Feature: {0}", feature.name));
+        logger::log_newline(suite);
+        logger::log_heading(suite, &format!("Feature: {0}", feature.name));
         
         for test in feature.tests.iter() {
             let mut result = TestResult {
@@ -74,16 +78,16 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 && exit_code_satisfied 
                 && output_satisfied
                 && error_satisfied {
-                logger::log_success(&format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
+                logger::log_success(suite, &format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
-                logger::log_failure(&format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
+                logger::log_failure(suite, &format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
                 result.succeeded = false;
 
-                logger::log_detail(&format!("Reproduce with: '{0}'", arg));
-                logger::log_newline();
+                logger::log_detail(suite, &format!("Reproduce with: '{0}'", arg));
+                logger::log_newline(suite);
 
                 if !performance_satisfied {
-                    logger::log_details(vec![
+                    logger::log_details(suite, vec![
                         &format!("Expected performance: {0}ms", test.expectations.performance),
                         &format!("Actual performance: {0}ms", time_in_milliseconds)
                     ]);
@@ -96,7 +100,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 }
 
                 if !exit_code_satisfied {
-                    logger::log_details(vec![
+                    logger::log_details(suite, vec![
                         &format!("Expected exit code: {0}", test.expectations.exit_code),
                         &format!("Actual exit code: {0}", output.status.code().unwrap())
                     ]);
@@ -109,7 +113,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 }
 
                 if !output_satisfied {
-                    logger::log_details(vec![
+                    logger::log_details(suite, vec![
                         &format!("Expected output: {0}", output_expectation),
                         &format!("Actual output: {0}", stdout)
                     ]);
@@ -122,7 +126,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 }
 
                 if !error_satisfied {
-                    logger::log_details(vec![
+                    logger::log_details(suite, vec![
                         &format!("Expected error: {0}", error_expectation),
                         &format!("Actual error: {0}", stderr)
                     ]);

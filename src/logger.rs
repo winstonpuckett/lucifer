@@ -1,33 +1,39 @@
-pub fn log_heading(message: &str) {
-    log(&format!("🌳 {0} 🌳", message));
-    log_newline();
+use crate::suite;
+
+pub fn log_heading(suite: &suite::Suite, message: &str) {
+    log(suite, &format!("🌳 {0} 🌳", message));
+    log_newline(suite);
 }
 
-pub fn log_success(message: &str) {
-    log(&format!("  🍏 {0}", message));
-    log_newline();
+pub fn log_success(suite: &suite::Suite, message: &str) {
+    log(suite, &format!("  🍏 {0}", message));
+    log_newline(suite);
 }
 
-pub fn log_failure(message: &str) {
-    log(&format!("  🍎 {0}", message));
-    log_newline();
+pub fn log_failure(suite: &suite::Suite, message: &str) {
+    log(suite, &format!("  🍎 {0}", message));
+    log_newline(suite);
 }
 
-pub fn log_details(messages: Vec<&str>) {
+pub fn log_details(suite: &suite::Suite, messages: Vec<&str>) {
     for detail in messages {
-        log_detail(detail);
+        log_detail(suite, detail);
     }
-    log_newline();
+    log_newline(suite);
 }
 
-pub fn log_detail(message: &str) {
-    log(&format!("    🌿 {0}", message));
+pub fn log_detail(suite: &suite::Suite, message: &str) {
+    log(suite, &format!("    🌿 {0}", message));
 }
 
-pub fn log_newline() {
-    log("");
+pub fn log_newline(suite: &suite::Suite) {
+    log(suite, "");
 }
 
-pub fn log(message: &str) {
+pub fn log(suite: &suite::Suite, message: &str) {
+    if suite.args.console_silent {
+        return;
+    }
+
     println!("{message}")
 }

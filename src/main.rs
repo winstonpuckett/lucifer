@@ -1,7 +1,6 @@
 use std::io::Write;
 
 use args::Args;
-use logger::{log, log_newline};
 
 mod suite;
 mod executor;
@@ -21,10 +20,6 @@ fn main() {
 }
 
 fn run(args: Args) -> i32 {
-    logger::log_newline();
-    logger::log("🐍  LUCIFER  🐍");
-    logger::log(&format!("Executing tests in '{0}'", args.input_directory));
-
     let suite = suite::get(args).unwrap();
     let results = executor::execute(&suite);
 
@@ -69,39 +64,39 @@ fn run(args: Args) -> i32 {
 }
 
 fn help(_command: &Args) -> i32 {
-    log("LUCIFER");
-    log("Illuminating CLI testing.");
-    log("Winston Puckett");
-    log_newline();
-    log("Helpful Links:");
-    log("• Documentation: https://github.com/winstonpuckett/lucifer");
-    log("• View source code: https://github.com/winstonpuckett/lucifer");
-    log("• Support the project: https://github.com/winstonpuckett/lucifer");
-    log("• Need help?: https://github.com/winstonpuckett/lucifer/issues");
+    println!("LUCIFER");
+    println!("Illuminating CLI testing.");
+    println!("Winston Puckett");
+    println!();
+    println!("Helpful Links:");
+    println!("• Documentation: https://github.com/winstonpuckett/lucifer");
+    println!("• View source code: https://github.com/winstonpuckett/lucifer");
+    println!("• Support the project: https://github.com/winstonpuckett/lucifer");
+    println!("• Need help?: https://github.com/winstonpuckett/lucifer/issues");
     
-    log_newline();
-    log(&format!("version: {0}", env!("CARGO_PKG_VERSION")));
-    log_newline();
+    println!();
+    println!("version: {0}", env!("CARGO_PKG_VERSION"));
+    println!();
     
-    log("USAGE:");
-    log("    lucifer [FLAGS] [OPTIONS]");
-    log_newline();
+    println!("USAGE:");
+    println!("    lucifer [FLAGS] [OPTIONS]");
+    println!();
     
-    log("FLAGS:");
-    log("    -h, --help                                  Print the help output.");
-    log("    -v, --version                               Print the currently running version.");
-    log("    -s, --silent                                Suppress all console output.");
-    log("    -n, --no-file                               Suppress all file output.");
-    log("    -e, --emoji                                 Use emoji output in the console.");
-    log_newline();
-    log("OPTIONS:");
-    log("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
-    log("    -o, --output-directory <folder_path>        Where to store resulting files. Default: .");
-    log("    -c, --command <file_path>                   The default command to run.");
+    println!("FLAGS:");
+    println!("    -h, --help                                  Print the help output.");
+    println!("    -v, --version                               Print the currently running version.");
+    println!("    -s, --silent                                Suppress all console output.");
+    println!("    -n, --no-file                               Suppress all file output.");
+    println!("    -e, --emoji                                 Use emoji output in the console.");
+    println!();
+    println!("OPTIONS:");
+    println!("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
+    println!("    -o, --output-directory <folder_path>        Where to store resulting files. Default: .");
+    println!("    -c, --command <file_path>                   The default command to run.");
     0
 }
 
 fn version(_command: &Args) -> i32 {
-    log(&format!("v{0}", env!("CARGO_PKG_VERSION")));
+    println!("v{0}", env!("CARGO_PKG_VERSION"));
     0
 }
