@@ -23,9 +23,8 @@ jobs:
     - name: Test exit codes
       run: >
         for suite in "./tests/suites"*
-        do 
-          echo running suite $suite
-          # ./target/release/lucifer run -i $suite --silent
+        do
+          echo hello
         done
 
 # ✔️ Start
