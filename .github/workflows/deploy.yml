@@ -21,7 +21,12 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
     - name: Test exit codes
-      run: ./target/release/lucifer run -i ./tests/exit_codes
+      run: >
+        for suite in "./tests/suites"*
+        do 
+          echo running suite $suite
+          ./target/release/lucifer run -i $suite --silent
+        done
 
 # ✔️ Start
 # Get previous version of lucifer (unavailable until release)
