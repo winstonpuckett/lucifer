@@ -33,6 +33,8 @@ pub fn get() -> Args {
             result.run_mode = RunMode::Help;
         } else if is_version_command(&arg) {
             result.run_mode = RunMode::Version;
+        } else if is_silent_flag(&arg) {
+            result.console_silent = true;
         } else if is_input_directory(&arg) {
             result.input_directory = (&args[i + 1]).to_owned();
             skip = true;
@@ -57,6 +59,10 @@ fn is_help_command(arg: &String) -> bool {
 fn is_version_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-v")
     || arg.eq_ignore_ascii_case("--version")
+}
+fn is_silent_flag(arg: &String) -> bool {
+    arg.eq_ignore_ascii_case("-s")
+    || arg.eq_ignore_ascii_case("--silent")
 }
 
 fn is_input_directory(arg: &String) -> bool {
