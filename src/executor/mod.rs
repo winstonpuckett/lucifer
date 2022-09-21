@@ -101,8 +101,8 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
 
                 if !exit_code_satisfied {
                     logger::log_details(suite, vec![
-                        &format!("Expected exit code: {0}", test.expectations.exit_code),
-                        &format!("Actual exit code: {0}", output.status.code().unwrap())
+                        &format!("Expected exit code: '{0}'", test.expectations.exit_code),
+                        &format!("Actual exit code: '{0}'", output.status.code().unwrap())
                     ]);
 
                     result.failures.push(Failure {
