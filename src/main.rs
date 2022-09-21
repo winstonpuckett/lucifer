@@ -22,11 +22,10 @@ fn main() {
 fn run(args: Args) -> i32 {
     let suite = suite::get(args).unwrap();
     let results = executor::execute(&suite);
-
-    let mut data = json::JsonValue::new_object();
-    data["testResults"] = json::JsonValue::new_array();
     
     let mut success = true;
+    let mut data = json::JsonValue::new_object();
+    data["testResults"] = json::JsonValue::new_array();
     for r in results {
         success &= r.succeeded;
         let mut failures = json::JsonValue::new_array();
