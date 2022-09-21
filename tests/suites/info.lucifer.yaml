@@ -81,7 +81,7 @@ tests:
     expectations:
       exitCode: 0
       performance: 20
-      output: v0.1.0
+      output: v0.1.0\n
     args:
       - --version
   - name: -v gives the correct output
@@ -92,6 +92,6 @@ tests:
     expectations:
       exitCode: 0
       performance: 20
-      output: v0.1.0
+      output: v0.1.0\n
     args:
       - -v
