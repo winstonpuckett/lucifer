@@ -1,11 +1,12 @@
 tests:
-  - name: Help gives the correct output
+  - name: --help gives the correct output
     description: >
-      Given a help request
+      Given a help request in long form
       When lucifer runs
       Then it should return the correct output
     expectations: 
       exitCode: 0
+      performance: 20
       output: |
         LUCIFER
         Illuminating CLI testing.
@@ -35,3 +36,62 @@ tests:
             -c, --command <file_path>                   The default command to run.
     args:
       - --help
+  - name: -h gives the correct output
+    description: >
+      Given a help request in short form
+      When lucifer runs
+      Then it should return the correct output
+    expectations: 
+      exitCode: 0
+      performance: 20
+      output: |
+        LUCIFER
+        Illuminating CLI testing.
+        Winston Puckett
+        
+        Helpful Links:
+        • Documentation: https://github.com/winstonpuckett/lucifer
+        • View source code: https://github.com/winstonpuckett/lucifer
+        • Support the project: https://github.com/winstonpuckett/lucifer
+        • Need help?: https://github.com/winstonpuckett/lucifer/issues
+        
+        version: 0.1.0
+
+        USAGE:
+            lucifer [FLAGS] [OPTIONS]
+        
+        FLAGS:
+            -h, --help                                  Print the help output.
+            -v, --version                               Print the currently running version.
+            -s, --silent                                Suppress all console output.
+            -n, --no-file                               Suppress all file output.
+            -e, --emoji                                 Use emoji output in the console.
+        
+        OPTIONS:
+            -i, --input-directory <folder_path>         The path to the test files. Default: .
+            -o, --output-directory <folder_path>        Where to store resulting files. Default: .
+            -c, --command <file_path>                   The default command to run.
+    args:
+      - -h
+  - name: --version gives the correct output
+    description: >
+      Given a version request in long form
+      When lucifer runs
+      Then it should return the correct output
+    expectations:
+      exitCode: 0
+      performance: 20
+      output: v0.1.0
+    args:
+      - --version
+  - name: -v gives the correct output
+    description: >
+      Given a version request in short form
+      When lucifer runs
+      Then it should return the correct output
+    expectations:
+      exitCode: 0
+      performance: 20
+      output: v0.1.0
+    args:
+      - -v
