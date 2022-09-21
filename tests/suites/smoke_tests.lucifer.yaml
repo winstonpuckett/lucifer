@@ -37,6 +37,6 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/files_before_and_after_s
+      - ./tests/test_data/empty_files
 
   
