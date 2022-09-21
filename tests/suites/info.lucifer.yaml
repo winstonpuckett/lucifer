@@ -22,7 +22,6 @@ tests:
         USAGE:
             lucifer [FLAGS] [OPTIONS]
         
-        
         FLAGS:
             -h, --help                                  Print the help output.
             -v, --version                               Print the currently running version.
