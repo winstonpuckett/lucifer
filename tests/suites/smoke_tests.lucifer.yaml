@@ -38,5 +38,3 @@ tests:
     args:
       - -i
       - ./tests/test_data/empty_files
-
-  

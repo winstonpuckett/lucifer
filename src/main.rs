@@ -47,7 +47,6 @@ fn run(args: Args) -> i32 {
 
         data["testResults"].push(json::object!{
             succeeded: r.succeeded,
-            // TODO: is u64 enough?
             milliseconds: r.performance as u64,
             failures: failures
         }).unwrap();
