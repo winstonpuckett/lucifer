@@ -6,7 +6,7 @@ tests:
       Then it should return the correct output
     expectations: 
       exitCode: 0
-      performance: 20
+      performance: 10
       output: |
         LUCIFER
         Illuminating CLI testing.
@@ -43,7 +43,7 @@ tests:
       Then it should return the correct output
     expectations: 
       exitCode: 0
-      performance: 20
+      performance: 10
       output: |
         LUCIFER
         Illuminating CLI testing.
@@ -80,7 +80,7 @@ tests:
       Then it should return the correct output
     expectations:
       exitCode: 0
-      performance: 20
+      performance: 10
       output: |
         v0.1.0
 
@@ -93,7 +93,7 @@ tests:
       Then it should return the correct output
     expectations:
       exitCode: 0
-      performance: 20
+      performance: 10
       output: |
         v0.1.0
 
@@ -106,7 +106,7 @@ tests:
       Then it should return nothing
     expectations:
       exitCode: 0
-      performance: 20
+      performance: 10
       output: ""
     args:
       - --silent
@@ -117,7 +117,7 @@ tests:
       Then it should return nothing
     expectations:
       exitCode: 0
-      performance: 20
+      performance: 10
       output: ""
     args:
       - -s
