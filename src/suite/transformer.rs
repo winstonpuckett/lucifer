@@ -12,7 +12,7 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
         Feature {
             name: entry.file_name().into_string().unwrap(),
             has_command: file["command"].as_str().is_some(),
-            command: file["command"].as_str().and_then(|f| Some(String::from(f))),
+            command: String::from(file["command"].as_str().unwrap()),
             tests: file["tests"]
                 .as_vec()
                 // TODO: Handle case where tests is not a vec
@@ -25,7 +25,7 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
         Feature {
             name: entry.file_name().into_string().unwrap(),
             has_command: false,
-            command: None,
+            command: String::from(""),
             tests: vec![]
         }
     }
@@ -49,7 +49,6 @@ fn to_test(y: &Yaml) -> Test {
         serialization: to_serialization(y),
         args: to_args(y),
         expectations: to_expectations(y),
-        command: y["command"].as_str().and_then(|f| Some(String::from(f)))
     }
 }
 
@@ -126,7 +125,7 @@ fn to_expectations(y: &Yaml) -> Expectations {
 pub struct Feature {
     pub name: String,
     pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
-    pub command: Option<String>,
+    pub command: String,
     pub tests: Vec<Test>
 }
 

@@ -19,7 +19,7 @@ pub fn get(args: Args) -> io::Result<Suite> {
         
         let file = file_result.unwrap();
         
-        if is_lucifer_file(&file) {
+        if !is_lucifer_file(&file) {
             continue;
         }
 
@@ -41,7 +41,6 @@ pub struct Suite {
 
 pub struct Test {
     pub args: Vec<String>,
-    pub command: Option<String>,
     pub description: String,
     pub expectations: Expectations,
     pub name: String,

@@ -24,13 +24,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
             };
 
             // Prefer test, feature, suite, args for where the test can come from.
-            let tool = if test.command.is_some() {
-                test.command.to_owned().unwrap()
-            } else if feature.has_command {
-                feature.command.to_owned().unwrap()
-            } else {
-                suite.args.command.to_owned().unwrap()
-            };
+            let tool = feature.command.to_owned();
 
             let mut command = Command::new(&shell);
             let arg = to_arg(tool, &test.args);

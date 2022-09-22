@@ -7,8 +7,6 @@ pub fn get() -> Args {
     // TODO: Store defaults somewhere sensible.
     let mut result = Args {
         run_mode: RunMode::None,
-        has_command: false,
-        command: None,
         execution_directory: String::from("."),
         input_directory: String::from("."),
         output_directory: String::from("."),
@@ -41,10 +39,6 @@ pub fn get() -> Args {
         } else if is_output_directory(&arg) {
             result.output_directory = (&args[i + 1]).to_owned();
             skip = true;
-        } else if is_command(&arg) {
-            result.command = Some((&args[i + 1]).to_owned());
-            result.has_command = true;
-            skip = true;
         }
     };
 
@@ -73,16 +67,9 @@ fn is_output_directory(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-o")
     || arg.eq_ignore_ascii_case("--output-directory")
 }
-fn is_command(arg: &String) -> bool {
-    arg.eq_ignore_ascii_case("-c")
-    || arg.eq_ignore_ascii_case("--command")
-}
 
 pub struct Args {
     pub run_mode: RunMode,
-
-    pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
-    pub command: Option<String>,
 
     pub output_directory: String,
     pub execution_directory: String,
