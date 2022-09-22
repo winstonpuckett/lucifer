@@ -21,12 +21,7 @@ jobs:
     - name: Run unit tests
       run: cargo test --verbose
     - name: Run integration tests
-      run: |
-        for suite in "./tests/suites"*
-        do
-          echo "running suite $suite"
-          ./target/release/lucifer run -i $suite --silent
-        done
+      run: ./target/release/lucifer run -i ./tests/suites
 
 # ✔️ Start
 # Get previous version of lucifer (unavailable until release)
