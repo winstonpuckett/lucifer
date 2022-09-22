@@ -114,8 +114,8 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
 
                 if !output_satisfied {
                     logger::log_details(suite, vec![
-                        &format!("Expected output: {0}", output_expectation),
-                        &format!("Actual output: {0}", stdout)
+                        &format!("Expected output: '{0}'", output_expectation),
+                        &format!("Actual output: '{0}'", stdout)
                     ]);
 
                     result.failures.push(Failure {
