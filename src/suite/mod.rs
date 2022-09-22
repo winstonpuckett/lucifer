@@ -26,16 +26,11 @@ pub fn get(args: Args) -> io::Result<Suite> {
         
         let file = file_result.unwrap();
 
-        if !is_lucifer_file(&file) {
-            continue;
-        }
-
         if is_settings_file(&file) {
             settings = transformer::to_settings(file);
-            continue;
+        } else if is_lucifer_file(&file) {
+            features.push(transformer::to_feature(&file));
         }
-
-        features.push(transformer::to_feature(&file));
     }
 
     let suite = Suite {
