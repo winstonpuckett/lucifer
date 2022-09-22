@@ -1,0 +1,14 @@
+# The version of the test file syntax.
+version: 0
+
+# Which things should lucifer keep.
+logLevel: verbose|debug|none
+
+# What command should be executed.
+command: commandToRun
+
+# Where the tests should be executed (should be an empty folder).
+executionDirectory: path/to/where/you/want/to/execute (defaults to .)
+
+# Whether to clean the execution folder.
+clean: true|false (defaults true) 

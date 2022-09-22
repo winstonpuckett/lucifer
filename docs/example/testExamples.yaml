@@ -1,0 +1,83 @@
+tests:
+  - name: The name of the test to run
+    description: >
+      A description of the test
+    expectations: # what do you expect from this test?
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: serial|parallel|auto
+    args: # arguments to the cli as a string or a list
+      - --something
+      - "somevalue"
+
+  # Example tests
+  - name: Console Output Test
+    description: >
+      Captures the output from the console and checks it against the expectation.
+    expectations:
+      output: console output string
+    serialization: parallel
+    args:
+      - --something
+      - "somevalue"
+  - name: File Exists Test
+    description: >
+      Checks to see that a file does not exist before execution and that the
+      file exists after execution.
+    expectations:
+      file: path/to/output/file
+    serialization: parallel
+    args:
+      - --something
+      - "somevalue"
+
+  - name: File Content Matches Test
+    expectations:
+      file: path/to/output/file
+      contents: file output string
+    description: >
+      Checks to see that a file does not exist before execution and that the
+      file exists after execution. Then checks that the contents of the file 
+      match the expectation.
+    serialization: parallel
+    args:
+      - --something
+      - "somevalue"
+
+  - name: Expected Code Test
+    description: >
+      Makes sure that the script returns a specific exit code.    
+    expectations:
+      exitCode: 1234 # any number
+    serialization: parallel
+    args:
+      - --something
+      - "somevalue"
+
+  - name: Performance Test
+    description: >
+      Makes sure that the script returns within a given time frame.
+    expectations:
+      performance: 1234 # in milliseconds
+    serialization: serial
+    args:
+      - --something
+      - "somevalue"
+      
+  - name: Multi-assert Test
+    type: expectedCode
+    description: >
+      Makes sure that the script returns within a given time frame.
+    expectations:
+      performance: 1234 # in milliseconds
+      exitCode: 1234 # any number
+      output: console output string
+      file: path/to/output/file
+      contents: file output string
+    serialization: serial
+    args:
+      - --something
+      - "somevalue"

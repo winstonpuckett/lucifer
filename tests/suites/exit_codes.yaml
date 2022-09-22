@@ -1,0 +1,12 @@
+command: ./target/release/lucifer
+tests:
+  - name: Returning an unexpected exit code fails the run
+    description: >
+      Given a test that will fail
+      When lucifer runs
+      Then it should return 1
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/fail_on_exit_code

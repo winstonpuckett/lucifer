@@ -1,0 +1,7 @@
+command: test
+tests:
+  - name: Expect 0, return 1
+    expectations: 
+      exitCode: 0
+    args:
+      - 1 = 2

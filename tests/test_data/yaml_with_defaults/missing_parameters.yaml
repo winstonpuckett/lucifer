@@ -1,0 +1,132 @@
+command: exit
+tests:
+  - name: Missing description should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+    - "1"
+  - description: Missing name should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations should compile
+    description: missing expectations test
+    serialization: auto
+    args:
+    - "1"
+  - name: Missing expectations/performance should compile
+    description: Missing expectations/performance should compile
+    expectations: 
+      exitCode: 1234
+      output:
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/exitCode should compile
+    description: Missing expectations/exitCode should compile
+    expectations: 
+      performance: 1234
+      output:
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/output should compile
+    description: Missing expectations/output should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/file should compile
+    description: Missing expectations/file should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      contents: file output string
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/contents should compile
+    description: Missing expectations/contents should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing expectations/error should compile
+    description: Missing expectations/error should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      file: path/to/output/file
+    serialization: auto
+    args:
+      - --something
+      - "somevalue"
+  - name: Missing serialization should compile
+    description: Missing serialization should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    args:
+    - "1"
+  - name: Missing args should compile
+    description: Missing args should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+  - name: Empty args should compile
+    description: Empty args should compile
+    expectations: 
+      performance: 1234
+      exitCode: 1234
+      output: console output string
+      error: console error string
+      file: path/to/output/file
+      contents: file output string
+    serialization: auto
+    args:
