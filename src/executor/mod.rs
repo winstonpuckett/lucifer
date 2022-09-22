@@ -28,8 +28,6 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 test.command.to_owned().unwrap()
             } else if feature.has_command {
                 feature.command.to_owned().unwrap()
-            } else if suite.settings.has_command {
-                suite.settings.command.to_owned().unwrap()
             } else {
                 suite.args.command.to_owned().unwrap()
             };
@@ -49,10 +47,10 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
             let stdout = str::from_utf8(&output.stdout).unwrap();
             let stderr = str::from_utf8(&output.stderr).unwrap();
 
-            if suite.settings.verbose {
-                println!("Standard Out: '{stdout}'");
-                println!("Standard Error: '{stderr}'");
-            }
+            // if suite.verbose {
+            //     println!("Standard Out: '{stdout}'");
+            //     println!("Standard Error: '{stderr}'");
+            // }
 
             let performance_satisfied = (time_in_milliseconds as u64) <= test.expectations.performance;
 

@@ -4,46 +4,6 @@ use std::fs::{self, DirEntry};
 use super::Test;
 extern crate yaml_rust;
 
-pub fn to_settings(settings_file: DirEntry) -> Settings {
-    let settings_option = file_to_map(&settings_file);
-
-    if settings_option.is_none() {
-        Settings {
-            version: 0,
-            has_command: false,
-            command: None,
-            verbose: false
-        }
-    } else {
-        // TODO: Handle mistyping gracefully.
-        let settings = settings_option.unwrap();
-        let command = settings["command"].as_str();
-
-        Settings { 
-            version: settings["version"].as_i64().unwrap() as u8,
-            has_command: command.is_some(),
-            command: if command.is_some() {
-                Some(String::from(command.unwrap()))
-            } else {
-                None
-            }, 
-            verbose: settings["verbose"].as_bool().unwrap_or(false)
-        }
-    }
-}
-
-fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
-    let content = fs::read_to_string(file.path()).unwrap();
-    let settings_yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
-
-    if settings_yaml.is_empty(){
-        return None;
-    }
-
-    let settings_map = &settings_yaml[0];
-    Some(settings_map.to_owned())
-}
-
 pub fn to_feature(entry: &DirEntry) -> Feature {
     let file_option = file_to_map(entry);
 
@@ -69,6 +29,17 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
             tests: vec![]
         }
     }
+}
+
+fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
+    let content = fs::read_to_string(file.path()).unwrap();
+    let yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
+
+    if yaml.is_empty(){
+        return None;
+    }
+
+    Some(yaml[0].to_owned())
 }
 
 fn to_test(y: &Yaml) -> Test {
@@ -151,14 +122,6 @@ fn to_expectations(y: &Yaml) -> Expectations {
 
 
 // Suite Structs
-
-#[derive(Clone)]
-pub struct Settings {
-    pub version: u8,
-    pub has_command: bool, // TODO: Remove this. It's a workaround because I don't know Rust very well.
-    pub command: Option<String>,
-    pub verbose: bool,
-}
 
 pub struct Feature {
     pub name: String,

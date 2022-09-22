@@ -1,7 +1,7 @@
 use std::{fs, io};
 extern crate yaml_rust;
 use crate::args::Args;
-use self::{transformer::{Expectations, Serialization, Feature}, sorter::{is_settings_file, is_lucifer_file}};
+use self::{transformer::{Expectations, Serialization, Feature}, sorter::is_lucifer_file};
 mod transformer;
 mod sorter;
 
@@ -10,13 +10,6 @@ pub fn get(args: Args) -> io::Result<Suite> {
     let files = fs::read_dir(&args.input_directory).unwrap();
 
     let mut features: Vec<Feature> = vec![];
-    // TODO: store default settings somewhere else.
-    let mut settings = transformer::Settings {
-        has_command: false,
-        command: None,
-        version: 0,
-        verbose: false,
-    };
 
     for file_result in files {
         if file_result.is_err() {
@@ -25,17 +18,16 @@ pub fn get(args: Args) -> io::Result<Suite> {
         }
         
         let file = file_result.unwrap();
-
-        if is_settings_file(&file) {
-            settings = transformer::to_settings(file);
-        } else if is_lucifer_file(&file) {
-            features.push(transformer::to_feature(&file));
+        
+        if is_lucifer_file(&file) {
+            continue;
         }
+
+        features.push(transformer::to_feature(&file));
     }
 
     let suite = Suite {
         args,
-        settings, 
         features
     };
 
@@ -44,7 +36,6 @@ pub fn get(args: Args) -> io::Result<Suite> {
 
 pub struct Suite {
     pub args: Args,
-    pub settings: transformer::Settings,
     pub features: Vec<transformer::Feature>
 }
 
