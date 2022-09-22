@@ -1,5 +1,7 @@
 use std::env;
+use memoize::memoize;
 
+#[memoize]
 pub fn get() -> Args {
     let args: Vec<String> = env::args().collect();
     let args_max_iter_value = args.len();
@@ -58,7 +60,6 @@ fn is_version_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-v")
     || arg.eq_ignore_ascii_case("--version")
 }
-
 fn is_input_directory(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-i")
     || arg.eq_ignore_ascii_case("--input-directory")
