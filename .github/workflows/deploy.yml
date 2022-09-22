@@ -20,6 +20,10 @@ jobs:
       run: cargo build --release --verbose
     - name: Run unit tests
       run: cargo test --verbose
+    - name: validate things
+      run: pwd
+    - name: validate things
+      run: ls -a
     - name: Run integration tests
       run: ./target/release/lucifer run -i ./tests/suites
 
