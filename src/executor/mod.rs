@@ -177,6 +177,6 @@ pub enum FailureType {
     ExitCode,
     Output,
     Error,
-    FileDoesNotExist,
-    FileContents
+    // FileDoesNotExist,
+    // FileContents
 }

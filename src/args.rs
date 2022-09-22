@@ -1,7 +1,5 @@
 use std::env;
-use memoize::memoize;
 
-#[memoize]
 pub fn get() -> Args {
     let args: Vec<String> = env::args().collect();
     let args_max_iter_value = args.len();

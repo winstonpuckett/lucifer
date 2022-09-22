@@ -36,8 +36,8 @@ fn run(args: Args) -> i32 {
                     executor::FailureType::ExitCode => "exitCode",
                     executor::FailureType::Output => "output",
                     executor::FailureType::Error => "error",
-                    executor::FailureType::FileDoesNotExist => "fileMissing",
-                    executor::FailureType::FileContents => "fileContents",
+                    // executor::FailureType::FileDoesNotExist => "fileMissing",
+                    // executor::FailureType::FileContents => "fileContents",
                 },
                 expectation: f.expectation,
                 actual: f.actual

@@ -6,4 +6,3 @@ edition = "2021"
 [dependencies]
 yaml-rust = "0.4"
 json = "0.12.4"
-memoize = "0.3.1"
