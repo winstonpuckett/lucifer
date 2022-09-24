@@ -11,7 +11,7 @@ pub fn get() -> Args {
         input_directory: String::from("."),
         output_directory: String::from("."),
         console_silent: false,
-        no_file: true,
+        no_file: false,
     };
 
     // First argument is command path. Skip that argument.
@@ -33,6 +33,8 @@ pub fn get() -> Args {
             result.run_mode = RunMode::Version;
         } else if is_silent_flag(&arg) {
             result.console_silent = true;
+        } else if is_no_file_flag(&arg) {
+            result.no_file = true;
         } else if is_input_directory(&arg) {
             result.input_directory = (&args[i + 1]).to_owned();
             skip = true;
@@ -57,6 +59,10 @@ fn is_version_command(arg: &String) -> bool {
 fn is_silent_flag(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-s")
     || arg.eq_ignore_ascii_case("--silent")
+}
+fn is_no_file_flag(arg: &String) -> bool {
+    arg.eq_ignore_ascii_case("-n")
+    || arg.eq_ignore_ascii_case("--no-file")
 }
 
 fn is_input_directory(arg: &String) -> bool {

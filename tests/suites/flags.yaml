@@ -141,8 +141,21 @@ tests:
     expectations:
       exitCode: 0
       performance: 10
-      noFile: ./output/should_not_exist/results.json
+      noFile: ./output/should_not_exist_long_form/results.json
     args:
-      - --nofile
+      - --no-file
       - --output-directory
-      - ./output/should_not_exist
+      - ./output/should_not_exist_long_form
+  - name: -n produces no file
+    description: >
+      Given the long form "no file" flag
+      When lucifer runs
+      Then no file should be produced
+    expectations:
+      exitCode: 0
+      performance: 10
+      noFile: ./output/should_not_exist_short_form/results.json
+    args:
+      - -n
+      - --output-directory
+      - ./output/should_not_exist_short_form
