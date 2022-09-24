@@ -83,8 +83,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
             };
 
             let mut no_file_expectation = String::from("");
-            // let mut file_contents = String::from("");
-            let no_file_satisfied = if test.expectations.file.is_none() {
+            let no_file_satisfied = if test.expectations.no_file.is_none() {
                 true
             } else {
                 no_file_expectation = test.to_owned().expectations.to_owned().no_file.unwrap();
