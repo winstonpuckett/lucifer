@@ -5,7 +5,7 @@ use crate::{suite, logger};
 
 pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
     logger::log_newline(suite);
-    logger::log(suite, "🐍  LUCIFER  🐍");
+    logger::log(suite, "🐉 LUCIFER 🐉");
     logger::log(suite, &format!("Executing tests for '{0}'", suite.args.input_directory));
 
     let mut results: Vec<TestResult> = vec![];
