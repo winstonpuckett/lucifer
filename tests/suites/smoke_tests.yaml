@@ -79,4 +79,4 @@ tests:
       exitCode: 0
     args:
     - -i 
-    - ./test_data/type_checking/type_checking.yaml
+    - ./tests/test_data/type_checking/type_checking.yaml
