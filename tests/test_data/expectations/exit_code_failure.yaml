@@ -1,17 +1,7 @@
-command: exit
+command: test
 tests:
-  - name: Expect 1, return 0
+  - name: 0 = 1
     expectations: 
       exitCode: 1
     args:
-      - 0
-  - name: Expect 0, return 1
-    expectations: 
-      exitCode: 0
-    args:
-      - 1
-  - name: Expect 0, return -1
-    expectations: 
-      exitCode: 0
-    args:
-      - -1
+      - 0 = 1
