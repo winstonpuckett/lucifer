@@ -40,15 +40,6 @@ tests:
       - -i
       - ./tests/test_data/empty_files
 
-  - name: Checking an empty dir should return 1
-    description: >
-      Given an expectation of a file in a folder which doesn't exist
-      When lucifer runs
-      Then it should output failure normally
-    expectations: 
-      exitCode: 1
-      file: ./path_which_doesnt_exist/result.json
-
   - name: Asking to output to a directory which doesn't exist works
     description: >
       Given an expectation of a file in a folder which doesn't exist

@@ -8,7 +8,6 @@ tests:
     expectations: 
       exitCode: 0
       performance: 10
-      file: ./test_data/results_folder_long_form/results.json
     args:
-      - -i 
-      - ./tests/test_data/output_to_results_folder
+      - --output-directory
+      - ./test_data/results_folder_long_form
