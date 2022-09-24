@@ -40,6 +40,7 @@ tests:
       Then it should return failure
     expectations: 
       exitCode: 1
+      performance: 2000
     args:
       - -i
       - ./tests/test_data/expectations/performance_failure.yaml
