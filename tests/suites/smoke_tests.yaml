@@ -40,6 +40,17 @@ tests:
       - -i
       - ./tests/test_data/empty_files
 
+  - name: Can compile a file vs a folder
+    description: >
+      Given a suite with a empty features
+      When lucifer runs
+      Then it should output success normally
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/empty_files/empty_file.yaml
+
   - name: Asking to output to a directory which doesn't exist works
     description: >
       Given an expectation of a file in a folder which doesn't exist
