@@ -49,7 +49,7 @@ tests:
       exitCode: 1
       file: ./path_which_doesnt_exist/result.json
 
-  - name: Asking to 
+  - name: Asking to output to a directory which doesn't exist works
     description: >
       Given an expectation of a file in a folder which doesn't exist
       When lucifer runs
