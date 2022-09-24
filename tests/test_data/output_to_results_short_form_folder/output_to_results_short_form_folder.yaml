@@ -1,13 +1,13 @@
 command: ./target/release/lucifer
 tests:
-  - name: --output-directory changes where results.json ends up
+  - name: -o changes where results.json ends up
     description: >
-      Given a help request in long form
+      Given an output request in short form
       When lucifer runs
       Then it should return the correct output
     expectations: 
       exitCode: 0
       performance: 10
     args:
-      - --output-directory
+      - -o
       - ./output/results_folder_short_form
