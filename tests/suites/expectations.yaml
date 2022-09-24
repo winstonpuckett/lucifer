@@ -45,7 +45,7 @@ tests:
       - -i
       - ./tests/test_data/expectations/performance_failure.yaml
 
-  - name: Ouput expectations met returns 0
+  - name: Output expectations met returns 0
     description: >
       Given a test with reasonable output expectations
       When lucifer runs
@@ -56,7 +56,7 @@ tests:
       - -i
       - ./tests/test_data/expectations/output_success.yaml
 
-  - name: Ouput expectations violated returns 1
+  - name: Output expectations violated returns 1
     description: >
       Given a test with unreasonable output expectations
       When lucifer runs
@@ -66,3 +66,25 @@ tests:
     args:
       - -i
       - ./tests/test_data/expectations/output_failure.yaml
+
+  - name: Error expectations met returns 0
+    description: >
+      Given a test with reasonable error expectations
+      When lucifer runs
+      Then it should return success
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/expectations/error_success.yaml
+
+  - name: Error expectations violated returns 1
+    description: >
+      Given a test with unreasonable error expectations
+      When lucifer runs
+      Then it should return failure
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/expectations/error_failure.yaml
