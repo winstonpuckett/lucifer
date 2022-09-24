@@ -6,7 +6,7 @@ use crate::{suite, logger};
 pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
     logger::log_newline(suite);
     logger::log(suite, "🐍  LUCIFER  🐍");
-    logger::log(suite, &format!("Executing tests in '{0}'", suite.args.input_directory));
+    logger::log(suite, &format!("Executing tests for '{0}'", suite.args.input_directory));
 
     let mut results: Vec<TestResult> = vec![];
 
@@ -23,7 +23,6 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 performance: 0
             };
 
-            // Prefer test, feature, suite, args for where the test can come from.
             let tool = feature.command.to_owned();
 
             let mut command = Command::new(&shell);
@@ -33,23 +32,15 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
             let now = Instant::now();
             let output_option = command_with_args.output();
             let time_in_milliseconds = now.elapsed().as_millis();
-
-            result.performance = time_in_milliseconds;
-
+            
             let output = output_option.unwrap();
-
-            let stdout = str::from_utf8(&output.stdout).unwrap();
-            let stderr = str::from_utf8(&output.stderr).unwrap();
-
-            // if suite.verbose {
-            //     println!("Standard Out: '{stdout}'");
-            //     println!("Standard Error: '{stderr}'");
-            // }
-
+            result.performance = time_in_milliseconds;
+            
             let performance_satisfied = (time_in_milliseconds as u64) <= test.expectations.performance;
-
+            
             let exit_code_satisfied = output.status.code().unwrap() == test.expectations.exit_code;
-
+            
+            let stdout = str::from_utf8(&output.stdout).unwrap();
             let mut output_expectation = String::from("");
             let output_satisfied = if test.expectations.output.is_none() {
                 true
@@ -57,7 +48,8 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 output_expectation = test.to_owned().expectations.to_owned().output.unwrap();
                 output_expectation == stdout
             };
-
+            
+            let stderr = str::from_utf8(&output.stderr).unwrap();
             let mut error_expectation = String::from("");
             let error_satisfied = if test.expectations.error.is_none() {
                 true

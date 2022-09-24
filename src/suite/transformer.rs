@@ -31,9 +31,45 @@ pub fn to_feature(entry: &DirEntry) -> Feature {
     }
 }
 
+pub fn to_feature_from_str(file_name: &str, entry: &str) -> Feature {
+    let file_option = string_to_map(entry);
+
+    if file_option.is_some() {
+        let file = file_option.unwrap();
+        Feature {
+            name: String::from(file_name),
+            has_command: file["command"].as_str().is_some(),
+            command: String::from(file["command"].as_str().unwrap()),
+            tests: file["tests"]
+                .as_vec()
+                // TODO: Handle case where tests is not a vec
+                .unwrap()
+                .into_iter()
+                .map(to_test)
+                .collect()
+        }
+    } else {
+        Feature {
+            name: String::from(file_name),
+            has_command: false,
+            command: String::from(""),
+            tests: vec![]
+        }
+    }
+}
+
 fn file_to_map(file: &DirEntry) -> Option<yaml_rust::Yaml> {
     let content = fs::read_to_string(file.path()).unwrap();
     let yaml = YamlLoader::load_from_str(content.as_str()).unwrap();
+
+    if yaml.is_empty(){
+        return None;
+    }
+
+    Some(yaml[0].to_owned())
+}
+fn string_to_map(content: &str) -> Option<yaml_rust::Yaml> {
+    let yaml = YamlLoader::load_from_str(content).unwrap();
 
     if yaml.is_empty(){
         return None;
