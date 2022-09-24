@@ -1,8 +1,0 @@
-command: exit
-tests:
-  - name: Args with large numbers should compile
-    args:
-    - 999999999999999999999999999999999999999999 # arbitrarily large
-    - -99999999999999999999999999999999999999999 # arbitrarily large
-    - 0
-    - 9.9999999999999999999999999999999999999999 # arbitrarily large

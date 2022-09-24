@@ -69,3 +69,14 @@ tests:
       Then it should output failure normally
     expectations: 
       noFile: ./any_non_existent_directory/and_file.txt
+
+  - name: Args should be accepted with different types
+    description: >
+      Given two tests with args of int and string
+      When lucifer runs
+      Then it should output the same result
+    expectations: 
+      exitCode: 0
+    args:
+    - -i 
+    - ./test_data/type_checking/type_checking.yaml

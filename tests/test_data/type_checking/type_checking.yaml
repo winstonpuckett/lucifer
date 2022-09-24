@@ -2,13 +2,13 @@ command: exit
 tests:
   - name: Args as strings should compile
     args:
+    - "0"
     - "1"
     - "-1"
-    - "0"
     - "1.1"
   - name: Args as numbers should compile
     args:
+    - 0
     - 1
     - -1
-    - 0
     - 1.1
