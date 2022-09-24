@@ -1,0 +1,18 @@
+command: echo
+tests:
+  - name: File contents asserted
+    expectations: 
+      file: ./tests/test_data/expectations/file_contents_success.yaml
+      contents: |
+        command: echo
+        tests:
+          - name: File contents asserted
+            expectations: 
+              file: ./tests/test_data/expectations/file_contents_success.yaml
+              contents: |
+                command: echo
+                tests:
+                  - name: File contents asserted
+                    expectations: 
+                      file: ./tests/test_data/expectations/file_contents_success.yaml
+                      contents: |

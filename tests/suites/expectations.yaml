@@ -110,3 +110,25 @@ tests:
     args:
       - -i
       - ./tests/test_data/expectations/file_failure.yaml
+
+  - name: File contents met returns 0
+    description: >
+      Given a test with reasonable file contents
+      When lucifer runs
+      Then it should return success
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/expectations/file_contents_success.yaml
+
+  - name: File contents violated returns 1
+    description: >
+      Given a test with unreasonable file contents
+      When lucifer runs
+      Then it should return failure
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/expectations/file_contents_failure.yaml
