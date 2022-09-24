@@ -1,0 +1,23 @@
+command: ./target/release/lucifer
+tests:
+  - name: Exit codes which meets expectations should succeed.
+    description: >
+      Given a test with expected exit codes
+      When lucifer runs
+      Then it should return success
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/expectations/exit_code_success.yaml
+
+  - name: Exit codes which fail expectations should fail.
+    description: >
+      Given a test with expected exit codes
+      When lucifer runs
+      Then it should return success
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/expectations/exit_code_failure.yaml
