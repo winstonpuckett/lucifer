@@ -10,4 +10,4 @@ tests:
       performance: 10
     args:
       - --output-directory
-      - ./test_data/results_folder_long_form
+      - ./output/results_folder_long_form

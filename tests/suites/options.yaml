@@ -8,7 +8,20 @@ tests:
     expectations: 
       exitCode: 0
       performance: 10
-      file: ./test_data/results_folder_long_form/results.json
+      file: ./output/results_folder_long_form/results.json
     args:
       - -i 
-      - ./tests/test_data/output_to_results_folder
+      - ./tests/test_data/output_to_results_long_form_folder
+
+  - name: -o changes where results.json ends up
+    description: >
+      Given a help request in long form
+      When lucifer runs
+      Then it should return the correct output
+    expectations: 
+      exitCode: 0
+      performance: 10
+      file: ./output/results_folder_long_form/results.json
+    args:
+      - -i
+      - ./tests/test_data/output_to_results_short_form_folder
