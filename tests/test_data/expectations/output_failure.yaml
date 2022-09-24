@@ -1,0 +1,7 @@
+command: echo
+tests:
+  - name: hello = world
+    expectations: 
+      output: "hello"
+    args:
+      - world
