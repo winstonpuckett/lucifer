@@ -141,6 +141,8 @@ tests:
     expectations:
       exitCode: 0
       performance: 10
-      output: ""
+      noFile: ./output/should_not_exist/results.json
     args:
       - --nofile
+      - --output-directory
+      - ./output/should_not_exist
