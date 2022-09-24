@@ -2,6 +2,6 @@ command: echo
 tests:
   - name: hello = hello
     expectations: 
-      output: "hello\r\n"
+      output: "hello\n"
     args:
       - hello
