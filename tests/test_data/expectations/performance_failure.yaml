@@ -1,0 +1,7 @@
+command: sleep
+tests:
+  - name: Unreasonable performance succeeds.
+    expectations: 
+      performance: 400
+    args:
+      - 1

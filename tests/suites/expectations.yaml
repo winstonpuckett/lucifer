@@ -21,3 +21,25 @@ tests:
     args:
       - -i
       - ./tests/test_data/expectations/exit_code_failure.yaml
+
+  - name: Performance expectations met returns 0
+    description: >
+      Given a test with reasonable performance expectations
+      When lucifer runs
+      Then it should return success
+    expectations: 
+      exitCode: 0
+    args:
+      - -i
+      - ./tests/test_data/expectations/performance_success.yaml
+
+  - name: Performance expectations violated returns 1
+    description: >
+      Given a test with unreasonable performance expectations
+      When lucifer runs
+      Then it should return failure
+    expectations: 
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/expectations/performance_failure.yaml

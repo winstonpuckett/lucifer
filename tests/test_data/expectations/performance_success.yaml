@@ -1,0 +1,7 @@
+command: sleep
+tests:
+  - name: Reasonable performance succeeds.
+    expectations: 
+      performance: 1000
+    args:
+      - 0
