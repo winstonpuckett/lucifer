@@ -1,0 +1,14 @@
+command: ./target/release/lucifer
+tests:
+  - name: --output-directory changes where results.json ends up
+    description: >
+      Given a help request in long form
+      When lucifer runs
+      Then it should return the correct output
+    expectations: 
+      exitCode: 0
+      performance: 10
+      file: ./test_data/results_folder/results.json
+    args:
+      - --output-directory
+      - ./test_data/results_folder
