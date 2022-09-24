@@ -1,5 +1,10 @@
 command: test
 tests:
+  - name: 0 = 1
+    expectations: 
+      exitCode: 1
+    args:
+      - 0 = 1
   - name: 0 = 0
     expectations: 
       exitCode: 0
