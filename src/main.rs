@@ -69,7 +69,7 @@ fn run(args: Args) -> i32 {
 }
 
 fn help(_command: &Args) -> i32 {
-    println!("LUCIFER");
+    println!("🐍 LUCIFER 🐍");
     println!("Illuminating CLI testing.");
     println!("Winston Puckett");
     println!();

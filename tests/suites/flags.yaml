@@ -9,7 +9,7 @@ tests:
       exitCode: 0
       performance: 10
       output: |
-        LUCIFER
+        🐍 LUCIFER 🐍
         Illuminating CLI testing.
         Winston Puckett
         
@@ -46,7 +46,7 @@ tests:
       exitCode: 0
       performance: 10
       output: |
-        LUCIFER
+        🐍 LUCIFER 🐍
         Illuminating CLI testing.
         Winston Puckett
         
