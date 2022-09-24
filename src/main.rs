@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::{io::Write, fs, path::Path};
 
 use args::Args;
 
@@ -36,7 +36,7 @@ fn run(args: Args) -> i32 {
                     executor::FailureType::ExitCode => "exitCode",
                     executor::FailureType::Output => "output",
                     executor::FailureType::Error => "error",
-                    // executor::FailureType::FileDoesNotExist => "fileMissing",
+                    executor::FailureType::FileDoesNotExist => "fileMissing",
                     // executor::FailureType::FileContents => "fileContents",
                 },
                 expectation: f.expectation,
@@ -51,6 +51,10 @@ fn run(args: Args) -> i32 {
         }).unwrap();
     }
 
+    if !Path::new(&suite.args.output_directory).is_dir() {
+       let _ = fs::create_dir(&suite.args.output_directory); 
+    }
+    
     let mut file = std::fs::File::create(format!("{}/{}", &suite.args.output_directory, "results.json")).expect("create failed");
     file.write_all(json::stringify(data).as_bytes()).expect("write failed");
 
