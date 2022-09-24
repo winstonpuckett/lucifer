@@ -52,12 +52,14 @@ fn run(args: Args) -> i32 {
         }).unwrap();
     }
 
-    if !Path::new(&suite.args.output_directory).is_dir() {
-        fs::create_dir_all(&suite.args.output_directory).unwrap();
+    if !suite.args.no_file {
+        if !Path::new(&suite.args.output_directory).is_dir() {
+            fs::create_dir_all(&suite.args.output_directory).unwrap();
+        }
+        
+        let mut file = std::fs::File::create(format!("{}/{}", &suite.args.output_directory, "results.json")).expect("create failed");
+        file.write_all(json::stringify(data).as_bytes()).expect("write failed");
     }
-    
-    let mut file = std::fs::File::create(format!("{}/{}", &suite.args.output_directory, "results.json")).expect("create failed");
-    file.write_all(json::stringify(data).as_bytes()).expect("write failed");
 
     if success {
         0
