@@ -82,11 +82,23 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 }
             };
 
+            let mut no_file_expectation = String::from("");
+            // let mut file_contents = String::from("");
+            let no_file_satisfied = if test.expectations.file.is_none() {
+                true
+            } else {
+                no_file_expectation = test.to_owned().expectations.to_owned().no_file.unwrap();
+                let metadata = fs::metadata(&no_file_expectation);
+                
+                metadata.is_err() || !metadata.unwrap().is_file()                    
+            };
+
 
             if performance_satisfied
                 && exit_code_satisfied 
                 && output_satisfied
                 && error_satisfied
+                && no_file_satisfied
                 && file_satisfied {
                 logger::log_success(suite, &format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
@@ -137,8 +149,8 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
 
                 if !error_satisfied {
                     logger::log_details(suite, vec![
-                        &format!("Expected error: {0}", error_expectation),
-                        &format!("Actual error: {0}", stderr)
+                        &format!("Expected error: '{0}'", error_expectation),
+                        &format!("Actual error: '{0}'", stderr)
                     ]);
 
                     result.failures.push(Failure {
@@ -148,10 +160,23 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                     })
                 }
 
+                if !no_file_satisfied {
+                    logger::log_details(suite, vec![
+                        &format!("Expected: This file should not exist '{0}'", no_file_expectation),
+                        &format!("Actual: This file exists '{0}'", no_file_expectation)
+                    ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::FileExists,
+                        expectation: String::from(""),
+                        actual: no_file_expectation
+                    })
+                }
+
                 if !file_satisfied {
                     logger::log_details(suite, vec![
-                        &format!("Expected file: {0}", file_expectation),
-                        &format!("File error message: {0}", String::from("File does not exist or cannot be accessed."))
+                        &format!("Expected file: '{0}'", file_expectation),
+                        &format!("File error message: '{0}'", String::from("File does not exist or cannot be accessed."))
                     ]);
 
                     result.failures.push(Failure {
@@ -200,6 +225,7 @@ pub enum FailureType {
     ExitCode,
     Output,
     Error,
+    FileExists,
     FileDoesNotExist,
     // FileContents
 }
