@@ -1,5 +1,5 @@
 use std::{process::Command, time::Instant};
-use std::str;
+use std::{str, fs};
 
 use crate::{suite, logger};
 
@@ -66,10 +66,28 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 error_expectation == stderr
             };
 
+            let mut file_expectation = String::from("");
+            // let mut file_contents = String::from("");
+            let file_satisfied = if test.expectations.file.is_none() {
+                true
+            } else {
+                file_expectation = test.to_owned().expectations.to_owned().file.unwrap();
+                let content_option = fs::read_to_string(&file_expectation);
+
+                if content_option.is_ok() {
+                    // file_contents = content_option.unwrap();
+                    true
+                } else {
+                    false
+                }
+            };
+
+
             if performance_satisfied
                 && exit_code_satisfied 
                 && output_satisfied
-                && error_satisfied {
+                && error_satisfied
+                && file_satisfied {
                 logger::log_success(suite, &format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
                 logger::log_failure(suite, &format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
@@ -127,6 +145,19 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                         failure_type: FailureType::Error,
                         expectation: error_expectation,
                         actual: String::from(stderr)
+                    })
+                }
+
+                if !file_satisfied {
+                    logger::log_details(suite, vec![
+                        &format!("Expected file: {0}", file_expectation),
+                        &format!("File error message: {0}", String::from("File does not exist or cannot be accessed."))
+                    ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::Error,
+                        expectation: file_expectation,
+                        actual: String::from("File does not exist or cannot be accessed.")
                     })
                 }
             }
