@@ -59,7 +59,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
             };
 
             let mut file_expectation = String::from("");
-            // let mut file_contents = String::from("");
+            let mut file_contents = String::from("");
             let file_satisfied = if test.expectations.file.is_none() {
                 true
             } else {
@@ -67,11 +67,17 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 let content_option = fs::read_to_string(&file_expectation);
 
                 if content_option.is_ok() {
-                    // file_contents = content_option.unwrap();
+                    file_contents = content_option.unwrap();
                     true
                 } else {
                     false
                 }
+            };
+
+            let file_contents_satisfied = if file_satisfied && test.expectations.contents.is_some() {
+                file_contents == test.to_owned().expectations.to_owned().contents.unwrap()
+            } else {
+                true
             };
 
             let mut no_file_expectation = String::from("");
@@ -90,7 +96,8 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                 && output_satisfied
                 && error_satisfied
                 && no_file_satisfied
-                && file_satisfied {
+                && file_satisfied
+                && file_contents_satisfied {
                 logger::log_success(suite, &format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds));
             } else {
                 logger::log_failure(suite, &format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
@@ -176,6 +183,19 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                         actual: String::from("File does not exist or cannot be accessed.")
                     })
                 }
+
+                if !file_contents_satisfied {
+                    logger::log_details(suite, vec![
+                        &format!("Expected file contents: '{0}'", test.to_owned().expectations.to_owned().contents.unwrap()),
+                        &format!("Actual file contents: '{0}'", file_contents)
+                    ]);
+
+                    result.failures.push(Failure {
+                        failure_type: FailureType::FileContents,
+                        expectation: test.to_owned().expectations.to_owned().contents.unwrap(),
+                        actual: file_contents
+                    })
+                }
             }
             
             results.push(result);
@@ -218,5 +238,5 @@ pub enum FailureType {
     Error,
     FileExists,
     FileDoesNotExist,
-    // FileContents
+    FileContents
 }
