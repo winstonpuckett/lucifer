@@ -50,3 +50,11 @@ tests:
     args:
       - -o
       - ./tests/test_data/path_which_doesnt_exist
+
+  - name: Erroneous noFile assertion succeeds
+    description: >
+      Given an expectation of a file in a folder which doesn't exist
+      When lucifer runs
+      Then it should output failure normally
+    expectations: 
+      noFile: ./any_non_existent_directory/and_file.txt
