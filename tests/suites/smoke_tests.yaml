@@ -48,3 +48,14 @@ tests:
     expectations: 
       exitCode: 1
       file: ./path_which_doesnt_exist/result.json
+
+  - name: Asking to 
+    description: >
+      Given an expectation of a file in a folder which doesn't exist
+      When lucifer runs
+      Then it should output failure normally
+    expectations: 
+      exitCode: 0
+    args:
+      - -o
+      - ./tests/test_data/path_which_doesnt_exist
