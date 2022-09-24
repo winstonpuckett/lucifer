@@ -155,7 +155,7 @@ pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
                     ]);
 
                     result.failures.push(Failure {
-                        failure_type: FailureType::Error,
+                        failure_type: FailureType::FileDoesNotExist,
                         expectation: file_expectation,
                         actual: String::from("File does not exist or cannot be accessed.")
                     })
@@ -200,6 +200,6 @@ pub enum FailureType {
     ExitCode,
     Output,
     Error,
-    // FileDoesNotExist,
+    FileDoesNotExist,
     // FileContents
 }
