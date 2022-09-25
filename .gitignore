@@ -12,3 +12,4 @@ Cargo.lock
 
 # output from tests
 **/results.json
+/output
