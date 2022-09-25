@@ -1,0 +1,5 @@
+- readme
+- documentation
+- donate button
+- support site
+- issue tracking

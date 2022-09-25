@@ -11,9 +11,7 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Build
@@ -22,23 +20,3 @@ jobs:
       run: cargo test --verbose
     - name: Run integration tests
       run: ./target/release/lucifer run -i ./tests/suites
-
-
-# ✔️ Start
-# Get previous version of lucifer (unavailable until release)
-# ✔️ Build new lucifer version
-# ✔️ Cargo Test new lucifer version
-# Use old version to run new version across all tests, in all supported OS's
-# ✔️ If any test fails, fail the build
-# ✔️ Use new version to run itself 
-#    - across all tests
-#    - in all supported OS's
-# ✔️ If any test fails, fail the build
-# Push to (unfinished list):
-# - cargo
-# - yum
-# - apt
-# - apt-get
-# - pacman
-# - snap
-# Report successful build status

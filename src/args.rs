@@ -18,7 +18,6 @@ pub fn get() -> Args {
     let mut skip = true;
 
     for i in 0..args_max_iter_value {
-
         if skip { 
             skip = false;
             continue;

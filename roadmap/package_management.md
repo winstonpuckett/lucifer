@@ -1,0 +1,7 @@
+- cargo
+- winget
+- snap
+- apt
+- apt-get
+- yum
+- pacman
