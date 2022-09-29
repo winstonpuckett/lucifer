@@ -1,5 +1,5 @@
-# LUCIFER
-Free, Open source, Illuminating CLI testing written in Rust.
+# LUCIFER 🐲
+Free, Open source, Cross-platform, Illuminating CLI testing written in Rust.
 
 ## Stability
 
@@ -35,8 +35,74 @@ It is always recommended to try the first to ideas first.
 
 ## Getting Started
 
+Currently the only way to install lucifer is from source.
 
+Prerequisites:
+- [git](https://git-scm.com/)
+- [rust/cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+- A bash-like terminal (or modify the script below to match your terminal)
 
-- Where is it going
-- How is it different
-- 
+*note: copy/pasting bash scripts from the internet is a bad idea. Make sure you know what you're doing and why. It never hurts to type things in manually.*
+
+You can do this with the following script:
+```bash
+# Get the source
+git clone https://github.com/winstonpuckett/lucifer.git
+cd lucifer
+
+# Build the project
+cargo build --release
+
+# move the target file out of the directory
+mv ./target/release/lucifer ..
+
+# Remove the source folder
+rm -rf lucifer
+```
+
+Once you have lucifer installed, it's time to start testing! Let's create a simple test.
+
+1. Create a yaml file called "feature.yaml" or any meaningful name.
+2. Paste this yaml into the file
+
+```yaml
+command: echo
+tests:
+  - name: echo replies
+    description: |
+      Given any string
+      When echo is called
+      Then that string should be returned
+    args:
+      - hello
+    expectations:
+      - output: hello
+```
+
+Run this file with the command:
+
+```bash
+lucifer -i ./feature.yaml
+```
+
+For more examples, visit the getting started page on our website. Which is not currently up.
+
+## Where is it going
+
+The current vision for the product is all about ease. This means LOTS of documentation and some infrastructure set up.
+
+Including (but not limited to):
+- Setting up the official website with documentation and lots of easy examples
+- Improving this readme
+- Installation through common package managers such as apt-get, snap, winget, homebrew, and more
+- A base docker image for when you want to deploy in CI/CD scenarios
+- GitHub Actions support
+- Squashing any found bugs
+- Improving performance
+
+## Alternatives
+
+Lucifer may not be the right choice for you. That's ok. I hope you will consider supporting one of these other open source projects:
+
+- [BATS](https://github.com/bats-core/bats-core)
+- [cli-testing-library](https://github.com/gmrchk/cli-testing-library)
