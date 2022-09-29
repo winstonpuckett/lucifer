@@ -2,6 +2,15 @@
 name = "lucifer"
 version = "0.1.0"
 edition = "2021"
+authors = ["Winston Puckett"]
+readme = "https://github.com/winstonpuckett/lucifer/blob/main/README.md"
+homepage = "https://github.com/winstonpuckett/lucifer"
+repository = "https://github.com/winstonpuckett/lucifer"
+license = "Apache-2.0"
+license-file = "https://github.com/winstonpuckett/lucifer/blob/main/LICENSE"
+keywords = ["testing", "cli", "integration", "cicd", "devops"]
+categories = ["command-line-utilities", "development-tools::testing"]
+publish = ["lucifer"]
 
 [dependencies]
 yaml-rust = "0.4"
