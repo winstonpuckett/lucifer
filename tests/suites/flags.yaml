@@ -64,12 +64,10 @@ tests:
             -v, --version                               Print the currently running version.
             -s, --silent                                Suppress all console output.
             -n, --no-file                               Suppress all file output.
-            -e, --emoji                                 Use emoji output in the console.
         
         OPTIONS:
             -i, --input-directory <folder_path>         The path to the test files. Default: .
             -o, --output-directory <folder_path>        Where to store resulting files. Default: .
-            -c, --command <file_path>                   The default command to run.
     args:
       - -h
   - name: --version gives the correct output
