@@ -92,12 +92,10 @@ fn help(_command: &Args) -> i32 {
     println!("    -v, --version                               Print the currently running version.");
     println!("    -s, --silent                                Suppress all console output.");
     println!("    -n, --no-file                               Suppress all file output.");
-    println!("    -e, --emoji                                 Use emoji output in the console.");
     println!();
     println!("OPTIONS:");
     println!("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
     println!("    -o, --output-directory <folder_path>        Where to store resulting files. Default: .");
-    println!("    -c, --command <file_path>                   The default command to run.");
     0
 }
 
