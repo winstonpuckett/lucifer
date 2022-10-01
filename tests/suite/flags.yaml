@@ -18,7 +18,7 @@ tests:
         • View source code: https://github.com/winstonpuckett/lucifer
         • Need help?: https://github.com/winstonpuckett/lucifer/issues
         
-        version: 0.1.0
+        version: 0.1.2
 
         USAGE:
             lucifer [FLAGS] [OPTIONS]
@@ -52,7 +52,7 @@ tests:
         • View source code: https://github.com/winstonpuckett/lucifer
         • Need help?: https://github.com/winstonpuckett/lucifer/issues
         
-        version: 0.1.0
+        version: 0.1.2
 
         USAGE:
             lucifer [FLAGS] [OPTIONS]
@@ -77,7 +77,7 @@ tests:
       exitCode: 0
       performance: 10
       output: |
-        v0.1.0
+        v0.1.2
 
     args:
       - --version
@@ -90,7 +90,7 @@ tests:
       exitCode: 0
       performance: 10
       output: |
-        v0.1.0
+        v0.1.2
 
     args:
       - -v
