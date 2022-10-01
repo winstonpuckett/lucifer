@@ -10,7 +10,6 @@ repository = "https://github.com/winstonpuckett/lucifer"
 license = "Apache-2.0"
 keywords = ["testing", "cli", "integration", "cicd", "devops"]
 categories = ["command-line-utilities", "development-tools::testing"]
-publish = ["lucifer-testing"]
 
 [dependencies]
 yaml-rust = "0.4"
