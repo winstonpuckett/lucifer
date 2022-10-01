@@ -8,7 +8,7 @@ readme = "https://github.com/winstonpuckett/lucifer/blob/main/README.md"
 homepage = "https://github.com/winstonpuckett/lucifer"
 repository = "https://github.com/winstonpuckett/lucifer"
 license = "Apache-2.0"
-license-file = "https://github.com/winstonpuckett/lucifer/blob/main/LICENSE"
+license-file = "./LICENSE"
 keywords = ["testing", "cli", "integration", "cicd", "devops"]
 categories = ["command-line-utilities", "development-tools::testing"]
 
