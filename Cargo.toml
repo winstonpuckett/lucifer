@@ -1,5 +1,5 @@
 [package]
-name = "lucifer"
+name = "lucifer-testing"
 description = "Illuminating CLI testing."
 version = "0.1.0"
 edition = "2021"
@@ -14,3 +14,7 @@ categories = ["command-line-utilities", "development-tools::testing"]
 [dependencies]
 yaml-rust = "0.4"
 json = "0.12.4"
+
+[[bin]]
+name = "lucifer"
+path = "./src/main.rs"
