@@ -19,7 +19,7 @@ This comes at the tradeoff of customizability. Lucifer is responsible for execut
 
 ### 1. Create an issue (Or even a pull request!)
 
-Remember, lucifer is still in alpha state. We may be missing features which would be a good idea to include in the final product. Use the [issue tab](https://github.com/winstonpuckett/lucifer/issues) to create new feature requests.
+Remember, lucifer is still in alpha state. We may be missing features which would be a good idea to include in the final product. Use the [issue tab](https://github.com/winstonpuckett/lucifer/issues) in GitHub to create new feature requests.
 
 ### 2. Consider whether it should be an integration test.
 
@@ -35,7 +35,21 @@ It is always recommended to try the first to ideas first.
 
 ## Getting Started
 
-Currently the only way to install lucifer is from source.
+### Install 
+
+#### 1. Install with Cargo (recommended)
+
+Prerequisites:
+- [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+
+The easiest way to get up and running with lucifer is to install it from rust's package manager, [cargo](https://doc.rust-lang.org/cargo/).
+
+To install lucifer, run the following command in your terminal of choice:
+```bash
+cargo install lucifer-testing
+```
+
+#### 2.
 
 Prerequisites:
 - [git](https://git-scm.com/)
@@ -44,7 +58,7 @@ Prerequisites:
 
 *note: copy/pasting bash scripts from the internet is a bad idea. Make sure you know what you're doing and why. It never hurts to type things in manually.*
 
-You can do this with the following script:
+You can do install from source with the following script:
 ```bash
 # Get the source
 git clone https://github.com/winstonpuckett/lucifer.git
@@ -59,6 +73,8 @@ mv ./target/release/lucifer ..
 # Remove the source folder
 rm -rf lucifer
 ```
+
+### Running a test
 
 Once you have lucifer installed, it's time to start testing! Let's create a simple test.
 
@@ -85,7 +101,7 @@ Run this file with the command:
 lucifer -i ./feature.yaml
 ```
 
-For more examples, visit the getting started page on our website. Which is not currently up.
+For more examples, visit the getting started page on our website... Which is not currently up.
 
 ## Where is it going
 
@@ -94,7 +110,7 @@ The current vision for the product is all about ease. This means LOTS of documen
 Including (but not limited to):
 - Setting up the official website with documentation and lots of easy examples
 - Improving this readme
-- Installation through common package managers such as apt-get, snap, winget, homebrew, and more
+- Installation through common package managers such as ~~cargo~~, apt-get, snap, winget, homebrew, and more
 - A base docker image for when you want to deploy in CI/CD scenarios
 - GitHub Actions support
 - Squashing any found bugs
