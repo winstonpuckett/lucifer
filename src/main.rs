@@ -76,7 +76,6 @@ fn help(_command: &Args) -> i32 {
     println!("Helpful Links:");
     println!("• Documentation: https://github.com/winstonpuckett/lucifer");
     println!("• View source code: https://github.com/winstonpuckett/lucifer");
-    println!("• Support the project: https://github.com/winstonpuckett/lucifer");
     println!("• Need help?: https://github.com/winstonpuckett/lucifer/issues");
     
     println!();
