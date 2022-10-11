@@ -1,6 +1,6 @@
 [Installation Instructions](https://lucifer.winstonpuckett.com/docs/installation/)
 
-## 0.1.5-0.1.11
+## 0.1.5-0.1.12
 
 Fix deployment errors
 
