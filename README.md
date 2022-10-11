@@ -51,7 +51,7 @@ To install lucifer, run the following command in your terminal of choice:
 cargo install lucifer-testing
 ```
 
-#### 2.
+#### 2. Install from source
 
 Prerequisites:
 - [git](https://git-scm.com/)
