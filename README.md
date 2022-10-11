@@ -1,3 +1,5 @@
+[![Build / Test / Publish](https://github.com/winstonpuckett/lucifer/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/winstonpuckett/lucifer/actions/workflows/deploy.yml)
+
 # LUCIFER 🐲
 Free, Open source, Cross-platform, Illuminating CLI testing written in Rust.
 
