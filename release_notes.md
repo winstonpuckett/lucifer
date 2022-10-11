@@ -1,3 +1,11 @@
+# 0.1.5
+
+Fix deployment errors
+
+# 0.1.4
+
+Trigger CI/CD Differently
+
 # 0.1.3
 
 Update typo in readme 
