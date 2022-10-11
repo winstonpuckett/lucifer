@@ -1,3 +1,7 @@
+# 0.1.7
+
+Fix deployment errors
+
 # 0.1.6
 
 Fix deployment errors
