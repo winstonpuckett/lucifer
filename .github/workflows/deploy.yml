@@ -2,9 +2,9 @@ name: Build / Test / Publish
 
 on:
   push:
-    tags: 'v*'
+    tags: '**'
   pull_request:
-    tags: 'v*'
+    tags: '**'
 
 env:
   CARGO_TERM_COLOR: always
