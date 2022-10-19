@@ -1,9 +1,9 @@
 use std::{process::Command, time::Instant};
 use std::{str, fs};
 
-use crate::{suite, logger};
+use crate::{suite_getter, logger};
 
-pub fn execute(suite: &suite::Suite) -> Vec<TestResult> {
+pub fn execute(suite: &suite_getter::Suite) -> Vec<TestResult> {
     logger::log_newline(suite);
     logger::log(suite, "🐉 LUCIFER 🐉");
     logger::log(suite, &format!("Executing tests for '{0}'", suite.args.input_directory));

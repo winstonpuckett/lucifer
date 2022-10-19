@@ -1,9 +1,9 @@
 use std::{path::Path, fs, io::Write};
 
-use crate::{args::Args, suite, executor};
+use crate::{args_getter::Args, suite_getter, executor};
 
 pub fn execute(args: Args) -> i32 {
-    let suite = suite::get(args).unwrap();
+    let suite = suite_getter::get(args).unwrap();
     let results = executor::execute(&suite);
     
     let mut success = true;

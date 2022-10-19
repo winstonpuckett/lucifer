@@ -1,4 +1,4 @@
-use crate::args::{RunMode, Args};
+use crate::args_getter::{RunMode, Args};
 
 mod test;
 mod help;

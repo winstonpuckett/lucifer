@@ -2,13 +2,13 @@ use router::route;
 
 mod router;
 
-mod suite;
+mod suite_getter;
 mod executor;
 mod logger;
-mod args;
+mod args_getter;
 
 fn main() {
-    let args = args::get();
+    let args = args_getter::get();
 
     let exit_code: i32 = route(args);
 

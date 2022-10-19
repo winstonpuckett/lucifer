@@ -1,6 +1,6 @@
 use std::{fs, io, path::Path};
 extern crate yaml_rust;
-use crate::args::Args;
+use crate::args_getter::Args;
 use self::{transformer::{Expectations, Serialization, Feature}, sorter::is_lucifer_file};
 mod transformer;
 mod sorter;
