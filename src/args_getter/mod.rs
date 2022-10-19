@@ -5,21 +5,24 @@ mod result_mutator;
 pub fn get() -> Args {
     let mut args = env::args().into_iter().peekable();
 
-    let mut result = get_default_args();
-
     if args.peek().is_none() {
-        return result;
+        get_default_args()
+    } else {
+        extract_args(args)
     }
+}
+
+fn extract_args(mut args: std::iter::Peekable<env::Args>) -> Args {
+    let mut result = get_default_args();
 
     // First argument is command path. Skip that argument.
     args.next();
-
+    
     while args.peek().is_some() {
         let arg = args.next().unwrap();
-
         self::result_mutator::mutate(&mut result, arg, &mut args);
     };
-
+    
     result
 }
 

@@ -18,7 +18,6 @@ pub fn mutate(result: &mut Args, current_arg: String, args: &mut std::iter::Peek
     }
 }
 
-
 fn is_help_command(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-h")
     || arg.eq_ignore_ascii_case("--help")
@@ -35,7 +34,6 @@ fn is_no_file_flag(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-n")
     || arg.eq_ignore_ascii_case("--no-file")
 }
-
 fn is_input_directory(arg: &String) -> bool {
     arg.eq_ignore_ascii_case("-i")
     || arg.eq_ignore_ascii_case("--input-directory")
