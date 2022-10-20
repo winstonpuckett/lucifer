@@ -1,29 +1,37 @@
 use std::env;
 
+use crate::ExitCode;
+
 mod result_mutator;
 
-pub fn get() -> Args {
+pub fn get() -> Result<Args, (ExitCode, String)> {
     let mut args = env::args().into_iter().peekable();
 
     if args.peek().is_none() {
-        get_default_args()
+        Ok(get_default_args())
     } else {
         extract_args(args)
     }
 }
 
-fn extract_args(mut args: std::iter::Peekable<env::Args>) -> Args {
+fn extract_args(mut args: std::iter::Peekable<env::Args>) -> Result<Args, (ExitCode, String)> {
     let mut result = get_default_args();
 
     // First argument is command path. Skip that argument.
     args.next();
     
     while args.peek().is_some() {
+        // This unwrap is safe because we've called peek.
         let arg = args.next().unwrap();
-        self::result_mutator::mutate(&mut result, arg, &mut args);
+
+        let result = self::result_mutator::mutate(&mut result, arg, &mut args);
+
+        if result.is_err() {
+            return Err(result.unwrap_err());
+        }
     };
     
-    result
+    Ok(result)
 }
 
 fn get_default_args() -> Args {
@@ -36,6 +44,7 @@ fn get_default_args() -> Args {
     }
 }
 
+#[derive(Debug)]
 pub struct Args {
     pub run_mode: RunMode,
 
@@ -46,6 +55,7 @@ pub struct Args {
     pub no_file: bool,
 }
 
+#[derive(Debug)]
 pub enum RunMode {
     None,
     Help,

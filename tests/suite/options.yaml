@@ -2,9 +2,9 @@ command: ./target/release/lucifer
 tests:
   - name: --output-directory changes where results.json ends up
     description: >
-      Given a help request in long form
+      Given a output directory request in long form
       When lucifer runs
-      Then it should return the correct output
+      Then it should create a file in the correct folder
     expectations: 
       exitCode: 0
       performance: 10
@@ -15,9 +15,9 @@ tests:
 
   - name: -o changes where results.json ends up
     description: >
-      Given a help request in long form
+      Given a output directory request in short form
       When lucifer runs
-      Then it should return the correct output
+      Then it should create a file in the correct folder
     expectations: 
       exitCode: 0
       performance: 10
@@ -25,3 +25,29 @@ tests:
     args:
       - -i
       - ./tests/test_data/output_to_results_short_form_folder
+
+  - name: -i without argument produces exit code 2
+    description: >
+      Given an input directory request in short form
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+    args:
+      - -n
+      - -i
+
+  - name: -i without argument produces exit code 2
+    description: >
+      Given an input directory request in long form
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+    args:
+      - -n
+      - --input-directory
+
+  # TODO: Tests for input directory (This will be easier once contains expectations are available)
