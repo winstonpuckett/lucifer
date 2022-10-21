@@ -1,13 +1,13 @@
-use crate::{args_getter::{RunMode, Args}, ExitCode};
+use crate::{args_getter::{RunMode, Args}, CommandResult};
 
 mod test;
 mod help;
 mod version;
 
-pub fn route(args: Args) -> Result<i32, (ExitCode, String)> {
+pub fn route(args: Args) -> CommandResult<()> {
     match args.run_mode {
-        RunMode::None => Ok(self::test::execute(args)),
-        RunMode::Help => Ok(self::help::execute()),
-        RunMode::Version => Ok(self::version::execute()),
+        RunMode::None => self::test::execute(args),
+        RunMode::Help => self::help::execute(),
+        RunMode::Version => self::version::execute(),
     }
 }

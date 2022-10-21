@@ -1,4 +1,7 @@
-pub fn execute() -> i32 {
+use crate::CommandResult;
+
+pub fn execute() -> CommandResult<()> {
     println!("v{0}", env!("CARGO_PKG_VERSION"));
-    0
+
+    Ok(())
 }

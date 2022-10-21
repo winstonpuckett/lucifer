@@ -1,4 +1,6 @@
-pub fn execute() -> i32 {
+use crate::CommandResult;
+
+pub fn execute() -> CommandResult<()> {
     println!("🐉 LUCIFER 🐉");
     println!("Illuminating CLI testing.");
     println!("Winston Puckett");
@@ -25,6 +27,6 @@ pub fn execute() -> i32 {
     println!("OPTIONS:");
     println!("    -i, --input-directory <folder_path>         The path to the test files. Default: .");
     println!("    -o, --output-directory <folder_path>        Where to store resulting files. Default: .");
-    
-    0
+
+    Ok(())
 }

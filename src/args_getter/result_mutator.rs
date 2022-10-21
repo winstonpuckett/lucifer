@@ -4,7 +4,7 @@ use crate::ExitCode;
 
 use super::{Args, RunMode};
 
-pub fn mutate(result: &mut Args, current_arg: String, args: &mut std::iter::Peekable<env::Args>) -> Result<(), (ExitCode, String)> {
+pub fn mutate(result: &mut Args, current_arg: String, args: &mut std::iter::Peekable<env::Args>) -> Result<(), (ExitCode, Option<String>)> {
     if is_help_command(&current_arg) {
         result.run_mode = RunMode::Help;
     } else if is_version_command(&current_arg) {
@@ -15,7 +15,7 @@ pub fn mutate(result: &mut Args, current_arg: String, args: &mut std::iter::Peek
         result.no_file = true;
     } else if is_input_directory(&current_arg) {
         if args.peek().is_none() {
-            return Err((ExitCode::UserError, format!("Expected an input directory after {:?}, but none was provided.", current_arg)));
+            return Err((ExitCode::UserError, Some(format!("Expected an input directory after {:?}, but none was provided.", current_arg))));
         }
             
         result.input_directory = args.next().unwrap();

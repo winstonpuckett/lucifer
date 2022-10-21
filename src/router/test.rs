@@ -1,8 +1,8 @@
 use std::{path::Path, fs, io::Write};
 
-use crate::{args_getter::Args, suite_getter, executor};
+use crate::{args_getter::Args, suite_getter, executor, ExitCode, CommandResult};
 
-pub fn execute(args: Args) -> i32 {
+pub fn execute(args: Args) -> CommandResult<()> {
     let suite = suite_getter::get(args).unwrap();
     let results = executor::execute(&suite);
     
@@ -45,8 +45,8 @@ pub fn execute(args: Args) -> i32 {
     }
 
     if success {
-        0
+        Ok(())
     } else {
-        1
+        Err((ExitCode::FailingTest, None))
     }
 }

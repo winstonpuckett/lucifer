@@ -1,10 +1,10 @@
 use std::env;
 
-use crate::ExitCode;
+use crate::CommandResult;
 
 mod result_mutator;
 
-pub fn get() -> Result<Args, (ExitCode, String)> {
+pub fn get() -> CommandResult<Args> {
     let mut args = env::args().into_iter().peekable();
 
     if args.peek().is_none() {
@@ -14,7 +14,7 @@ pub fn get() -> Result<Args, (ExitCode, String)> {
     }
 }
 
-fn extract_args(mut args: std::iter::Peekable<env::Args>) -> Result<Args, (ExitCode, String)> {
+fn extract_args(mut args: std::iter::Peekable<env::Args>) -> CommandResult<Args> {
     let mut result = get_default_args();
 
     // First argument is command path. Skip that argument.
