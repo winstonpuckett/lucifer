@@ -34,11 +34,14 @@ tests:
     expectations: 
       exitCode: 2
       performance: 10
+      error: | 
+        Expected an input directory after "-i", but none was provided.
+
     args:
       - -n
       - -i
 
-  - name: -i without argument produces exit code 2
+  - name: --input-directory without argument produces exit code 2
     description: >
       Given an input directory request in long form
       When lucifer runs
@@ -46,8 +49,41 @@ tests:
     expectations: 
       exitCode: 2
       performance: 10
+      error: | 
+        Expected an input directory after "--input-directory", but none was provided.
+
     args:
       - -n
       - --input-directory
+
+  - name: -o without argument produces exit code 2
+    description: >
+      Given an output directory request in short form
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+      error: | 
+        Expected an output directory after "-o", but none was provided.
+
+    args:
+      - -n
+      - -o
+
+  - name: --output-directory without argument produces exit code 2
+    description: >
+      Given an output directory request in long form
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+      error: | 
+        Expected an output directory after "--output-directory", but none was provided.
+
+    args:
+      - -n
+      - --output-directory
 
   # TODO: Tests for input directory (This will be easier once contains expectations are available)

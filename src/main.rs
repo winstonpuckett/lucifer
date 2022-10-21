@@ -1,18 +1,18 @@
+use args_getter::get_args;
 use exiter::exit;
 use router::route;
 
 mod router;
 
-mod suite_getter;
-mod executor;
-mod logger;
 mod args_getter;
+mod executor;
 mod exiter;
+mod logger;
+mod suite_getter;
 
 fn main() {
-    let result = args_getter::get()
-    .and_then(route);
-    
+    let result = get_args().and_then(route);
+
     exit(result);
 }
 

@@ -4,7 +4,7 @@ use crate::CommandResult;
 
 mod result_mutator;
 
-pub fn get() -> CommandResult<Args> {
+pub fn get_args() -> CommandResult<Args> {
     let mut args = env::args().into_iter().peekable();
 
     if args.peek().is_none() {
@@ -21,7 +21,6 @@ fn extract_args(mut args: std::iter::Peekable<env::Args>) -> CommandResult<Args>
     args.next();
     
     while args.peek().is_some() {
-        // This unwrap is safe because we've called peek.
         let arg = args.next().unwrap();
 
         let result = self::result_mutator::mutate(&mut result, arg, &mut args);
