@@ -49,6 +49,9 @@ pub fn get(args: Args) -> io::Result<Suite> {
 
         Ok(suite)
     } else {
+        // The path doesn't exist. Create a failing test for this then uncomment this code
+        // Err((ExitCode::UserError, format!("Could not find path \"{:?}\". It may be that the path does not exist or the current user does not have read permissions.", path)))
+
         // TODO: don't panic.
         panic!()
     }

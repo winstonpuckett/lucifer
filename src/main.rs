@@ -5,7 +5,7 @@ use router::route;
 mod router;
 
 mod args_getter;
-mod executor;
+mod test_runner;
 mod exiter;
 mod logger;
 mod suite_getter;

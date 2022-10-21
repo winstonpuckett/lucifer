@@ -1,10 +1,10 @@
 use std::{path::Path, fs, io::Write};
 
-use crate::{args_getter::Args, suite_getter, executor, ExitCode, CommandResult};
+use crate::{args_getter::Args, suite_getter, test_runner, ExitCode, CommandResult};
 
 pub fn execute(args: Args) -> CommandResult<()> {
     let suite = suite_getter::get(args).unwrap();
-    let results = executor::execute(&suite);
+    let results = test_runner::run_suite(&suite);
     
     let mut success = true;
     let mut data = json::JsonValue::new_object();
@@ -15,13 +15,13 @@ pub fn execute(args: Args) -> CommandResult<()> {
         for f in r.failures {
             failures.push(json::object!{
                 type: match f.failure_type{
-                    executor::FailureType::Performance => "performance",
-                    executor::FailureType::ExitCode => "exitCode",
-                    executor::FailureType::Output => "output",
-                    executor::FailureType::Error => "error",
-                    executor::FailureType::FileExists => "fileExists",
-                    executor::FailureType::FileDoesNotExist => "fileMissing",
-                    executor::FailureType::FileContents => "fileContents",
+                    test_runner::FailureType::Performance => "performance",
+                    test_runner::FailureType::ExitCode => "exitCode",
+                    test_runner::FailureType::Output => "output",
+                    test_runner::FailureType::Error => "error",
+                    test_runner::FailureType::FileExists => "fileExists",
+                    test_runner::FailureType::FileDoesNotExist => "fileMissing",
+                    test_runner::FailureType::FileContents => "fileContents",
                 },
                 expectation: f.expectation,
                 actual: f.actual
