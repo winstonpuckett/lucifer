@@ -1,11 +1,11 @@
-use std::{fs, io, path::Path};
+use std::{fs, path::Path};
 extern crate yaml_rust;
-use crate::args_getter::Args;
+use crate::{args_getter::Args, ExitCode, CommandResult};
 use self::{transformer::{Expectations, Serialization, Feature}, sorter::is_lucifer_file};
 mod transformer;
 mod sorter;
 
-pub fn get(args: Args) -> io::Result<Suite> {
+pub fn get(args: Args) -> CommandResult<Suite> {
     let path = Path::new(&args.input_directory);
     if path.is_dir() {
         // TODO: Catch errors from unwrapping folders.
@@ -49,11 +49,7 @@ pub fn get(args: Args) -> io::Result<Suite> {
 
         Ok(suite)
     } else {
-        // The path doesn't exist. Create a failing test for this then uncomment this code
-        // Err((ExitCode::UserError, format!("Could not find path \"{:?}\". It may be that the path does not exist or the current user does not have read permissions.", path)))
-
-        // TODO: don't panic.
-        panic!()
+        Err((ExitCode::UserError, Some(format!("Could not find path {:?}. It may be that the path does not exist or the current user does not have read permissions.", path))))
     }
 }
 

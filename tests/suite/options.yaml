@@ -86,4 +86,36 @@ tests:
       - -n
       - --output-directory
 
+  - name: -i with non-existent filepath produces exit code 2
+    description: >
+      Given an input directory request in short form with a non-existent filepath 
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+      error: | 
+        Could not find path "./some/non-existent/path". It may be that the path does not exist or the current user does not have read permissions.
+
+    args:
+      - -n
+      - -i
+      - ./some/non-existent/path
+
+  - name: --input-directory with non-existent filepath produces exit code 2
+    description: >
+      Given an input directory request in long form with a non-existent filepath 
+      When lucifer runs
+      Then it should return the error code 2
+    expectations: 
+      exitCode: 2
+      performance: 10
+      error: | 
+        Could not find path "./some/non-existent/path". It may be that the path does not exist or the current user does not have read permissions.
+
+    args:
+      - -n
+      - --input-directory
+      - ./some/non-existent/path
+
   # TODO: Tests for input directory (This will be easier once contains expectations are available)

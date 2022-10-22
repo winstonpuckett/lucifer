@@ -3,7 +3,7 @@ use std::{path::Path, fs, io::Write};
 use crate::{args_getter::Args, suite_getter, test_runner, ExitCode, CommandResult};
 
 pub fn execute(args: Args) -> CommandResult<()> {
-    let suite = suite_getter::get(args).unwrap();
+    let suite = suite_getter::get(args)?;
     let results = test_runner::run_suite(&suite);
     
     let mut success = true;
