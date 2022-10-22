@@ -1,5 +1,9 @@
 [Installation Instructions](https://lucifer.winstonpuckett.com/docs/installation/)
 
+## 0.2.1
+
+Give better errors when the user doesn't have permission to create a specified output file.
+
 ## 0.2.0
 
 Allow specification of the output file name using the output directory.
