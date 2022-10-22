@@ -24,3 +24,5 @@ pub enum ExitCode {
     FailingTest = 1,
     UserError = 2,
 }
+
+// TODO: Report test time metrics to website on build

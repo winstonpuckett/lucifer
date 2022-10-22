@@ -1,0 +1,27 @@
+# TODO: Uncomment these tests and implement them for new expectations formats
+# results:
+#   - name: help
+#     args: -h -v -i .
+#     expectations:
+#       file:
+#         - path: asdf
+#           contents: fdsa
+#           contains:
+#             - 9
+#             - 2
+#         - path: fdsa
+#           contents: asdf
+#           contains:
+#             - 5, 7
+#             - 0
+#       output:
+#         contents: fdsa
+#         contains:
+#           - 2
+#           - 1
+#       error:
+#         contents: dfs
+#         contains:
+#           - 3
+#           - 4
+      

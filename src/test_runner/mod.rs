@@ -1,14 +1,15 @@
 use std::{process::Command, time::Instant};
-use std::{str, fs};
+use std::{str, fs, fmt};
 
 use crate::{suite_getter, logger};
 
-pub fn run_suite(suite: &suite_getter::Suite) -> Vec<TestResult> {
+pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
     logger::log_newline(suite);
     logger::log(suite, "🐉 LUCIFER 🐉");
     logger::log(suite, &format!("Executing tests for '{0}'", suite.args.input_directory));
 
-    let mut results: Vec<TestResult> = vec![];
+    let mut test_results: Vec<TestResult> = vec![];
+    let mut success = true;
 
     let (shell, first_arg) = get_shell();
 
@@ -102,6 +103,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> Vec<TestResult> {
             } else {
                 logger::log_failure(suite, &format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds));
                 result.succeeded = false;
+                success = false;
 
                 logger::log_detail(suite, &format!("Reproduce with: '{0}'", arg));
                 logger::log_newline(suite);
@@ -198,11 +200,14 @@ pub fn run_suite(suite: &suite_getter::Suite) -> Vec<TestResult> {
                 }
             }
             
-            results.push(result);
+            test_results.push(result);
         }
     }
 
-    results
+    SuiteResult {
+        success,
+        test_results
+    } 
 }
 
 fn to_arg(command: String, args: &Vec<String>) -> String {
@@ -217,6 +222,11 @@ fn get_shell() -> (String, String) {
     } else {
         (String::from("sh"), String::from("-c"))
     }
+}
+
+pub struct SuiteResult {
+    pub success: bool,
+    pub test_results: Vec<TestResult>
 }
 
 pub struct TestResult { 
@@ -239,4 +249,18 @@ pub enum FailureType {
     FileExists,
     FileDoesNotExist,
     FileContents
+}
+
+impl fmt::Display for FailureType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            FailureType::Performance => write!(f, "performance"),
+            FailureType::ExitCode => write!(f, "exitCode"),
+            FailureType::Output => write!(f, "output"),
+            FailureType::Error => write!(f, "error"),
+            FailureType::FileExists => write!(f, "fileExists"),
+            FailureType::FileDoesNotExist => write!(f, "fileMissing"),
+            FailureType::FileContents => write!(f, "fileContents"),
+        }
+    }
 }
