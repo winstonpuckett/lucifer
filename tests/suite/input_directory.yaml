@@ -1,31 +1,5 @@
 command: ./target/release/lucifer
 tests:
-  - name: --output-directory changes where results.json ends up
-    description: >
-      Given a output directory request in long form
-      When lucifer runs
-      Then it should create a file in the correct folder
-    expectations: 
-      exitCode: 0
-      performance: 10
-      file: ./output/results_folder_long_form/results.json
-    args:
-      - -i 
-      - ./tests/test_data/output_to_results_long_form_folder
-
-  - name: -o changes where results.json ends up
-    description: >
-      Given a output directory request in short form
-      When lucifer runs
-      Then it should create a file in the correct folder
-    expectations: 
-      exitCode: 0
-      performance: 10
-      file: ./output/results_folder_long_form/results.json
-    args:
-      - -i
-      - ./tests/test_data/output_to_results_short_form_folder
-
   - name: -i without argument produces exit code 2
     description: >
       Given an input directory request in short form
@@ -55,36 +29,6 @@ tests:
     args:
       - -n
       - --input-directory
-
-  - name: -o without argument produces exit code 2
-    description: >
-      Given an output directory request in short form
-      When lucifer runs
-      Then it should return the error code 2
-    expectations: 
-      exitCode: 2
-      performance: 10
-      error: | 
-        Expected an output directory after "-o", but none was provided.
-
-    args:
-      - -n
-      - -o
-
-  - name: --output-directory without argument produces exit code 2
-    description: >
-      Given an output directory request in long form
-      When lucifer runs
-      Then it should return the error code 2
-    expectations: 
-      exitCode: 2
-      performance: 10
-      error: | 
-        Expected an output directory after "--output-directory", but none was provided.
-
-    args:
-      - -n
-      - --output-directory
 
   - name: -i with non-existent filepath produces exit code 2
     description: >

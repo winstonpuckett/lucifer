@@ -9,6 +9,7 @@ mod test_runner;
 mod exiter;
 mod logger;
 mod suite_getter;
+mod output_writer;
 
 fn main() {
     let result = get_args().and_then(route);

@@ -5,7 +5,7 @@ use self::{transformer::{Expectations, Serialization, Feature}, sorter::is_lucif
 mod transformer;
 mod sorter;
 
-pub fn get(args: Args) -> CommandResult<Suite> {
+pub fn get_suite(args: Args) -> CommandResult<Suite> {
     let path = Path::new(&args.input_directory);
     if path.is_dir() {
         // TODO: Catch errors from unwrapping folders.

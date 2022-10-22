@@ -1,5 +1,23 @@
 [Installation Instructions](https://lucifer.winstonpuckett.com/docs/installation/)
 
+## 0.2.0
+
+Allow specification of the output file name using the output directory.
+
+For instance:
+```bash
+# produces ./results/results.json
+lucifer -o ./results
+
+# produces ./results/xyz.json
+lucifer -o ./results/xyz.json
+
+# produces ./results/xyz.json/results.json
+lucifer -o ./results/xyz.json/
+```
+
+Note: this is technically a breaking change because anyone relying on lucifer outputing to a folder ending in .json will now receive a file with that name instead.
+
 ## 0.1.15
 
 Oops. Push release notes for 0.1.14.

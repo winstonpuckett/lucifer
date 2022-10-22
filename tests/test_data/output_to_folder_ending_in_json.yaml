@@ -1,0 +1,9 @@
+command: ./target/release/lucifer
+tests:
+  - name: -o outputs to a folder ending in .json
+    expectations: 
+      exitCode: 0
+      performance: 10
+    args:
+      - -o
+      - ./output/results_folder_short_form.json/

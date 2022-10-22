@@ -224,23 +224,27 @@ fn get_shell() -> (String, String) {
     }
 }
 
+#[derive(Clone)] 
 pub struct SuiteResult {
     pub success: bool,
     pub test_results: Vec<TestResult>
-}
+} 
 
+#[derive(Clone)] 
 pub struct TestResult { 
     pub succeeded: bool,
     pub failures: Vec<Failure>,
     pub performance: u128,
 }
 
+#[derive(Clone)] 
 pub struct Failure {
     pub failure_type: FailureType,
     pub expectation: String,
     pub actual: String
 }
 
+#[derive(Clone)] 
 pub enum FailureType {
     Performance,
     ExitCode,

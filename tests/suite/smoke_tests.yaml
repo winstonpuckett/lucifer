@@ -9,7 +9,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/yaml_with_defaults
+      - ./tests/test_data/missing_parameters.yaml
 
   - name: All file names are valid
     description: >
@@ -79,4 +79,4 @@ tests:
       exitCode: 0
     args:
     - -i 
-    - ./tests/test_data/type_checking/type_checking.yaml
+    - ./tests/test_data/type_checking.yaml
