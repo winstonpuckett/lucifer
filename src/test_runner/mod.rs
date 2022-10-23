@@ -22,7 +22,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 performance: 0,
                 exit_code: 0,
                 output: String::from(""),
-                error: String::from("")
+                error: String::from(""),
+                file_content: None,
             };
 
             let tool = feature.command.to_owned();
@@ -34,10 +35,20 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             result.exit_code = output.status.code().unwrap();
             result.output = String::from(str::from_utf8(&output.stdout).unwrap());
             result.error = String::from(str::from_utf8(&output.stderr).unwrap());
+            result.file_content = if test.expectations.file.is_none() {
+                None
+            } else {
+                let file_expectation = test.to_owned().expectations.to_owned().file.unwrap();
+                let content = fs::read_to_string(&file_expectation);
+
+                if content.is_ok() {
+                    Some(Ok(content.unwrap()))
+                } else {
+                    Some(Err(()))
+                }
+            };
 
             let failures = assert_all(&test.expectations, &result);
-
-            
 
             let mut file_expectation = String::from("");
             let mut file_contents = String::from("");
@@ -72,10 +83,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 metadata.is_err() || !metadata.unwrap().is_file()
             };
 
-            if failures.is_empty()
-                && no_file_satisfied
-                && file_satisfied
-                && file_contents_satisfied
+            if failures.is_empty() && no_file_satisfied && file_satisfied && file_contents_satisfied
             {
                 logger::log_success(
                     suite,
@@ -93,10 +101,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 logger::log_newline(suite);
 
                 for f in failures {
-                    logger::log_details(
-                        suite,
-                        get_failure_messages(f),
-                    );
+                    logger::log_details(suite, get_failure_messages(f));
                 }
 
                 if !no_file_satisfied {
@@ -173,11 +178,13 @@ fn assert_all(expectations: &Expectations, result: &TestResult) -> Vec<Failure> 
     let mut exit_code = assert_exit_code(expectations, result);
     let mut output = assert_output(expectations, result);
     let mut error = assert_error(expectations, result);
+    let mut file = assert_file(expectations, result);
 
     all.append(&mut performance);
     all.append(&mut exit_code);
     all.append(&mut output);
     all.append(&mut error);
+    all.append(&mut file);
 
     all
 }
@@ -224,7 +231,7 @@ fn assert_output(expectations: &Expectations, result: &TestResult) -> Vec<Failur
     vec![Failure {
         failure_type: FailureType::Output,
         expectation,
-        actual 
+        actual,
     }]
 }
 
@@ -242,7 +249,23 @@ fn assert_error(expectations: &Expectations, result: &TestResult) -> Vec<Failure
     vec![Failure {
         failure_type: FailureType::Error,
         expectation,
-        actual
+        actual,
+    }]
+}
+
+fn assert_file(expectations: &Expectations, result: &TestResult) -> Vec<Failure> {
+    if expectations.file.is_none() {
+        return vec![];
+    }
+
+    if result.file_content.is_some() && result.file_content.to_owned().unwrap().is_ok() {
+        return vec![];
+    }
+
+    vec![Failure {
+        failure_type: FailureType::FileDoesNotExist,
+        expectation: expectations.file.to_owned().unwrap(),
+        actual: String::from("File does not exist or cannot be accessed."),
     }]
 }
 
@@ -265,7 +288,10 @@ fn get_failure_messages(failure: Failure) -> Vec<String> {
             format!("Actual error: '{0}'", failure.actual),
         ],
         FailureType::FileExists => todo!(),
-        FailureType::FileDoesNotExist => todo!(),
+        FailureType::FileDoesNotExist => vec![
+            format!("Expected file: '{0}'", failure.expectation),
+            format!("File error message: '{0}'", failure.actual),
+        ],
         FailureType::FileContents => todo!(),
     }
 }
@@ -308,7 +334,8 @@ pub struct TestResult {
     pub performance: u128,
     pub exit_code: i32,
     pub output: String,
-    pub error: String
+    pub error: String,
+    pub file_content: Option<Result<String, ()>>,
 }
 
 #[derive(Clone)]
