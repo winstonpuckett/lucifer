@@ -20,7 +20,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 succeeded: true,
                 failures: vec![],
                 performance: 0,
-                exit_code: 0
+                exit_code: 0,
+                output: String::from("")
             };
 
             let tool = feature.command.to_owned();
@@ -30,18 +31,9 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             let (time_in_milliseconds, output) = perform_command(&shell, full_args);
             result.performance = time_in_milliseconds;
             result.exit_code = output.status.code().unwrap();
+            result.output = String::from(str::from_utf8(&output.stdout).unwrap());
 
             let failures = assert_all(&test.expectations, &result);
-
-
-            let stdout = str::from_utf8(&output.stdout).unwrap();
-            let mut output_expectation = String::from("");
-            let output_satisfied = if test.expectations.output.is_none() {
-                true
-            } else {
-                output_expectation = test.to_owned().expectations.to_owned().output.unwrap();
-                output_expectation == stdout
-            };
 
             let stderr = str::from_utf8(&output.stderr).unwrap();
             let mut error_expectation = String::from("");
@@ -86,7 +78,6 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             };
 
             if failures.is_empty()
-                && output_satisfied
                 && error_satisfied
                 && no_file_satisfied
                 && file_satisfied
@@ -112,24 +103,6 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                         suite,
                         get_failure_messages(f),
                     );
-                }
-
-                
-
-                if !output_satisfied {
-                    logger::log_details(
-                        suite,
-                        vec![
-                            format!("Expected output: '{0}'", output_expectation),
-                            format!("Actual output: '{0}'", stdout),
-                        ],
-                    );
-
-                    result.failures.push(Failure {
-                        failure_type: FailureType::Output,
-                        expectation: output_expectation,
-                        actual: String::from(stdout),
-                    })
                 }
 
                 if !error_satisfied {
@@ -220,9 +193,11 @@ fn assert_all(expectations: &Expectations, result: &TestResult) -> Vec<Failure> 
     let mut all = vec![];
     let mut performance = assert_performance(expectations, result);
     let mut exit_code = assert_exit_code(expectations, result);
+    let mut output = assert_output(expectations, result);
 
     all.append(&mut performance);
     all.append(&mut exit_code);
+    all.append(&mut output);
 
     all
 }
@@ -255,6 +230,24 @@ fn assert_exit_code(expectations: &Expectations, result: &TestResult) -> Vec<Fai
     }
 }
 
+fn assert_output(expectations: &Expectations, result: &TestResult) -> Vec<Failure> {
+    if expectations.output.is_none() {
+        return vec![];
+    }
+
+    let expectation = String::from(expectations.output.as_ref().unwrap());
+    let actual = result.output.to_owned();
+    if expectation == actual {
+        return vec![];
+    }
+
+    vec![Failure {
+        failure_type: FailureType::Output,
+        expectation,
+        actual 
+    }]
+}
+
 fn get_failure_messages(failure: Failure) -> Vec<String> {
     match failure.failure_type {
         FailureType::Performance => vec![
@@ -265,7 +258,10 @@ fn get_failure_messages(failure: Failure) -> Vec<String> {
             format!("Expected exit code: {0}", failure.expectation),
             format!("Actual exit code: {0}", failure.actual),
         ],
-        FailureType::Output => todo!(),
+        FailureType::Output => vec![
+            format!("Expected output: '{0}'", failure.expectation),
+            format!("Actual output: '{0}'", failure.actual),
+        ],
         FailureType::Error => todo!(),
         FailureType::FileExists => todo!(),
         FailureType::FileDoesNotExist => todo!(),
@@ -309,7 +305,8 @@ pub struct TestResult {
     pub succeeded: bool,
     pub failures: Vec<Failure>,
     pub performance: u128,
-    pub exit_code: i32
+    pub exit_code: i32,
+    pub output: String
 }
 
 #[derive(Clone)]
