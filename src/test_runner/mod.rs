@@ -1,4 +1,4 @@
-use std::{fmt, fs, str};
+use std::{fmt, fs, str, process};
 use std::{process::Command, time::Instant};
 
 use crate::{logger, suite_getter};
@@ -22,16 +22,11 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             };
 
             let tool = feature.command.to_owned();
+            let meaningful_args = to_arg(tool, &test.args);
+            let full_args = [&first_arg, &meaningful_args];
 
-            let mut command = Command::new(&shell);
-            let arg = to_arg(tool, &test.args);
-            let command_with_args = command.args([&first_arg, &arg]);
-
-            let now = Instant::now();
-            let output_option = command_with_args.output();
-            let time_in_milliseconds = now.elapsed().as_millis();
-
-            let output = output_option.unwrap();
+            let (time_in_milliseconds, output) = perform_command(&shell, full_args);
+            
             result.performance = time_in_milliseconds;
 
             let performance_satisfied =
@@ -110,7 +105,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 result.succeeded = false;
                 success = false;
 
-                logger::log_detail(suite, &format!("Reproduce with: '{0}'", arg));
+                logger::log_detail(suite, &format!("Reproduce with: '{0}'", meaningful_args));
                 logger::log_newline(suite);
 
                 if !performance_satisfied {
@@ -243,6 +238,19 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
         success,
         test_results,
     }
+}
+
+fn perform_command(shell: &String, args: [&String; 2]) -> (u128, process::Output) {
+    let mut command = Command::new(shell);
+    command.args(args);
+    
+    let now = Instant::now();
+    let output_option = command.output();
+    let time_in_milliseconds = now.elapsed().as_millis();
+    
+    let output = output_option.unwrap();
+
+    (time_in_milliseconds, output)
 }
 
 fn to_arg(command: String, args: &Vec<String>) -> String {
