@@ -1,7 +1,7 @@
 use yaml_rust::{YamlLoader, Yaml};
 use std::fs::{self, DirEntry};
 
-use super::Test;
+use super::{Test, Expectations};
 extern crate yaml_rust;
 
 pub fn to_feature(entry: &DirEntry) -> Feature {
@@ -172,15 +172,4 @@ pub enum Serialization {
     Auto,
     Parallel,
     Serial,
-}
-
-#[derive(Clone)]
-pub struct Expectations {
-    pub performance: u64,
-    pub exit_code: i32,
-    pub output: Option<String>,
-    pub error: Option<String>,
-    pub no_file: Option<String>,
-    pub file: Option<String>,
-    pub contents: Option<String>
 }

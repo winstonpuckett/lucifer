@@ -22,9 +22,9 @@ pub fn log_failure(suite: &suite_getter::Suite, message: &str) {
     log_newline(suite);
 }
 
-pub fn log_details(suite: &suite_getter::Suite, messages: Vec<&str>) {
+pub fn log_details(suite: &suite_getter::Suite, messages: Vec<String>) {
     for detail in messages {
-        log_detail(suite, detail);
+        log_detail(suite, &detail);
     }
     log_newline(suite);
 }

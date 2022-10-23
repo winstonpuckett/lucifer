@@ -1,7 +1,7 @@
 use std::{fs, path::Path};
 extern crate yaml_rust;
 use crate::{args_getter::Args, ExitCode, CommandResult};
-use self::{transformer::{Expectations, Serialization, Feature}, sorter::is_lucifer_file};
+use self::{transformer::{Serialization, Feature}, sorter::is_lucifer_file};
 mod transformer;
 mod sorter;
 
@@ -64,4 +64,15 @@ pub struct Test {
     pub expectations: Expectations,
     pub name: String,
     pub serialization: Serialization
+}
+
+#[derive(Clone)]
+pub struct Expectations {
+    pub performance: u64,
+    pub exit_code: i32,
+    pub output: Option<String>,
+    pub error: Option<String>,
+    pub no_file: Option<String>,
+    pub file: Option<String>,
+    pub contents: Option<String>
 }

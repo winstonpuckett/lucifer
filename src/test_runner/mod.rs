@@ -1,6 +1,7 @@
-use std::{fmt, fs, str, process};
+use std::{fmt, fs, process, str};
 use std::{process::Command, time::Instant};
 
+use crate::suite_getter::Expectations;
 use crate::{logger, suite_getter};
 
 pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
@@ -26,11 +27,9 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             let full_args = [&first_arg, &meaningful_args];
 
             let (time_in_milliseconds, output) = perform_command(&shell, full_args);
-            
             result.performance = time_in_milliseconds;
 
-            let performance_satisfied =
-                (time_in_milliseconds as u64) <= test.expectations.performance;
+            let failures = assert_all(&test.expectations, &result);
 
             let exit_code_satisfied = output.status.code().unwrap() == test.expectations.exit_code;
 
@@ -85,7 +84,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 metadata.is_err() || !metadata.unwrap().is_file()
             };
 
-            if performance_satisfied
+            if failures.is_empty()
                 && exit_code_satisfied
                 && output_satisfied
                 && error_satisfied
@@ -108,28 +107,19 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 logger::log_detail(suite, &format!("Reproduce with: '{0}'", meaningful_args));
                 logger::log_newline(suite);
 
-                if !performance_satisfied {
+                for f in failures {
                     logger::log_details(
                         suite,
-                        vec![
-                            &format!("Expected performance: {0}ms", test.expectations.performance),
-                            &format!("Actual performance: {0}ms", time_in_milliseconds),
-                        ],
+                        get_failure_messages(f),
                     );
-
-                    result.failures.push(Failure {
-                        failure_type: FailureType::Performance,
-                        expectation: test.expectations.performance.to_string(),
-                        actual: time_in_milliseconds.to_string(),
-                    })
                 }
 
                 if !exit_code_satisfied {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!("Expected exit code: {0}", test.expectations.exit_code),
-                            &format!("Actual exit code: {0}", output.status.code().unwrap()),
+                            format!("Expected exit code: {0}", test.expectations.exit_code),
+                            format!("Actual exit code: {0}", output.status.code().unwrap()),
                         ],
                     );
 
@@ -144,8 +134,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!("Expected output: '{0}'", output_expectation),
-                            &format!("Actual output: '{0}'", stdout),
+                            format!("Expected output: '{0}'", output_expectation),
+                            format!("Actual output: '{0}'", stdout),
                         ],
                     );
 
@@ -160,8 +150,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!("Expected error: '{0}'", error_expectation),
-                            &format!("Actual error: '{0}'", stderr),
+                            format!("Expected error: '{0}'", error_expectation),
+                            format!("Actual error: '{0}'", stderr),
                         ],
                     );
 
@@ -176,11 +166,11 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!(
+                            format!(
                                 "Expected: This file should not exist '{0}'",
                                 no_file_expectation
                             ),
-                            &format!("Actual: This file exists '{0}'", no_file_expectation),
+                            format!("Actual: This file exists '{0}'", no_file_expectation),
                         ],
                     );
 
@@ -195,8 +185,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!("Expected file: '{0}'", file_expectation),
-                            &format!(
+                            format!("Expected file: '{0}'", file_expectation),
+                            format!(
                                 "File error message: '{0}'",
                                 String::from("File does not exist or cannot be accessed.")
                             ),
@@ -214,11 +204,11 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                     logger::log_details(
                         suite,
                         vec![
-                            &format!(
+                            format!(
                                 "Expected file contents: '{0}'",
                                 test.to_owned().expectations.to_owned().contents.unwrap()
                             ),
-                            &format!("Actual file contents: '{0}'", file_contents),
+                            format!("Actual file contents: '{0}'", file_contents),
                         ],
                     );
 
@@ -240,14 +230,47 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
     }
 }
 
+fn assert_all(expectations: &Expectations, result: &TestResult) -> Vec<Failure> {
+    assert_performance(expectations, result)
+}
+
+fn assert_performance(expectations: &Expectations, result: &TestResult) -> Vec<Failure> {
+    let performance_satisfied = result.performance <= expectations.performance.into();
+
+    if !performance_satisfied {
+        vec![Failure {
+            failure_type: FailureType::Performance,
+            expectation: expectations.performance.to_string(),
+            actual: result.performance.to_string(),
+        }]
+    } else {
+        vec![]
+    }
+}
+
+fn get_failure_messages(failure: Failure) -> Vec<String> {
+    match failure.failure_type {
+        FailureType::Performance => vec![
+            format!("Expected performance: {0}ms", failure.expectation),
+            format!("Actual performance: {0}ms", failure.actual),
+        ],
+        FailureType::ExitCode => todo!(),
+        FailureType::Output => todo!(),
+        FailureType::Error => todo!(),
+        FailureType::FileExists => todo!(),
+        FailureType::FileDoesNotExist => todo!(),
+        FailureType::FileContents => todo!(),
+    }
+}
+
 fn perform_command(shell: &String, args: [&String; 2]) -> (u128, process::Output) {
     let mut command = Command::new(shell);
     command.args(args);
-    
+
     let now = Instant::now();
     let output_option = command.output();
     let time_in_milliseconds = now.elapsed().as_millis();
-    
+
     let output = output_option.unwrap();
 
     (time_in_milliseconds, output)
