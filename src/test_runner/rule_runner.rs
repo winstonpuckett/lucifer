@@ -134,7 +134,6 @@ fn assert_no_file(expectations: &Expectations, _: &TestRun) -> Vec<Failure> {
     }
 
     let file_which_shouldnt_exist = expectations.no_file.to_owned().unwrap();
-
     let metadata = fs::metadata(&file_which_shouldnt_exist);
 
     if metadata.is_err() || !metadata.unwrap().is_file() {
