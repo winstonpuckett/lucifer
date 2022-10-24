@@ -1,7 +1,7 @@
 use std::fs;
 
+use super::{Failure, FailureType, TestRun};
 use crate::suite_getter::Expectations;
-use super::{TestRun, Failure, FailureType};
 
 pub fn assert_all(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
     let mut all = vec![];
@@ -18,31 +18,27 @@ pub fn assert_all(expectations: &Expectations, result: &TestRun) -> Vec<Failure>
 }
 
 fn assert_performance(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
-    let performance_satisfied = result.performance <= expectations.performance.into();
-
-    if !performance_satisfied {
-        vec![Failure {
-            failure_type: FailureType::Performance,
-            expectation: expectations.performance.to_string(),
-            actual: result.performance.to_string(),
-        }]
-    } else {
-        vec![]
+    if result.performance <= expectations.performance.into() {
+        return vec![];
     }
+
+    vec![Failure {
+        failure_type: FailureType::Performance,
+        expectation: expectations.performance.to_string(),
+        actual: result.performance.to_string(),
+    }]
 }
 
 fn assert_exit_code(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
-    let exit_code_satisfied = result.exit_code == expectations.exit_code;
-
-    if !exit_code_satisfied {
-        vec![Failure {
-            failure_type: FailureType::ExitCode,
-            expectation: expectations.exit_code.to_string(),
-            actual: result.exit_code.to_string(),
-        }]
-    } else {
-        vec![]
+    if result.exit_code == expectations.exit_code {
+        return vec![];
     }
+
+    vec![Failure {
+        failure_type: FailureType::ExitCode,
+        expectation: expectations.exit_code.to_string(),
+        actual: result.exit_code.to_string(),
+    }]
 }
 
 fn assert_output(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
@@ -52,6 +48,7 @@ fn assert_output(expectations: &Expectations, result: &TestRun) -> Vec<Failure> 
 
     let expectation = String::from(expectations.output.as_ref().unwrap());
     let actual = result.output.to_owned();
+
     if expectation == actual {
         return vec![];
     }
@@ -70,6 +67,7 @@ fn assert_error(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
 
     let expectation = String::from(expectations.error.as_ref().unwrap());
     let actual = result.error.to_owned();
+    
     if expectation == actual {
         return vec![];
     }
