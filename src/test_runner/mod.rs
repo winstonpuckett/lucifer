@@ -31,6 +31,7 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             let full_args = [&first_arg, &meaningful_args];
 
             let (time_in_milliseconds, output) = perform_command(&shell, full_args);
+
             result.performance = time_in_milliseconds;
             result.exit_code = output.status.code().unwrap();
             result.output = String::from(str::from_utf8(&output.stdout).unwrap());
@@ -50,49 +51,15 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
 
             let failures = assert_all(&test.expectations, &result);
 
-            let mut file_expectation = String::from("");
-            let mut file_contents = String::from("");
-            let file_satisfied = if test.expectations.file.is_none() {
-                true
-            } else {
-                file_expectation = test.to_owned().expectations.to_owned().file.unwrap();
-                let content_option = fs::read_to_string(&file_expectation);
-
-                if content_option.is_ok() {
-                    file_contents = content_option.unwrap();
-                    true
-                } else {
-                    false
-                }
-            };
-
-            let file_contents_satisfied = if file_satisfied && test.expectations.contents.is_some()
-            {
-                file_contents == test.to_owned().expectations.to_owned().contents.unwrap()
-            } else {
-                true
-            };
-
-            let mut no_file_expectation = String::from("");
-            let no_file_satisfied = if test.expectations.no_file.is_none() {
-                true
-            } else {
-                no_file_expectation = test.to_owned().expectations.to_owned().no_file.unwrap();
-                let metadata = fs::metadata(&no_file_expectation);
-
-                metadata.is_err() || !metadata.unwrap().is_file()
-            };
-
-            if failures.is_empty() && no_file_satisfied && file_satisfied && file_contents_satisfied
-            {
+            if failures.is_empty() {
                 logger::log_success(
                     suite,
-                    &format!("'{0}' succeeded in {1}ms", test.name, time_in_milliseconds),
+                    &format!("'{0}' succeeded in {1}ms", test.name, result.performance),
                 );
             } else {
                 logger::log_failure(
                     suite,
-                    &format!("'{0}' failed in {1}ms", test.name, time_in_milliseconds),
+                    &format!("'{0}' failed in {1}ms", test.name, result.performance),
                 );
                 result.succeeded = false;
                 success = false;
@@ -102,63 +69,6 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
 
                 for f in failures {
                     logger::log_details(suite, get_failure_messages(f));
-                }
-
-                if !no_file_satisfied {
-                    logger::log_details(
-                        suite,
-                        vec![
-                            format!(
-                                "Expected: This file should not exist '{0}'",
-                                no_file_expectation
-                            ),
-                            format!("Actual: This file exists '{0}'", no_file_expectation),
-                        ],
-                    );
-
-                    result.failures.push(Failure {
-                        failure_type: FailureType::FileExists,
-                        expectation: String::from(""),
-                        actual: no_file_expectation,
-                    })
-                }
-
-                if !file_satisfied {
-                    logger::log_details(
-                        suite,
-                        vec![
-                            format!("Expected file: '{0}'", file_expectation),
-                            format!(
-                                "File error message: '{0}'",
-                                String::from("File does not exist or cannot be accessed.")
-                            ),
-                        ],
-                    );
-
-                    result.failures.push(Failure {
-                        failure_type: FailureType::FileDoesNotExist,
-                        expectation: file_expectation,
-                        actual: String::from("File does not exist or cannot be accessed."),
-                    })
-                }
-
-                if !file_contents_satisfied {
-                    logger::log_details(
-                        suite,
-                        vec![
-                            format!(
-                                "Expected file contents: '{0}'",
-                                test.to_owned().expectations.to_owned().contents.unwrap()
-                            ),
-                            format!("Actual file contents: '{0}'", file_contents),
-                        ],
-                    );
-
-                    result.failures.push(Failure {
-                        failure_type: FailureType::FileContents,
-                        expectation: test.to_owned().expectations.to_owned().contents.unwrap(),
-                        actual: file_contents,
-                    })
                 }
             }
 
@@ -178,13 +88,17 @@ fn assert_all(expectations: &Expectations, result: &TestResult) -> Vec<Failure> 
     let mut exit_code = assert_exit_code(expectations, result);
     let mut output = assert_output(expectations, result);
     let mut error = assert_error(expectations, result);
+    let mut no_file = assert_no_file(expectations, result);
     let mut file = assert_file(expectations, result);
+    let mut content = assert_file_content(expectations, result);
 
     all.append(&mut performance);
     all.append(&mut exit_code);
     all.append(&mut output);
     all.append(&mut error);
+    all.append(&mut no_file);
     all.append(&mut file);
+    all.append(&mut content);
 
     all
 }
@@ -269,6 +183,58 @@ fn assert_file(expectations: &Expectations, result: &TestResult) -> Vec<Failure>
     }]
 }
 
+fn assert_file_content(expectations: &Expectations, result: &TestResult) -> Vec<Failure> {
+    // If we cover expectations in assert_file or don't expect content, we're good.
+    if expectations.file.is_none() || expectations.contents.is_none() {
+        return vec![];
+    }
+
+    // If we're in a state where assert_file should take care of the error, we're good.
+    if result.file_content.is_none() {
+        return vec![];
+    }
+
+    let content_result = result.file_content.to_owned().unwrap();
+
+    if content_result.is_err() {
+        return vec![];
+    }
+
+    let expectation = expectations.contents.to_owned().unwrap();
+    let actual = content_result.unwrap();
+
+    // If contents equals
+    if expectation == actual {
+        return vec![];
+    }
+
+    vec![Failure {
+        failure_type: FailureType::FileContents,
+        expectation,
+        actual,
+    }]
+}
+
+fn assert_no_file(expectations: &Expectations, _: &TestResult) -> Vec<Failure> {
+    if expectations.no_file.is_none() {
+        return vec![];
+    }
+
+    let file_which_shouldnt_exist = expectations.no_file.to_owned().unwrap();
+
+    let metadata = fs::metadata(&file_which_shouldnt_exist);
+
+    if metadata.is_err() || !metadata.unwrap().is_file() {
+        return vec![];
+    }
+
+    vec![Failure {
+        failure_type: FailureType::FileExists,
+        expectation: String::from(""),
+        actual: file_which_shouldnt_exist,
+    }]
+}
+
 fn get_failure_messages(failure: Failure) -> Vec<String> {
     match failure.failure_type {
         FailureType::Performance => vec![
@@ -287,12 +253,19 @@ fn get_failure_messages(failure: Failure) -> Vec<String> {
             format!("Expected error: '{0}'", failure.expectation),
             format!("Actual error: '{0}'", failure.actual),
         ],
-        FailureType::FileExists => todo!(),
+        // TODO: This is the only one which breaks the pattern. Rework.
+        FailureType::FileExists => vec![
+            format!("Expected: This file should not exist '{0}'", failure.actual),
+            format!("Actual: This file exists '{0}'", failure.actual),
+        ],
         FailureType::FileDoesNotExist => vec![
             format!("Expected file: '{0}'", failure.expectation),
             format!("File error message: '{0}'", failure.actual),
         ],
-        FailureType::FileContents => todo!(),
+        FailureType::FileContents => vec![
+            format!("Expected file contents: '{0}'", failure.expectation),
+            format!("Actual file contents: '{0}'", failure.actual),
+        ],
     }
 }
 
