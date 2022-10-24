@@ -1,6 +1,6 @@
 use json::JsonValue;
 
-use crate::test_runner::{SuiteResult, TestResult, Failure};
+use crate::test_runner::{SuiteResult, Failure, TestResult};
 
 pub fn suite_to_json(suite: &SuiteResult) -> String {
     let mut json = json::JsonValue::new_object();
@@ -18,7 +18,7 @@ pub fn suite_to_json(suite: &SuiteResult) -> String {
 fn test_result_to_json(result: TestResult) -> JsonValue {
     json::object! {
         succeeded: result.succeeded,
-        milliseconds: result.performance as u64,
+        milliseconds: result.run.performance as u64,
         failures: result.failures
             .clone()
             .into_iter()
