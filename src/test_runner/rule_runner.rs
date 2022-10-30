@@ -4,17 +4,19 @@ use super::{Failure, FailureType, TestRun};
 use crate::suite_getter::Expectations;
 
 pub fn assert_all(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
-    let mut all = vec![];
+    get_rules().map(|r| r(expectations, result)).concat()
+}
 
-    all.append(&mut assert_performance(expectations, result));
-    all.append(&mut assert_exit_code(expectations, result));
-    all.append(&mut assert_output(expectations, result));
-    all.append(&mut assert_error(expectations, result));
-    all.append(&mut assert_no_file(expectations, result));
-    all.append(&mut assert_file(expectations, result));
-    all.append(&mut assert_file_content(expectations, result));
-
-    all
+fn get_rules() -> [fn(&Expectations, &TestRun) -> Vec<Failure>; 7] {
+    [
+        assert_performance,
+        assert_exit_code,
+        assert_output,
+        assert_error,
+        assert_file,
+        assert_file_content,
+        assert_no_file,
+    ]
 }
 
 fn assert_performance(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
@@ -67,7 +69,7 @@ fn assert_error(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
 
     let expectation = String::from(expectations.error.as_ref().unwrap());
     let actual = result.error.to_owned();
-    
+
     if expectation == actual {
         return vec![];
     }
