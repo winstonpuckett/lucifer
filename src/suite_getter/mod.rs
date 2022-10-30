@@ -6,7 +6,7 @@ use std::{
 extern crate yaml_rust;
 use self::{
     sorter::is_lucifer_file,
-    transformer::{Feature, Serialization},
+    transformer::Feature,
 };
 use crate::{args_getter::Args, CommandResult, ExitCode};
 mod sorter;
@@ -54,7 +54,7 @@ fn to_feature_option(f: Result<DirEntry, Error>) -> Option<Feature> {
         return None;
     }
 
-    Some(transformer::to_feature(&file))
+    Some(transformer::to_feature_from_dir_entry(&file))
 }
 
 pub struct Suite {
@@ -67,12 +67,11 @@ pub struct Test {
     pub description: String,
     pub expectations: Expectations,
     pub name: String,
-    pub serialization: Serialization,
 }
 
 #[derive(Clone)]
 pub struct Expectations {
-    pub performance: u64,
+    pub performance: Option<u64>,
     pub exit_code: i32,
     pub output: Option<String>,
     pub error: Option<String>,

@@ -20,13 +20,19 @@ fn get_rules() -> [fn(&Expectations, &TestRun) -> Vec<Failure>; 7] {
 }
 
 fn assert_performance(expectations: &Expectations, result: &TestRun) -> Vec<Failure> {
-    if result.performance <= expectations.performance.into() {
+    if expectations.performance.is_none() {
+        return vec![];
+    }
+
+    let expected_performance = expectations.performance.unwrap();
+
+    if result.performance <= expected_performance.into() {
         return vec![];
     }
 
     vec![Failure {
         failure_type: FailureType::Performance,
-        expectation: expectations.performance.to_string(),
+        expectation: expected_performance.to_string(),
         actual: result.performance.to_string(),
     }]
 }

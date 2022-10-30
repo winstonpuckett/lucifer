@@ -1,5 +1,13 @@
 [Installation Instructions](https://lucifer.winstonpuckett.com/docs/installation/)
 
+## 0.3.0
+
+Performance expectations will no longer be set if not provided. 
+
+In previous versions, if there was no performance expectation explicitly set, the performance would default to 1 second. However, there are many tools which don't have any performance metrics such as developer hotfix tools internal to a company. Some of these may be expected to take multiple hours.
+
+It doesn't make sense to force a developer to do math around a tool's performance when they have no preference around how long it takes. It would be better to simply remove the feature.
+
 ## 0.2.1
 
 Give better errors when the user doesn't have permission to create a specified output file.
