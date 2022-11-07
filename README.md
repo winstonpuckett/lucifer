@@ -7,7 +7,7 @@ Free, Open source, Cross-platform, Illuminating CLI testing written in Rust.
 
 Lucifer is currently in alpha. While the contract will never break within the same version, there will be a few bugs. If you like the project and want to support its development, consider giving it a try and filing an issue or two when something breaks.
 
-The project is expected to hit a full release by December 2022, and the your help in ironing out all of the bugs will be greatly appreciated.
+Development on Lucifer has slowed. I need to take a break from doing side projects for awhile to regain a sense of balance. Lucifer is not dead however. It's entirely useable right now and is expected to have more features in the future.
 
 ## What is lucifer?
 
