@@ -14,18 +14,20 @@ pub fn mutate(
     return mutate_options(current_arg, result, args);
 }
 
-fn mutate_options(current_arg: String, result: &mut Args, args: &mut std::iter::Peekable<env::Args>) -> Result<(), (ExitCode, Option<String>)> {
+fn mutate_options(
+    current_arg: String,
+    result: &mut Args,
+    args: &mut std::iter::Peekable<env::Args>,
+) -> Result<(), (ExitCode, Option<String>)> {
     let options_parsers = get_options();
-    let options = options_parsers
-        .iter()
-        .filter(|f| {
-            f.name_short.eq_ignore_ascii_case(&current_arg)
-                || f.name_long.eq_ignore_ascii_case(&current_arg)
-        });
+    let options = options_parsers.iter().filter(|f| {
+        f.name_short.eq_ignore_ascii_case(&current_arg)
+            || f.name_long.eq_ignore_ascii_case(&current_arg)
+    });
 
     for o in options {
         let r = (o.mutator)(result, &current_arg, args);
-        
+
         if r.is_err() {
             return r;
         }

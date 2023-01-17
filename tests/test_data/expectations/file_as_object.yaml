@@ -1,0 +1,7 @@
+command: echo
+tests:
+  - name: Assert file contents
+    expectations: 
+      file: 
+        path: ./tests/test_data/expectations/some_file_content.txt
+        parts: any eroneous content

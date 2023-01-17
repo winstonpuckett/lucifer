@@ -132,3 +132,14 @@ tests:
     args:
       - -i
       - ./tests/test_data/expectations/file_contents_failure.yaml
+
+  - name: File assertion should be able to contain one element
+    description: >
+      Given a test which uses the file assertion as an object
+      When lucifer runs
+      Then it should fail on the eroneous part assertion
+    expectations:
+      exitCode: 1
+    args:
+      - -i
+      - ./tests/test_data/expectations/file_as_object.yaml

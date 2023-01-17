@@ -2,8 +2,21 @@ command: echo
 tests:
   - name: Assert file contents
     expectations: 
-      file: ./tests/test_data/expectations/some_file_content.txt
-      contents: |
-        This is a story
-        About a lovely lady
-        Who was bringing up three very lovely girls
+      file: 
+        - path: ./tests/test_data/expectations/some_file_content.txt
+          parts: |-
+            This is a story
+            About a lovely lady
+            Who was bringing up three very lovely girls
+  - name: Assert file in parts
+    expectations: 
+      file: 
+        - path: ./tests/test_data/expectations/some_file_content.txt
+          parts: 
+            - This is a story
+            - About a lovely lady
+            - Who was bringing up three very lovely girls
+            - This
+            - is
+            - a
+            - story

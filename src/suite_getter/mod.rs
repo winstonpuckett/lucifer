@@ -69,6 +69,7 @@ pub struct Test {
     pub name: String,
 }
 
+
 #[derive(Clone)]
 pub struct Expectations {
     pub performance: Option<u64>,
@@ -76,6 +77,12 @@ pub struct Expectations {
     pub output: Option<String>,
     pub error: Option<String>,
     pub no_file: Option<String>,
-    pub file: Option<String>,
-    pub contents: Option<String>,
+    pub file: Vec<FileExpectation>
+}
+
+#[derive(Clone)]
+pub struct FileExpectation {
+    pub path: String,
+    pub parts: Vec<String>
+    // TODO: matches?
 }

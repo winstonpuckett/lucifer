@@ -2,5 +2,6 @@ command: echo
 tests:
   - name: File contents asserted
     expectations: 
-      file: ./tests/test_data/expectations/file_contents_failure.yaml
-      contents: "eroneous content"
+      file: 
+        - path: ./tests/test_data/expectations/some_file_content.txt
+          parts: "eroneous content"

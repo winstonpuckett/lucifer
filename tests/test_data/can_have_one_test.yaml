@@ -1,0 +1,14 @@
+command: exit
+tests:
+  name: Any test ever should compile 
+  description: any
+  expectations: 
+    performance: 1234
+    exitCode: 1234
+    output: console output string
+    error: console error string
+    file: path/to/output/file
+    contents: file output string
+  serialization: auto
+  args:
+  - "1"
