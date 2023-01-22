@@ -35,6 +35,14 @@ If worst comes to worst, you *can* write a simple bash script to wrap your tool 
 
 It is always recommended to try the first to ideas first.
 
+## Why is it called Lucifer?
+
+I was talking with a friend of mine who's Jewish and he told me that the original translations of "the Satan" actually translate better as "the challenger." This alters the understanding of what happened with Job - it's not that God and "Satan" were talking, it's that God was discussing something and someone spoke up, making them "the Satan" in that scenario.
+
+Of course, I'm misrepresenting all of this by calling this project lucifer and not satan. Lucifer is the reference to the fallen angel as far as I am aware. But darn it, lucifer sounded better.
+
+This project aims to challenge your assumptions of what your code looks like. And in doing so, become "the Satan" for you so that you don't have to.
+
 ## Getting Started
 
 ### Install 
