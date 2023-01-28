@@ -11,7 +11,7 @@ tests:
       file: ./output/results_folder_long_form/results.json
     args:
       - -i 
-      - ./tests/test_data/output_to_results_long_form_folder.yaml
+      - ./tests/data/output_to_results_long_form_folder.yaml
 
   - name: -o changes where results.json ends up
     description: >
@@ -24,7 +24,7 @@ tests:
       file: ./output/results_folder_short_form/results.json
     args:
       - -i
-      - ./tests/test_data/output_to_results_short_form_folder.yaml
+      - ./tests/data/output_to_results_short_form_folder.yaml
 
   - name: -o without argument produces exit code 2
     description: >
@@ -67,7 +67,7 @@ tests:
       file: ./output/results_folder_long_form_custom_file/xyz.json
     args:
       - -i 
-      - ./tests/test_data/output_to_results_long_form_folder_custom_file.yaml
+      - ./tests/data/output_to_results_long_form_folder_custom_file.yaml
 
   - name: -o with filename changes the filename
     description: >
@@ -80,7 +80,7 @@ tests:
       file: ./output/results_folder_short_form_custom_file/xyz.json
     args:
       - -i
-      - ./tests/test_data/output_to_results_short_form_folder_custom_file.yaml
+      - ./tests/data/output_to_results_short_form_folder_custom_file.yaml
 
   - name: -o with folder ending in .json outputs to a folder
     description: >
@@ -93,4 +93,4 @@ tests:
       file: ./output/results_folder_short_form.json/results.json
     args:
       - -i
-      - ./tests/test_data/output_to_folder_ending_in_json.yaml
+      - ./tests/data/output_to_folder_ending_in_json.yaml

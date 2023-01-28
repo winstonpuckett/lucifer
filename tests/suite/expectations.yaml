@@ -9,7 +9,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/exit_code_success.yaml
+      - ./tests/data/expectations/exit_code_success.yaml
 
   - name: Exit codes which fail expectations should fail.
     description: >
@@ -20,7 +20,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/exit_code_failure.yaml
+      - ./tests/data/expectations/exit_code_failure.yaml
 
   - name: Performance expectations met returns 0
     description: >
@@ -31,7 +31,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/performance_success.yaml
+      - ./tests/data/expectations/performance_success.yaml
 
   - name: Performance expectations violated returns 1
     description: >
@@ -43,7 +43,7 @@ tests:
       performance: 2000
     args:
       - -i
-      - ./tests/test_data/expectations/performance_failure.yaml
+      - ./tests/data/expectations/performance_failure.yaml
 
   - name: Output expectations met returns 0
     description: >
@@ -54,7 +54,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/output_success.yaml
+      - ./tests/data/expectations/output_success.yaml
 
   - name: Output expectations violated returns 1
     description: >
@@ -65,7 +65,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/output_failure.yaml
+      - ./tests/data/expectations/output_failure.yaml
 
   - name: Error expectations met returns 0
     description: >
@@ -76,7 +76,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/error_success.yaml
+      - ./tests/data/expectations/error_success.yaml
 
   - name: Error expectations violated returns 1
     description: >
@@ -87,7 +87,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/error_failure.yaml
+      - ./tests/data/expectations/error_failure.yaml
 
   - name: File expectations met returns 0
     description: >
@@ -98,7 +98,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/file_success.yaml
+      - ./tests/data/expectations/file_success.yaml
 
   - name: File expectations violated returns 1
     description: >
@@ -109,7 +109,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/file_failure.yaml
+      - ./tests/data/expectations/file_failure.yaml
 
   - name: File contents met returns 0
     description: >
@@ -120,7 +120,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/expectations/file_contents_success.yaml
+      - ./tests/data/expectations/file_contents_success.yaml
 
   - name: File contents violated returns 1
     description: >
@@ -131,7 +131,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/file_contents_failure.yaml
+      - ./tests/data/expectations/file_contents_failure.yaml
 
   - name: File assertion should be able to contain one element
     description: >
@@ -142,4 +142,4 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/expectations/file_as_object.yaml
+      - ./tests/data/expectations/file_as_object.yaml

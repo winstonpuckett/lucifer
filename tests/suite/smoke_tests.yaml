@@ -9,7 +9,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/missing_parameters.yaml
+      - ./tests/data/missing_parameters.yaml
 
   - name: All file names are valid
     description: >
@@ -27,7 +27,7 @@ tests:
       exitCode: 1
     args:
       - -i
-      - ./tests/test_data/files_before_and_after_s
+      - ./tests/data/files_before_and_after_s
 
   - name: Empty files should simply return ok
     description: >
@@ -38,7 +38,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/empty_files
+      - ./tests/data/empty_files
 
   - name: Can compile a file vs a folder
     description: >
@@ -49,7 +49,7 @@ tests:
       exitCode: 0
     args:
       - -i
-      - ./tests/test_data/empty_files/empty_file.yaml
+      - ./tests/data/empty_files/empty_file.yaml
 
   - name: Asking to output to a directory which doesn't exist works
     description: >
@@ -60,7 +60,7 @@ tests:
       exitCode: 0
     args:
       - -o
-      - ./tests/test_data/path_which_doesnt_exist
+      - ./tests/data/path_which_doesnt_exist
 
   - name: Erroneous noFile assertion succeeds
     description: >
@@ -79,4 +79,4 @@ tests:
       exitCode: 0
     args:
     - -i 
-    - ./tests/test_data/type_checking.yaml
+    - ./tests/data/type_checking.yaml

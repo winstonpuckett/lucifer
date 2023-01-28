@@ -1,0 +1,30 @@
+command: ./target/release/lucifer
+tests:
+  - name: JSON output has all necessary fields
+    expectations: 
+      exitCode: 1
+      performance: 10
+      file:
+        - path: ./output/fail_all.json
+          parts: 
+            # Top level
+            - "\"succeeded\":false"
+            - "milliseconds"
+            - '"standardOut":""'
+            - '"standardError":""'
+            - '"exitCode":0'
+            # Test level
+            - '"feature":"fail_all.yaml"'
+            - '"test":"fail all"'
+            # Expectation headers
+            - '{"type":"exitCode","expectation":"1234","actual":"0"}'
+            - '{"type":"output","expectation":"eroneous output","actual":""}'
+            - '{"type":"error","expectation":"eroneous error","actual":""}'
+            - '{"type":"fileMissing","expectation":"no/matching/file","actual":"File does not exist or cannot be accessed."}'
+            # # Error Messages
+            # - 
+    args:
+      - -i
+      - ./tests/data/fail_all.yaml
+      - -o
+      - ./output/fail_all.json

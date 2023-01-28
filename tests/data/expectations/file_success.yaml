@@ -2,4 +2,4 @@ command: echo
 tests:
   - name: this file exists
     expectations: 
-      file: ./tests/test_data/expectations/file_success.yaml
+      file: ./tests/data/expectations/file_success.yaml

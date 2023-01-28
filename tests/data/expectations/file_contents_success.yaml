@@ -3,7 +3,7 @@ tests:
   - name: Assert file contents
     expectations: 
       file: 
-        - path: ./tests/test_data/expectations/some_file_content.txt
+        - path: ./tests/data/expectations/some_file_content.txt
           parts: |-
             This is a story
             About a lovely lady
@@ -11,7 +11,7 @@ tests:
   - name: Assert file in parts
     expectations: 
       file: 
-        - path: ./tests/test_data/expectations/some_file_content.txt
+        - path: ./tests/data/expectations/some_file_content.txt
           parts: 
             - This is a story
             - About a lovely lady

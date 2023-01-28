@@ -1,0 +1,13 @@
+command: exit
+tests:
+  - name: fail all
+    description: fail all description
+    expectations: 
+      performance: 1
+      exitCode: 1234
+      output: eroneous output
+      error: eroneous error
+      file: 
+        - path: ./tests/data/empty_files/empty_file.yaml
+          matches: no matching contents
+        - path: no/matching/file

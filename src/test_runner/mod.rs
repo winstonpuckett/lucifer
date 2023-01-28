@@ -24,6 +24,8 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
             let full_args = [&first_arg, &meaningful_args];
 
             let mut result = TestResult {
+                feature: String::from(&feature.name),
+                test: String::from(&test.name),
                 run: perform_command(&shell, full_args),
                 failures: vec![],
                 succeeded: true
@@ -43,11 +45,12 @@ pub fn run_suite(suite: &suite_getter::Suite) -> SuiteResult {
                 );
                 result.succeeded = false;
                 success = false;
-
+                
                 logger::log_detail(suite, &format!("Reproduce with: '{0}'", meaningful_args));
                 logger::log_newline(suite);
-
+                
                 for f in failures {
+                    result.failures.push(f.clone());
                     logger::log_details(suite, get_failure_messages(f));
                 }
             }
@@ -134,6 +137,8 @@ pub struct SuiteResult {
 
 #[derive(Clone)]
 pub struct TestResult {
+    pub feature: String,
+    pub test: String,
     pub succeeded: bool,
     pub failures: Vec<Failure>,
     pub run: TestRun

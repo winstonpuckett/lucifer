@@ -3,5 +3,5 @@ tests:
   - name: File contents asserted
     expectations: 
       file: 
-        - path: ./tests/test_data/expectations/some_file_content.txt
+        - path: ./tests/data/expectations/some_file_content.txt
           parts: "eroneous content"

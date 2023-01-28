@@ -31,8 +31,8 @@ fn to_feature_from_map(file_option: Option<Yaml>, file_name: String) -> Feature 
             has_command: file["command"].as_str().is_some(),
             command: String::from(file["command"].as_str().unwrap()),
             tests: file["tests"]
-                .as_vec()
                 // TODO: Handle case where tests is not a vec
+                .as_vec()
                 .unwrap()
                 .into_iter()
                 .map(to_test)
