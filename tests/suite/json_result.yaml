@@ -3,26 +3,26 @@ tests:
   - name: JSON output has all necessary fields
     expectations: 
       exitCode: 1
-      performance: 10
+      performance: 1010
       file:
         - path: ./output/fail_all.json
           parts: 
             # Top level
             - "\"succeeded\":false"
             - "milliseconds"
-            - '"standardOut":""'
-            - '"standardError":""'
+            - '"standardOut":"hi output\n"'
+            - '"standardError":"hi error\n"'
             - '"exitCode":0'
             # Test level
             - '"feature":"fail_all.yaml"'
             - '"test":"fail all"'
-            # Expectation headers
+            # Expectations
+            - '{"type":"performance","expectation":"1","actual"'
             - '{"type":"exitCode","expectation":"1234","actual":"0"}'
-            - '{"type":"output","expectation":"eroneous output","actual":""}'
-            - '{"type":"error","expectation":"eroneous error","actual":""}'
+            - '{"type":"output","expectation":"eroneous output","actual":"hi output\n"}'
+            - '{"type":"error","expectation":"eroneous error","actual":"hi error\n"}'
             - '{"type":"fileMissing","expectation":"no/matching/file","actual":"File does not exist or cannot be accessed."}'
-            # # Error Messages
-            # - 
+            - '{"type":"fileExists","expectation":"","actual":"./tests/data/empty_files/empty_file.yaml"}'
     args:
       - -i
       - ./tests/data/fail_all.yaml

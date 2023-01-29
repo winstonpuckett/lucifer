@@ -14,7 +14,6 @@ fn get_rules() -> [fn(&Expectations, &TestRun) -> Vec<Failure>; 6] {
         assert_output,
         assert_error,
         assert_file,
-        // assert_file_content,
         assert_no_file,
     ]
 }
@@ -139,52 +138,7 @@ fn assert_file(expectations: &Expectations, _: &TestRun) -> Vec<Failure> {
         })
         .flatten()
         .collect()
-
-    // if expectations.file.is_none() {
-    //     return vec![];
-    // }
-
-    // let file_which_should_exist = expectations.file.to_owned().unwrap();
-    // let metadata = fs::metadata(&file_which_should_exist);
-
-    // if metadata.is_ok() {
-    //     return vec![];
-    // }
-
-    // vec![Failure {
-    //     failure_type: FailureType::FileDoesNotExist,
-    //     expectation: expectations.file.to_owned().unwrap(),
-    //     actual: String::from("File does not exist or cannot be accessed."),
-    // }]
 }
-
-// fn assert_file_content(expectations: &Expectations, _: &TestRun) -> Vec<Failure> {
-//     // If we cover expectations in assert_file or don't expect content, we're good.
-//     if expectations.file.is_none() || expectations.contents.is_none() {
-//         return vec![];
-//     }
-
-//     let file_expectation = expectations.to_owned().file.unwrap();
-//     let content_result = fs::read_to_string(&file_expectation);
-
-//     if content_result.is_err() {
-//         return vec![];
-//     }
-
-//     let expectation = expectations.contents.to_owned().unwrap();
-//     let actual = content_result.unwrap();
-
-//     // If contents equals
-//     if expectation == actual {
-//         return vec![];
-//     }
-
-//     vec![Failure {
-//         failure_type: FailureType::FileContents,
-//         expectation,
-//         actual,
-//     }]
-// }
 
 fn assert_no_file(expectations: &Expectations, _: &TestRun) -> Vec<Failure> {
     if expectations.no_file.is_none() {

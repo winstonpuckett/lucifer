@@ -1,12 +1,14 @@
-command: exit
+command: sleep 1 && echo hi output && echo hi error >&2
 tests:
   - name: fail all
     description: fail all description
+    
     expectations: 
       performance: 1
       exitCode: 1234
       output: eroneous output
       error: eroneous error
+      noFile: ./tests/data/empty_files/empty_file.yaml
       file: 
         - path: ./tests/data/empty_files/empty_file.yaml
           matches: no matching contents
