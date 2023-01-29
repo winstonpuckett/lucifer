@@ -3,12 +3,6 @@
 # LUCIFER 🐲
 Free, Open source, Cross-platform, Illuminating CLI testing written in Rust.
 
-## Stability
-
-Lucifer is currently in alpha. While the contract will never break within the same version, there will be a few bugs. If you like the project and want to support its development, consider giving it a try and filing an issue or two when something breaks.
-
-Development on Lucifer has slowed. I need to take a break from doing side projects for awhile to regain a sense of balance. Lucifer is not dead however. It's entirely useable right now and is expected to have more features in the future.
-
 ## What is lucifer?
 
 Lucifer is a CLI testing tool designed for running suites of tests. It is designed around the idea that your integration tests need to scale alongside your code base. 
@@ -19,9 +13,9 @@ All lucifer tests are specified in plain YAML to maximise the readability and ea
 
 This comes at the tradeoff of customizability. Lucifer is responsible for executing the data, which makes it harder to customize the tool should you have  a need to. If you find that you need to do something lucifer doesn't offer, there are a few options.
 
-### 1. Create an issue (Or even a pull request!)
+### 1. Create an issue (Or better yet, a pull request!)
 
-Remember, lucifer is still in alpha state. We may be missing features which would be a good idea to include in the final product. Use the [issue tab](https://github.com/winstonpuckett/lucifer/issues) in GitHub to create new feature requests.
+Lucifer may be missing features. Use the [issue tab](https://github.com/winstonpuckett/lucifer/issues) in GitHub to create new feature requests and connect with me about what you're looking for.
 
 ### 2. Consider whether it should be an integration test.
 
@@ -33,11 +27,9 @@ Lucifer supports many different types of tests. If there's something specific th
 
 If worst comes to worst, you *can* write a simple bash script to wrap your tool and validate what needs to be validated. Just remember that performance metrics will envolve any custom verification steps.
 
-It is always recommended to try the first to ideas first.
-
 ## Why is it called Lucifer?
 
-I was talking with a friend of mine who's Jewish and he told me that the original translations of "the Satan" actually translate better as "the challenger." This alters the understanding of what happened with Job - it's not that God and "Satan" were talking, it's that God was discussing something and someone spoke up, making them "the Satan" in that scenario.
+I was talking with a friend of mine who studies these things and he told me that the original translations of "the Satan" actually translate better as "the challenger." This alters the understanding of what happened with Job (in the book of Job in the old testament) - it's not that God and "Satan" were talking, it's that God was discussing something and someone spoke up, making them "the Satan" in that scenario.
 
 Of course, I'm misrepresenting all of this by calling this project lucifer and not satan. Lucifer is the reference to the fallen angel as far as I am aware. But darn it, lucifer sounded better.
 
@@ -47,41 +39,14 @@ This project aims to challenge your assumptions of what your code looks like. An
 
 ### Install 
 
-#### 1. Install with Cargo (recommended)
-
 Prerequisites:
 - [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 
-The easiest way to get up and running with lucifer is to install it from rust's package manager, [cargo](https://doc.rust-lang.org/cargo/).
+lucifer is built and distributed using Rust. You'll need a copy of Rust's package manager, [cargo](https://doc.rust-lang.org/cargo/), installed on your local system.
 
 To install lucifer, run the following command in your terminal of choice:
 ```bash
 cargo install lucifer-testing
-```
-
-#### 2. Install from source
-
-Prerequisites:
-- [git](https://git-scm.com/)
-- [rust/cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
-- A bash-like terminal (or modify the script below to match your terminal)
-
-*note: copy/pasting bash scripts from the internet is a bad idea. Make sure you know what you're doing and why. It never hurts to type things in manually.*
-
-You can do install from source with the following script:
-```bash
-# Get the source
-git clone https://github.com/winstonpuckett/lucifer.git
-cd lucifer
-
-# Build the project
-cargo build --release
-
-# move the target file out of the directory
-mv ./target/release/lucifer ..
-
-# Remove the source folder
-rm -rf lucifer
 ```
 
 ### Running a test
@@ -111,20 +76,7 @@ Run this file with the command:
 lucifer -i ./feature.yaml
 ```
 
-For more examples, visit the getting started page on our website... Which is not currently up.
-
-## Where is it going
-
-The current vision for the product is all about ease. This means LOTS of documentation and some infrastructure set up.
-
-Including (but not limited to):
-- Setting up the official website with documentation and lots of easy examples
-- Improving this readme
-- Installation through common package managers such as ~~cargo~~, apt-get, snap, winget, homebrew, and more
-- A base docker image for when you want to deploy in CI/CD scenarios
-- GitHub Actions support
-- Squashing any found bugs
-- Improving performance
+For more examples, visit the [test syntax reference](https://winstonpuckett.com/products/lucifer/tests).
 
 ## Alternatives
 
@@ -132,3 +84,7 @@ Lucifer may not be the right choice for you. That's ok. I hope you will consider
 
 - [BATS](https://github.com/bats-core/bats-core)
 - [cli-testing-library](https://github.com/gmrchk/cli-testing-library)
+
+## Finally
+
+If you try out lucifer, please give it a start on GitHub. I love knowing that someone thought this effort was valuable.
